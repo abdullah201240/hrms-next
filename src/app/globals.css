@@ -72,7 +72,8 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  /* FLAT UI: no rounded corners anywhere (see .qoder/rules/02-shadcn-flat-ui.md) */
+  --radius: 0rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -126,5 +127,34 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* =====================================================================
+   FLAT UI GLOBAL OVERRIDES — project policy (rules/02-shadcn-flat-ui.md)
+   No shadows and no rounded corners anywhere. Focus rings (accessibility)
+   are preserved because they are driven by --tw-ring-shadow, not the
+   --shadow-* scale neutralized below.
+   ===================================================================== */
+
+/* 1. Kill every drop shadow in the shadow scale (shadow-sm, shadow-md, ...). */
+@theme {
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+  --drop-shadow-*: initial;
+}
+
+/* 2. Force sharp corners globally, incl. rounded-full (avatar/switch/etc.). */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
   }
 }
