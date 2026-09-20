@@ -1,0 +1,24 @@
+// HRMS — Prisma schema
+// Full HR models (Employee, Leave, Payroll, Attendance...) are added in the schema phase.
+// For now: a HealthCheck table used to verify migrate + client + connection wiring.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model HealthCheck {
+  id      Int      @id @default(autoincrement())
+  message String
+  at      DateTime @default(now())
+}
+
+model AuditLog {
+  id      Int      @id @default(autoincrement())
+  action  String
+  at      DateTime @default(now())
+}
