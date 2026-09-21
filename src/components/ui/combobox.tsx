@@ -72,6 +72,9 @@ function ComboboxInput({
             size="icon-xs"
             variant="ghost"
             render={<ComboboxTrigger />}
+            // ComboboxTrigger renders a native <button>, so it must NOT be
+            // flagged as a non-native (render-based) button by our Button wrapper.
+            nativeButton
             data-slot="input-group-button"
             className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
             disabled={disabled}

@@ -57,7 +57,7 @@ export default function EmployeesPage() {
   return (
     <>
       <PageHeader title="Employees" description={`${employees.length} people across ${new Set(employees.map((e) => e.department)).size} departments.`}>
-        <Button>
+        <Button render={<Link href="/employees/new" />}>
           <Plus /> New Employee
         </Button>
       </PageHeader>
