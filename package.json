@@ -12,7 +12,8 @@
     "db:generate": "prisma generate",
     "db:verify": "tsx scripts/verify-db.mts",
     "db:push": "node scripts/guard-no-db-push.mjs",
-    "db:pull": "node scripts/guard-no-db-push.mjs"
+    "db:pull": "node scripts/guard-no-db-push.mjs",
+    "ui:flatten": "node scripts/flatten-ui.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

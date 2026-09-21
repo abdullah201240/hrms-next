@@ -11,3 +11,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Hard Rules
 
 - **Database: migrations only.** `prisma db push`/`db pull` are disabled and guarded. All schema changes go through `npm run db:migrate`. See `.qoder/rules/01-database-migrations-only.md`.
+- **UI: shadcn-only + flat.** Only shadcn/ui components; no other UI libs. No shadows and no rounded corners anywhere (globally enforced in globals.css). See `.qoder/rules/02-shadcn-flat-ui.md`.
