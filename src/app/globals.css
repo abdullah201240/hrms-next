@@ -49,7 +49,9 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  /* FLAT/BORDERLESS: page uses a light tint so white surfaces (cards) stay
+     readable without any 1px outlines. */
+  --background: oklch(0.975 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -156,5 +158,21 @@
   *::before,
   *::after {
     border-radius: 0 !important;
+  }
+}
+
+/* 3. BORDERLESS surfaces: remove every 1px line (cards, inputs, selects,
+   table rows, dividers). Focus/invalid states stay visible because they are
+   driven by box-shadow rings (--tw-ring-shadow) and outline, NOT border-width.
+   See .qoder/rules flat-ui policy. */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-width: 0 !important;
+  }
+  /* Separator is a background-coloured 1px bar, not a CSS border — hide it too. */
+  [data-slot="separator"] {
+    background-color: transparent;
   }
 }
