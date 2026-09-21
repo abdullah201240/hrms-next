@@ -167,7 +167,7 @@ export function SalarySlipDetailed({ data: d }: P) {
 
 /* ── Salary Slip With Year To Date ── */
 export function SalarySlipYtd({ data: d }: P) {
-  const ytd = d.ytd!;
+  const { ytd } = d;
   const ytdRow = (r: Money, i: number, cur: number) => (
     <tr key={r.label} className={i % 2 ? "bg-neutral-50" : undefined}>
       <td className="py-1.5">{r.label}</td>

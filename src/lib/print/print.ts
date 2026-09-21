@@ -1,4 +1,4 @@
-import { company, employees, type SalarySlip, type LeaveApplication, type ExpenseClaim } from "@/lib/mock/data";
+import { company, employees, salarySlips, type SalarySlip, type LeaveApplication, type ExpenseClaim } from "@/lib/mock/data";
 
 /**
  * Print data layer — mirrors the reference Frappe HR print subsystem
@@ -34,7 +34,8 @@ export type SalarySlipPrint = {
   net: number;
   rounded: number;
   inWords: string;
-  ytd?: { earnings: Money[]; deductions: Money[]; gross: number; deduction: number; net: number };
+  /** Year-to-date totals — always built so every registered format can render. */
+  ytd: { earnings: Money[]; deductions: Money[]; gross: number; deduction: number; net: number };
   timeSheetBased?: boolean;
 };
 
@@ -70,6 +71,19 @@ export type Printable =
   | EmployeePrint
   | GenericPrint;
 
+/**
+ * Months covered year-to-date for a slip — like Frappe HR, which sums the
+ * employee's submitted slips of the same year up to and including the pay month.
+ */
+function ytdMonthCount(slip: SalarySlip): number {
+  const idx = (month: string) => new Date(`${month.split(" ")[0]} 1, ${month.split(" ")[1]}`).getMonth();
+  const target = idx(slip.month);
+  const count = salarySlips.filter(
+    (s) => s.employeeId === slip.employeeId && s.month.endsWith(slip.month.split(" ")[1]) && idx(s.month) <= target,
+  ).length;
+  return Math.max(count, 1);
+}
+
 /** month "September 2026" → { start, end, drawing } ISO dates. */
 function monthRange(month: string): { start: string; end: string; drawing: string } {
   const [m, y] = month.split(" ");
@@ -92,7 +106,7 @@ function split(total: number, ratios: [string, number][]): Money[] {
 }
 
 /** Build the printable payload for a salary-slip row (component split mirrors Frappe HR structures). */
-export function salarySlipPrint(slip: SalarySlip, opts: { ytd?: boolean; timesheet?: boolean } = {}): SalarySlipPrint {
+export function salarySlipPrint(slip: SalarySlip, opts: { timesheet?: boolean } = {}): SalarySlipPrint {
   const emp = employees.find((e) => e.id === slip.employeeId);
   const { start, end, drawing } = monthRange(slip.month);
   const earnings = split(slip.gross, [
@@ -110,6 +124,7 @@ export function salarySlipPrint(slip: SalarySlip, opts: { ytd?: boolean; timeshe
   ]).map((d, i) => (i === 0 ? { ...d, label: "Provident Fund" } : d));
   const rounded = Math.round(slip.net / 10) * 10;
   const seq = slip.id.replace(/\D/g, "").padStart(3, "0");
+  const ytdMonths = ytdMonthCount(slip);
   const year = slip.month.split(" ")[1];
   const workingDays = 26;
   return {
@@ -137,15 +152,13 @@ export function salarySlipPrint(slip: SalarySlip, opts: { ytd?: boolean; timeshe
     net: slip.net,
     rounded,
     inWords: amountInWords(rounded),
-    ytd: opts.ytd
-      ? {
-          earnings: earnings.map((e) => ({ label: e.label, amount: e.amount * 6 })),
-          deductions: deductions.map((d) => ({ label: d.label, amount: d.amount * 6 })),
-          gross: slip.gross * 6,
-          deduction: slip.deductions * 6,
-          net: slip.net * 6,
-        }
-      : undefined,
+    ytd: {
+      earnings: earnings.map((e) => ({ label: e.label, amount: e.amount * ytdMonths })),
+      deductions: deductions.map((d) => ({ label: d.label, amount: d.amount * ytdMonths })),
+      gross: slip.gross * ytdMonths,
+      deduction: slip.deductions * ytdMonths,
+      net: slip.net * ytdMonths,
+    },
     timeSheetBased: opts.timesheet,
   };
 }

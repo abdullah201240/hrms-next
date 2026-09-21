@@ -74,24 +74,21 @@ export default function LeaveControlPanelPage() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <p className="text-sm text-muted-foreground">Active Leave Periods</p>
-            <p className="text-2xl font-semibold">{leavePeriods.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <p className="text-sm text-muted-foreground">Leave Policies</p>
-            <p className="text-2xl font-semibold">{leavePolicies.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <p className="text-sm text-muted-foreground">Block Lists</p>
-            <p className="text-2xl font-semibold">{leaveBlockLists.length}</p>
-          </CardContent>
-        </Card>
+        <StatCard
+          label="Active Leave Periods"
+          value={leavePeriods.length}
+          icon={CalendarClock}
+        />
+        <StatCard
+          label="Leave Policies"
+          value={leavePolicies.length}
+          icon={Shield}
+        />
+        <StatCard
+          label="Block Lists"
+          value={leaveBlockLists.length}
+          icon={Ban}
+        />
       </div>
     </>
   );

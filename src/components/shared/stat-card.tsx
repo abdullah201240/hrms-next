@@ -10,7 +10,7 @@ export function StatCard({
 }: {
   label: string;
   value: string | number;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   hint?: string;
   trend?: "up" | "down" | "flat";
 }) {
@@ -28,9 +28,11 @@ export function StatCard({
           <p className="text-2xl font-semibold tracking-tight">{value}</p>
           {hint ? <p className={`text-xs ${trendColor}`}>{hint}</p> : null}
         </div>
-        <div className="flex size-10 shrink-0 items-center justify-center bg-muted text-muted-foreground">
-          <Icon className="size-5" />
-        </div>
+        {Icon ? (
+          <div className="flex size-10 shrink-0 items-center justify-center bg-muted text-muted-foreground">
+            <Icon className="size-5" />
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );
