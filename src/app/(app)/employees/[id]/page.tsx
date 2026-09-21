@@ -25,7 +25,9 @@ import {
   fmtMoney,
   leaveApplications,
   attendanceRecords,
+  company,
 } from "@/lib/mock/data";
+import { PrintButton } from "@/components/shared/print/print-dialog";
 import { ArrowLeft, Mail, Phone, MapPin, Pencil } from "lucide-react";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
@@ -87,6 +89,7 @@ export default async function EmployeeDetailPage({
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <PrintButton data={{ doctype: "Employee", name: emp.employeeId, row: emp, company: company.name }} />
           <Button render={<Link href={`/employees/${emp.id}/edit`} />}>
             <Pencil /> Edit
           </Button>

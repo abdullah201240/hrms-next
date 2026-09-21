@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/shared/page-header";
@@ -27,6 +29,7 @@ const myRecords = [
 ];
 
 export default function MyAttendancePage() {
+  const [clockedOut, setClockedOut] = useState(false);
   return (
     <>
       <PageHeader
@@ -50,7 +53,17 @@ export default function MyAttendancePage() {
             </div>
             <div className="flex gap-2">
               <Button className="flex-1" disabled><LogIn /> Clocked In</Button>
-              <Button variant="outline" className="flex-1"><LogOut /> Check Out</Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                disabled={clockedOut}
+                onClick={() => {
+                  setClockedOut(true);
+                  toast.success("Checked out at 18:07 — have a great day!");
+                }}
+              >
+                <LogOut /> {clockedOut ? "Checked Out" : "Check Out"}
+              </Button>
             </div>
           </CardContent>
         </Card>

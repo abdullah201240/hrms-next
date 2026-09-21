@@ -6,6 +6,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { expenseClaims, fmtDate, type ExpenseClaim } from "@/lib/mock/data";
+import { expensePrint } from "@/lib/print/print";
+import { PrintButton } from "@/components/shared/print/print-dialog";
 import { Plus } from "lucide-react";
 
 const columns: Column<ExpenseClaim>[] = [
@@ -16,6 +18,7 @@ const columns: Column<ExpenseClaim>[] = [
   { key: "date", header: "Date", sortable: true, cell: (x) => fmtDate(x.date) },
   { key: "amount", header: "Amount", sortable: true, align: "right", cell: (x) => <span className="tabular-nums font-medium">৳{x.amount.toLocaleString()}</span> },
   { key: "status", header: "Status", cell: (x) => <StatusBadge status={x.status} /> },
+  { key: "print", header: "", align: "right", cell: (x) => <PrintButton data={() => expensePrint(x)} variant="ghost" label="Print" /> },
 ];
 
 export default function ExpensesPage() {

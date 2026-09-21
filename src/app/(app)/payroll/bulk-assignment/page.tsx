@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -65,7 +66,10 @@ export default function BulkSalaryStructurePage() {
       </Card>
 
       <div className="mt-5 flex items-center gap-3">
-        <Button disabled={count === 0}>
+        <Button
+          disabled={count === 0}
+          onClick={() => toast.success(`${count} ${count === 1 ? "assignment" : "assignments"} created on ${structure || "salary structure"} from ${from}`)}
+        >
           <Layers className="size-4" />
           Create {count} {count === 1 ? "Assignment" : "Assignments"}
         </Button>

@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Plus, Inbox, Clock, CheckCircle2, CalendarDays, Wallet } from "lucide-react";
 import { leaveApplications, type LeaveApplication } from "@/lib/mock/data";
 import { fmtDate } from "@/lib/mock/data";
+import { leavePrint } from "@/lib/print/print";
+import { PrintButton } from "@/components/shared/print/print-dialog";
 
 const columns: Column<LeaveApplication>[] = [
   { key: "employeeName", header: "Employee", sortable: true, cell: (x) => <span className="font-medium">{x.employeeName}</span> },
@@ -17,6 +19,7 @@ const columns: Column<LeaveApplication>[] = [
   { key: "to", header: "To", sortable: true, cell: (x) => fmtDate(x.to) },
   { key: "days", header: "Days", align: "center" },
   { key: "status", header: "Status", cell: (x) => <StatusBadge status={x.status} /> },
+  { key: "print", header: "", align: "right", cell: (x) => <PrintButton data={() => leavePrint(x)} variant="ghost" label="Print" /> },
 ];
 
 export default function MyLeavePage() {

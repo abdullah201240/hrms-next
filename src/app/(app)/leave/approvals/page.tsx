@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/shared/page-header";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { leaveApplications, fmtDate, currentUser } from "@/lib/mock/data";
+import { leavePrint } from "@/lib/print/print";
+import { PrintButton } from "@/components/shared/print/print-dialog";
 import { toast } from "sonner";
 import { Check, X, Inbox } from "lucide-react";
 
@@ -71,6 +73,7 @@ export default function LeaveApprovalsPage() {
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
+                  <PrintButton data={() => leavePrint(l)} variant="ghost" label="Print" />
                   <Button variant="outline" size="sm" onClick={() => decide(l.id, l.employeeName, "Rejected")}>
                     <X /> Reject
                   </Button>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
+import { ExportButton } from "@/components/shared/export-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Download, ArrowLeft, CalendarRange } from "lucide-react";
+import { ArrowLeft, CalendarRange } from "lucide-react";
 import { reportBySlug, reportRows } from "@/lib/mock/data-3";
 
 export default async function ReportViewPage({
@@ -35,10 +36,7 @@ export default async function ReportViewPage({
           <ArrowLeft className="size-4" />
           All Reports
         </Button>
-        <Button>
-          <Download className="size-4" />
-          Export
-        </Button>
+        <ExportButton what={report.name.toLowerCase()} />
       </PageHeader>
 
       <Card className="mb-5">

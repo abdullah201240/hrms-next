@@ -72,6 +72,7 @@ export type NavItem = {
 
 export type NavSection = {
   label: string;
+  icon: LucideIcon;
   items: NavItem[];
 };
 
@@ -81,10 +82,12 @@ export type NavSection = {
 export const navSections: NavSection[] = [
   {
     label: "Overview",
+    icon: LayoutDashboard,
     items: [{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
   },
   {
     label: "Employee (Self-Service)",
+    icon: IdCard,
     items: [
       { title: "My Profile", href: "/profile", icon: IdCard },
       { title: "My Attendance", href: "/my-attendance", icon: CalendarClock },
@@ -100,6 +103,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Human Resources",
+    icon: Users,
     items: [
       { title: "Employees", href: "/employees", icon: Users },
       { title: "Departments", href: "/departments", icon: Building2 },
@@ -114,6 +118,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Shift & Attendance",
+    icon: CalendarClock,
     items: [
       { title: "Attendance", href: "/attendance", icon: CalendarCheck },
       { title: "Mark Attendance", href: "/attendance/mark-attendance", icon: ClipboardCheck },
@@ -135,6 +140,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Leaves",
+    icon: CalendarDays,
     items: [
       { title: "Leave Applications", href: "/leave", icon: CalendarDays },
       { title: "My Leave Balances", href: "/leave/balances", icon: Wallet },
@@ -157,6 +163,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Payroll",
+    icon: Wallet,
     items: [
       { title: "Salary Structures", href: "/payroll", icon: Wallet },
       { title: "Salary Components", href: "/payroll/components", icon: Coins },
@@ -182,6 +189,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Expenses",
+    icon: Receipt,
     items: [
       { title: "Expense Claims", href: "/expenses", icon: Receipt },
       { title: "New Claim", href: "/expenses/new", icon: Plane },
@@ -196,6 +204,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Recruitment",
+    icon: Briefcase,
     items: [
       { title: "Job Openings", href: "/recruitment/jobs", icon: Briefcase },
       { title: "Job Applicants", href: "/recruitment/applications", icon: Users },
@@ -215,6 +224,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Performance",
+    icon: Target,
     items: [
       { title: "Appraisals", href: "/performance/appraisals", icon: Target },
       { title: "Appraisal Cycles", href: "/performance/cycles", icon: CalendarClock },
@@ -228,6 +238,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Tenure",
+    icon: GraduationCap,
     items: [
       { title: "Employee Onboarding", href: "/tenure/onboarding", icon: UserPlus },
       { title: "Employee Separation", href: "/tenure/separations", icon: DoorOpen },
@@ -245,6 +256,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Tax & Benefits",
+    icon: Shield,
     items: [
       { title: "Exemption Declarations", href: "/tax-benefits/declarations", icon: FileText },
       { title: "Exemption Proof Submission", href: "/tax-benefits/proofs", icon: FileSignature },
@@ -257,10 +269,12 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Reports",
+    icon: BarChart3,
     items: [{ title: "Reports", href: "/reports", icon: BarChart3 }],
   },
   {
     label: "System",
+    icon: Settings,
     items: [{ title: "Settings", href: "/settings", icon: Settings }],
   },
 ];

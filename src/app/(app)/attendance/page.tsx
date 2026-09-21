@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { StatCard } from "@/components/shared/stat-card";
+import { ExportButton } from "@/components/shared/export-button";
 import { attendanceRecords, type AttendanceRecord } from "@/lib/mock/data";
-import { Download, CalendarCheck, CalendarX, Clock, Coffee } from "lucide-react";
+import { CalendarCheck, CalendarX, Clock, Coffee } from "lucide-react";
 
 const columns: Column<AttendanceRecord>[] = [
   { key: "date", header: "Date", sortable: true },
@@ -32,7 +32,7 @@ export default function AttendancePage() {
   return (
     <>
       <PageHeader title="Attendance" description="Daily attendance register across the organization.">
-        <Button variant="outline"><Download /> Export</Button>
+        <ExportButton variant="outline" what="attendance" />
       </PageHeader>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

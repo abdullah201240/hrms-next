@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Wallet, Banknote, Receipt, TrendingUp } from "lucide-react";
 import { salarySlips, type SalarySlip } from "@/lib/mock/data";
 import { fmtMoney } from "@/lib/mock/data";
+import { salarySlipPrint } from "@/lib/print/print";
+import { PrintButton } from "@/components/shared/print/print-dialog";
 
 const columns: Column<SalarySlip>[] = [
   { key: "month", header: "Month", sortable: true, cell: (x) => <span className="font-medium">{x.month}</span> },
@@ -16,6 +18,7 @@ const columns: Column<SalarySlip>[] = [
   { key: "deductions", header: "Deductions", align: "right", cell: (x) => <span className="tabular-nums">{fmtMoney(x.deductions)}</span> },
   { key: "net", header: "Net Pay", align: "right", sortable: true, cell: (x) => <span className="tabular-nums font-medium">{fmtMoney(x.net)}</span> },
   { key: "status", header: "Status", cell: (x) => <StatusBadge status={x.status} /> },
+  { key: "print", header: "", align: "right", cell: (x) => <PrintButton data={() => salarySlipPrint(x)} variant="ghost" label="Print" /> },
 ];
 
 export default function MySalaryPage() {

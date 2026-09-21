@@ -8,6 +8,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { leaveApplications, fmtDate, type LeaveApplication, type LeaveStatus } from "@/lib/mock/data";
+import { leavePrint } from "@/lib/print/print";
+import { PrintButton } from "@/components/shared/print/print-dialog";
 import { Plus } from "lucide-react";
 
 const columns: Column<LeaveApplication>[] = [
@@ -25,6 +27,7 @@ const columns: Column<LeaveApplication>[] = [
   { key: "days", header: "Days", sortable: true, align: "right", cell: (l) => <span className="tabular-nums">{l.days}</span> },
   { key: "approver", header: "Approver", className: "hidden lg:table-cell" },
   { key: "status", header: "Status", cell: (l) => <StatusBadge status={l.status} /> },
+  { key: "print", header: "", align: "right", cell: (l) => <PrintButton data={() => leavePrint(l)} variant="ghost" label="Print" /> },
 ];
 
 const FILTERS: ("All" | LeaveStatus)[] = ["All", "Pending", "Approved", "Rejected", "Cancelled"];

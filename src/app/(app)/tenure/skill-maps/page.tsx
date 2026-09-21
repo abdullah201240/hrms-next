@@ -1,20 +1,7 @@
-"use client"
-import { PageHeader } from "@/components/shared/page-header"
-import { DataTable, type Column } from "@/components/shared/data-table"
-import { skillMaps, type SkillMap } from "@/lib/mock/data-3";
+"use client";
 
-const columns: Column<SkillMap>[] = [
-  { key: "employee", header: "Employee", sortable: true, cell: (x) => <span className="font-medium">{x.employee}</span> },
-  { key: "department", header: "Department" },
-  { key: "basedOn", header: "Based On", cell: (x) => <span className="text-muted-foreground">{x.basedOn}</span> },
-  { key: "totalSkills", header: "Skills", sortable: true, align: "center" },
-];
+import { CrudList } from "@/components/shared/crud/crud-list";
 
-export default function SkillMapsPage() {
-  return (
-    <>
-      <PageHeader title="Employee Skill Maps" description="Skill profiles per employee." />
-      <DataTable columns={columns} rows={skillMaps} searchKeys={["employee", "department"]} pageSize={10} />
-    </>
-  );
+export default function Page() {
+  return <CrudList doctype="/tenure/skill-maps" />;
 }

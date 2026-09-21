@@ -176,3 +176,50 @@
     background-color: transparent;
   }
 }
+
+/* =====================================================================
+   PRINT — Frappe-HR-style document printing (see components/shared/print).
+   The open PrintDialog renders an A4 sheet with id="print-root"; when the
+   browser print kicks in we hide the entire app chrome (everything under
+   .print-hide in the root layout) and isolate the sheet. Site-wide flat
+   rules are neutralised for paper only: exact colour backgrounds are
+   preserved and light-scheme inks are forced regardless of dark mode.
+   ===================================================================== */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  :root {
+    color-scheme: light !important;
+  }
+  /* Hide the whole application shell while printing. */
+  .print-hide {
+    display: none !important;
+  }
+  /* Isolate the sheet: neutralise dialog overlays/preview transforms and
+     hide everything outside the print subtree (which keeps its tones). */
+  body:has(#print-root) :not(:is(#print-root, #print-root *)) {
+    visibility: hidden !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  body:has(#print-root) #print-root,
+  body:has(#print-root) #print-root * {
+    visibility: visible !important;
+  }
+  #print-root {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    background: #fff !important;
+    color: #171717 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

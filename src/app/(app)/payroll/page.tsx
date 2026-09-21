@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
 import { StatCard } from "@/components/shared/stat-card";
 import { salaryStructures, fmtMoney, type SalaryStructure } from "@/lib/mock/data";
+import { toast } from "sonner";
 import { Plus, Wallet, Layers, PiggyBank } from "lucide-react";
 
 const sum = (arr: { amount: number }[]) => arr.reduce((s, c) => s + c.amount, 0);
@@ -19,7 +20,7 @@ const columns: Column<SalaryStructure>[] = [
   { key: "gross", header: "Gross / mo", sortable: true, align: "right", cell: (s) => <span className="tabular-nums">{fmtMoney(grossOf(s))}</span> },
   { key: "ded", header: "Deductions", align: "right", cell: (s) => <span className="tabular-nums text-muted-foreground">−{fmtMoney(dedOf(s))}</span> },
   { key: "net", header: "Net / mo", sortable: true, align: "right", cell: (s) => <span className="font-medium tabular-nums">{fmtMoney(grossOf(s) - dedOf(s))}</span> },
-  { key: "actions", header: "", align: "right", cell: () => <Button size="sm" variant="outline">Configure</Button> },
+  { key: "actions", header: "", align: "right", cell: (s: SalaryStructure) => <Button size="sm" variant="outline" onClick={() => toast.success(`Opening ${s.name} for configuration`)}>Configure</Button> },
 ];
 
 export default function SalaryStructuresPage() {

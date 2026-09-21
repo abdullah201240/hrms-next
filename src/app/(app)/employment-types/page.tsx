@@ -1,18 +1,7 @@
-"use client"
-import { PageHeader } from "@/components/shared/page-header"
-import { DataTable, type Column } from "@/components/shared/data-table"
-import { employmentTypes, type EmploymentType } from "@/lib/mock/data-4";
+"use client";
 
-const columns: Column<EmploymentType>[] = [
-  { key: "name", header: "Type", sortable: true, cell: (x) => <span className="font-medium">{x.name}</span> },
-  { key: "description", header: "Description", cell: (x) => <span className="text-muted-foreground">{x.description}</span> },
-];
+import { CrudList } from "@/components/shared/crud/crud-list";
 
-export default function EmploymentTypesPage() {
-  return (
-    <>
-      <PageHeader title="Employment Types" description="Classifications of employment." />
-      <DataTable columns={columns} rows={employmentTypes} searchKeys={["name", "description"]} pageSize={10} />
-    </>
-  );
+export default function Page() {
+  return <CrudList doctype="/employment-types" />;
 }

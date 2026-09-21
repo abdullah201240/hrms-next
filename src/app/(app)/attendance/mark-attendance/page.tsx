@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -66,7 +67,7 @@ export default function AttendanceToolPage() {
       </Card>
 
       <div className="mt-5 flex items-center gap-3">
-        <Button>
+        <Button onClick={() => toast.success(`Attendance entries created for ${date}`)}>
           <CalendarCheck className="size-4" />
           Create Attendance Entries
         </Button>

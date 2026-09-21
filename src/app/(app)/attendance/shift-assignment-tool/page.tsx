@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -74,7 +75,10 @@ export default function ShiftAssignmentToolPage() {
       </Card>
 
       <div className="mt-5 flex items-center gap-3">
-        <Button disabled={count === 0}>
+        <Button
+          disabled={count === 0}
+          onClick={() => toast.success(`${shift} assigned to ${count} ${count === 1 ? "employee" : "employees"} (${from} → ${to})`)}
+        >
           <UserCog className="size-4" />
           Assign to {count} {count === 1 ? "employee" : "employees"}
         </Button>
