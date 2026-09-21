@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { Layers } from "lucide-react";
 import { employees, salaryStructures } from "@/lib/mock/data";
 
@@ -35,18 +29,13 @@ export default function BulkSalaryStructurePage() {
         <CardContent className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label>Salary Structure</Label>
-            <Select value={structure} onValueChange={(v) => v && setStructure(v)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select structure" />
-              </SelectTrigger>
-              <SelectContent>
-                {salaryStructures.map((s) => (
-                  <SelectItem key={s.id} value={s.name}>
-                    {s.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchSelect
+              value={structure}
+              onChange={setStructure}
+              options={salaryStructures.map((s) => s.name)}
+              placeholder="Search structure…"
+              addLabel="Salary Structure"
+            />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="bs-from">Salary Effective From</Label>

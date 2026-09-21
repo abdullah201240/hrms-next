@@ -6,13 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { CalendarCheck } from "lucide-react";
 import { employees } from "@/lib/mock/data";
 
@@ -60,21 +54,12 @@ export default function AttendanceToolPage() {
                   {e.designation} · {e.department}
                 </p>
               </div>
-              <Select
+              <SearchSelect
                 value={marks[e.id] ?? "Present"}
-                onValueChange={(v) => v && setMarks((m) => ({ ...m, [e.id]: v }))}
-              >
-                <SelectTrigger size="sm" className="w-40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {STATUSES.map((s) => (
-                    <SelectItem key={s} value={s}>
-                      {s}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                onChange={(val) => setMarks((m) => ({ ...m, [e.id]: val }))}
+                options={STATUSES}
+                className="w-40"
+              />
             </div>
           ))}
         </CardContent>

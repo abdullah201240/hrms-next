@@ -13,13 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { company } from "@/lib/mock/data";
 import { toast } from "sonner";
@@ -81,12 +75,13 @@ export default function SettingsPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="org-currency">Currency</Label>
-                <Select value={org.currency} onValueChange={(v) => setOrg((p) => ({ ...p, currency: v ?? p.currency }))}>
-                  <SelectTrigger id="org-currency" className="w-full"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {["USD", "EUR", "GBP", "INR", "BDT"].map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <SearchSelect
+                  id="org-currency"
+                  value={org.currency}
+                  onChange={(val) => setOrg((p) => ({ ...p, currency: val }))}
+                  options={["USD", "EUR", "GBP", "INR", "BDT"]}
+                  addLabel="Currency"
+                />
               </div>
             </div>
             <div className="space-y-2">

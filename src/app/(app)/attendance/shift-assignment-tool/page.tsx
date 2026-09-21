@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { UserCog } from "lucide-react";
 import { employees } from "@/lib/mock/data";
 import { shiftTypes } from "@/lib/mock/data-2";
@@ -38,18 +32,13 @@ export default function ShiftAssignmentToolPage() {
         <CardContent className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-3">
           <div className="space-y-1.5">
             <Label>Shift Type</Label>
-            <Select value={shift} onValueChange={(v) => v && setShift(v)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select shift" />
-              </SelectTrigger>
-              <SelectContent>
-                {shiftTypes.map((s) => (
-                  <SelectItem key={s.id} value={s.name}>
-                    {s.name} ({s.start}–{s.end})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchSelect
+              value={shift}
+              onChange={setShift}
+              options={shiftTypes.map((s) => s.name)}
+              placeholder="Search shift…"
+              addLabel="Shift Type"
+            />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="sa-from">From Date</Label>

@@ -12,13 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { leaveTypes } from "@/lib/mock/data";
 import { toast } from "sonner";
@@ -69,18 +63,14 @@ export default function LeaveApplyPage() {
           <form className="space-y-5" onSubmit={submit}>
             <div className="space-y-2">
               <Label htmlFor="leaveType">Leave Type</Label>
-              <Select value={leaveType} onValueChange={(v) => setLeaveType(v ?? "")}>
-                <SelectTrigger id="leaveType" className="w-full">
-                  <SelectValue placeholder="Select leave type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {leaveTypes.map((t) => (
-                    <SelectItem key={t.id} value={t.name}>
-                      {t.name} ({t.code})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <SearchSelect
+                id="leaveType"
+                value={leaveType}
+                onChange={setLeaveType}
+                options={leaveTypes.map((t) => t.name)}
+                placeholder="Search leave type…"
+                addLabel="Leave Type"
+              />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

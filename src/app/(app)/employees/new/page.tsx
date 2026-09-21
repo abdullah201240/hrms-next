@@ -15,24 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxContent,
-  ComboboxList,
-  ComboboxItem,
-  ComboboxCollection,
-  ComboboxEmpty,
-  ComboboxSeparator,
-} from "@/components/ui/combobox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { SearchSelect } from "@/components/shared/search-select";
 import {
   Table,
   TableBody,
@@ -220,21 +203,6 @@ export default function NewEmployeePage() {
   });
   const set = (k: string, val: string) => setV((prev) => ({ ...prev, [k]: val }));
 
-  // Quick-add support: newly created options live in `extra` and are appended to the field's list.
-  const [extra, setExtra] = useState<Record<string, string[]>>({});
-  const [adding, setAdding] = useState<{ key: string; doctype: string } | null>(null);
-  const [newName, setNewName] = useState("");
-  const startAdd = (key: string, doctype: string) => { setNewName(""); setAdding({ key, doctype }); };
-  const confirmAdd = () => {
-    if (!adding) return;
-    const name = newName.trim();
-    if (!name) { toast.error("Name is required."); return; }
-    setExtra((prev) => ({ ...prev, [adding.key]: [...(prev[adding.key] ?? []), name] }));
-    set(adding.key, name);
-    toast.success(`${name} added to ${adding.doctype}`);
-    setAdding(null);
-  };
-
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const missing = REQUIRED.filter((r) => !v[r.key]?.trim()).map((r) => r.label);
@@ -267,42 +235,17 @@ export default function NewEmployeePage() {
       );
     }
     if (f.type === "select") {
-      const dt = LINK_DOCTYPE[f.key];
-      const opts = [...(f.options ?? []), ...(extra[f.key] ?? [])];
       return (
         <div key={id} className={f.full ? "sm:col-span-2 space-y-2" : "space-y-2"}>
           {label}
-          <Combobox
-            items={opts}
-            // Base UI ships no default filter — provide a case-insensitive
-            // substring match so typing in the box filters the dropdown items.
-            filter={(item: string, query: string) =>
-              item.toLowerCase().includes(query.toLowerCase())
-            }
-            value={v[id] || null}
-            onValueChange={(val) => {
-              if (val === "__add__") { if (dt) startAdd(f.key, dt); return; }
-              set(id, val ?? "");
-            }}
-          >
-            <ComboboxInput placeholder={`Search ${f.label.toLowerCase()}\u2026`} showClear />
-            <ComboboxContent>
-              <ComboboxList>
-                <ComboboxCollection>
-                  {(item: string) => (
-                    <ComboboxItem key={item} value={item}>{item}</ComboboxItem>
-                  )}
-                </ComboboxCollection>
-                {dt && (
-                  <>
-                    <ComboboxSeparator />
-                    <ComboboxItem value="__add__" className="text-muted-foreground">+ Add {dt}</ComboboxItem>
-                  </>
-                )}
-              </ComboboxList>
-              <ComboboxEmpty>No matches found.</ComboboxEmpty>
-            </ComboboxContent>
-          </Combobox>
+          <SearchSelect
+            id={id}
+            value={v[id] ?? ""}
+            onChange={(val) => set(id, val)}
+            options={f.options ?? []}
+            placeholder={`Search ${f.label.toLowerCase()}\u2026`}
+            addLabel={LINK_DOCTYPE[f.key]}
+          />
         </div>
       );
     }
@@ -369,30 +312,6 @@ export default function NewEmployeePage() {
           <Button type="submit">Create Employee</Button>
         </div>
       </form>
-
-      <Dialog open={!!adding} onOpenChange={(o) => { if (!o) setAdding(null); }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add {adding?.doctype}</DialogTitle>
-            <DialogDescription>Create a new {adding?.doctype.toLowerCase()} and select it right away.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-2">
-            <Label htmlFor="quick-add-name">Name</Label>
-            <Input
-              id="quick-add-name"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); confirmAdd(); } }}
-              placeholder={`Enter ${adding?.doctype.toLowerCase()} name`}
-              autoFocus
-            />
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setAdding(null)}>Cancel</Button>
-            <Button type="button" onClick={confirmAdd}>Create</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

@@ -12,13 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatCard } from "@/components/shared/stat-card";
 import { salarySlips, fmtMoney } from "@/lib/mock/data";
@@ -64,16 +58,12 @@ export default function PayrollProcessingPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
             <div className="space-y-2">
               <label className="text-sm font-medium">Pay Period</label>
-              <Select value={period} onValueChange={(v) => setPeriod(v ?? period)}>
-                <SelectTrigger className="w-56">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {["September 2026", "October 2026", "November 2026"].map((m) => (
-                    <SelectItem key={m} value={m}>{m}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <SearchSelect
+                value={period}
+                onChange={setPeriod}
+                options={["September 2026", "October 2026", "November 2026"]}
+                className="w-56"
+              />
             </div>
             <Button onClick={run} disabled={running}>
               <Play /> {running ? "Processing…" : done ? "Re-run" : "Run Payroll"}

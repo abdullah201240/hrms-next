@@ -13,13 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { expenseCategories } from "@/lib/mock/data";
 import { toast } from "sonner";
@@ -81,16 +75,14 @@ export default function NewExpensePage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
-                <Select value={category} onValueChange={(v) => setCategory(v ?? "")}>
-                  <SelectTrigger id="category" className="w-full">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {expenseCategories.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SearchSelect
+                  id="category"
+                  value={category}
+                  onChange={setCategory}
+                  options={expenseCategories}
+                  placeholder="Search category…"
+                  addLabel="Expense Claim Type"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="amount">Amount (USD)</Label>
