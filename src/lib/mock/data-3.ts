@@ -179,25 +179,86 @@ export const benefitClaims: BenefitClaim[] = [
   { id: "bc1", benefitApplication: "BA/2026/0001", employee: "Tom Becker", expenseDate: "2026-09-12", amount: 2400, status: "Approved" },
 ];
 
-// --- Reports catalog --------------------------------------------------------
+// --- Reports catalog (mirrors the 28 real Frappe HR report doctypes) --------
 
-export interface ReportDef { id: ID; name: string; module: string; doctype: string; }
+export interface ReportDef {
+  id: ID;
+  slug: string;
+  name: string;
+  module: string;
+  doctype: string;
+  columns: string[];
+}
+
 export const reports: ReportDef[] = [
-  { id: "r1", name: "Leave Balance", module: "Leaves", doctype: "Leave Ledger Entry" },
-  { id: "r2", name: "Leave Balance Summary", module: "Leaves", doctype: "Employee" },
-  { id: "r3", name: "Employees Working on a Holiday", module: "Leaves", doctype: "Attendance" },
-  { id: "r4", name: "Monthly Attendance Sheet", module: "Shift & Attendance", doctype: "Attendance" },
-  { id: "r5", name: "Shift Attendance", module: "Shift & Attendance", doctype: "Attendance" },
-  { id: "r6", name: "Employee Hours Utilization", module: "Shift & Attendance", doctype: "Timesheet" },
-  { id: "r7", name: "Salary Register", module: "Payroll", doctype: "Salary Slip" },
-  { id: "r8", name: "Employee CTC Break-up", module: "Payroll", doctype: "Employee" },
-  { id: "r9", name: "Income Tax Deductions", module: "Payroll", doctype: "Salary Slip" },
-  { id: "r10", name: "Unpaid Expense Claim", module: "Expenses", doctype: "Expense Claim" },
-  { id: "r11", name: "Recruitment Analytics", module: "Recruitment", doctype: "Job Applicant" },
-  { id: "r12", name: "Appraisal Overview", module: "Performance", doctype: "Appraisal" },
-  { id: "r13", name: "Employee Exits", module: "Tenure", doctype: "Employee" },
-  { id: "r14", name: "Employee Birthday", module: "Tenure", doctype: "Employee" },
-  { id: "r15", name: "Employee Analytics", module: "Tenure", doctype: "Employee" },
-  { id: "r16", name: "Income Tax Computation", module: "Tax & Benefits", doctype: "Salary Slip" },
-  { id: "r17", name: "Accrued Earnings Report", module: "Tax & Benefits", doctype: "Employee Benefit Ledger" },
+  { id: "r1", slug: "employee-leave-balance", name: "Employee Leave Balance", module: "Leaves", doctype: "Employee Leave Balance", columns: ["Employee", "Leave Type", "Total Allocated", "Leaves Requested", "Balance Leave"] },
+  { id: "r2", slug: "employee-leave-balance-summary", name: "Employee Leave Balance Summary", module: "Leaves", doctype: "Employee", columns: ["Employee", "Opening Balance", "Planned", "Consumed", "Closing Balance"] },
+  { id: "r3", slug: "employees-working-on-a-holiday", name: "Employees Working on a Holiday", module: "Leaves", doctype: "Attendance", columns: ["Employee", "Date", "Holiday", "Shift", "Status"] },
+  { id: "r4", slug: "leave-ledger", name: "Leave Ledger", module: "Leaves", doctype: "Leave Ledger Entry", columns: ["Employee", "Leave Type", "Transaction Type", "Leaves", "From", "To"] },
+  { id: "r5", slug: "monthly-attendance-sheet", name: "Monthly Attendance Sheet", module: "Shift & Attendance", doctype: "Attendance", columns: ["Employee", "Present Days", "Absent Days", "Leave Days", "Total Working Days"] },
+  { id: "r6", slug: "shift-attendance", name: "Shift Attendance", module: "Shift & Attendance", doctype: "Attendance", columns: ["Employee", "Date", "Shift", "In Time", "Out Time", "Status"] },
+  { id: "r7", slug: "employee-hours-utilization-based-on-timesheet", name: "Employee Hours Utilization Based On Timesheet", module: "Shift & Attendance", doctype: "Timesheet", columns: ["Employee", "Project", "Hours Logged", "Utilization %"] },
+  { id: "r8", slug: "daily-work-summary-replies", name: "Daily Work Summary Replies", module: "Shift & Attendance", doctype: "Daily Work Summary", columns: ["Employee", "Date", "Reply Status"] },
+  { id: "r9", slug: "salary-register", name: "Salary Register", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Designation", "Basic", "Total Earnings", "Total Deductions", "Net Pay"] },
+  { id: "r10", slug: "employee-ctc-break-up", name: "Employee CTC Break-up", module: "Payroll", doctype: "Employee", columns: ["Employee", "Component", "Amount"] },
+  { id: "r11", slug: "income-tax-deductions", name: "Income Tax Deductions", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Gross Pay", "Exemption", "Taxable", "TDS"] },
+  { id: "r12", slug: "income-tax-computation", name: "Income Tax Computation", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Head", "Amount"] },
+  { id: "r13", slug: "professional-tax-deductions", name: "Professional Tax Deductions", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Month", "Professional Tax"] },
+  { id: "r14", slug: "provident-fund-deductions", name: "Provident Fund Deductions", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Employee Share", "Employer Share"] },
+  { id: "r15", slug: "salary-payments-based-on-payment-mode", name: "Salary Payments Based On Payment Mode", module: "Payroll", doctype: "Salary Slip", columns: ["Payment Mode", "No of Employees", "Amount"] },
+  { id: "r16", slug: "salary-payments-via-ecs", name: "Salary Payments via ECS", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Bank", "Account No", "Net Pay"] },
+  { id: "r17", slug: "bank-remittance", name: "Bank Remittance", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Bank", "Account Type", "Amount"] },
+  { id: "r18", slug: "accrued-earnings-report", name: "Accrued Earnings Report", module: "Payroll", doctype: "Employee Benefit Ledger", columns: ["Employee", "Leave Type", "Accrued Days", "Amount"] },
+  { id: "r19", slug: "employee-advance-summary", name: "Employee Advance Summary", module: "Payroll", doctype: "Employee Advance", columns: ["Employee", "Paid Amount", "Refund Amount", "Advance Balance"] },
+  { id: "r20", slug: "unpaid-expense-claim", name: "Unpaid Expense Claim", module: "Expenses", doctype: "Expense Claim", columns: ["Employee", "Claim", "Category", "Amount", "Status"] },
+  { id: "r21", slug: "vehicle-expenses", name: "Vehicle Expenses", module: "Expenses", doctype: "Vehicle Log", columns: ["Vehicle", "Type", "Date", "Amount"] },
+  { id: "r22", slug: "recruitment-analytics", name: "Recruitment Analytics", module: "Recruitment", doctype: "Job Applicant", columns: ["Job Title", "Applicants", "Interviews", "Offers", "Hired"] },
+  { id: "r23", slug: "appraisal-overview", name: "Appraisal Overview", module: "Performance", doctype: "Appraisal", columns: ["Employee", "Cycle", "Review Score", "Avg Points", "Status"] },
+  { id: "r24", slug: "employee-information", name: "Employee Information", module: "Human Resources", doctype: "Employee", columns: ["Employee", "Department", "Designation", "Reports To", "Status"] },
+  { id: "r25", slug: "employee-analytics", name: "Employee Analytics", module: "Human Resources", doctype: "Employee", columns: ["Department", "Employee Count", "Avg Tenure"] },
+  { id: "r26", slug: "employee-birthday", name: "Employee Birthday", module: "Human Resources", doctype: "Employee", columns: ["Employee", "Date of Birth", "Department", "Months to Celebrate"] },
+  { id: "r27", slug: "employee-exits", name: "Employee Exits", module: "Human Resources", doctype: "Employee", columns: ["Employee", "Leave Date", "Reason", "Status"] },
+  { id: "r28", slug: "project-profitability", name: "Project Profitability", module: "Shift & Attendance", doctype: "Timesheet", columns: ["Project", "Sales Amount", "Expense Amount", "Profit", "Profit %"] },
 ];
+
+export const reportBySlug = (slug: string) => reports.find((r) => r.slug === slug);
+
+// --- Deterministic mock report rows (preview only) --------------------------
+const NAMES = ["Aisha Khan", "Nina Patel", "Sarah Chen", "Tom Becker", "Diego Torres", "Grace Liu", "Leo Martins", "Priya Nair"];
+const DEPTS = ["Engineering", "Product", "Sales", "Finance", "Design"];
+const STATUS = ["Present", "Absent", "Leave", "Week Off"];
+const PROJECTS = ["Billing Platform", "Mobile Beta", "Data Pipeline", "Design System"];
+const BANKS = ["Chase", "HSBC", "Citibank", "Wells Fargo"];
+const LEAVES = ["Earned Leave", "Casual Leave", "Privileged Leave"];
+const money = (n: number) => "$" + n.toLocaleString("en-US");
+
+function cellFor(col: string, idx: number, row: number): string {
+  const c = col.toLowerCase();
+  const r = row;
+  if (idx === 0 && /employee|job title|vehicle|department|payment mode/.test(c)) {
+    if (/department/.test(c)) return DEPTS[r % DEPTS.length];
+    if (/vehicle/.test(c)) return ["SF-2044", "NY-8821", "SF-1180"][r % 3];
+    if (/job title/.test(c)) return ["Backend Engineer", "Product Designer", "Sales Exec"][r % 3];
+    if (/payment mode/.test(c)) return ["Bank", "Cash", "UPI"][r % 3];
+    return NAMES[r % NAMES.length];
+  }
+  if (/amount|pay|balance|earnings|deduction|basic|tds|tax|share|refund|net|cost|profit|professional tax/.test(c)) return money(800 + ((r * 137 + idx * 53) % 9200));
+  if (/%/.test(c)) return 60 + ((r * 7 + idx) % 40) + "%";
+  if (/date|dob|birth/.test(c)) return ["2026-09-21", "2026-09-20", "2026-09-18", "2026-09-15", "2026-09-11", "2026-09-08"][r % 6];
+  if (/time/.test(c)) return ["09:02", "18:15", "08:55", "17:40", "13:05", "21:00"][r % 6];
+  if (/month/.test(c)) return ["Jul", "Aug", "Sep"][r % 3] + " 2026";
+  if (/status|state|reply/.test(c)) return c.includes("reply") ? ["Received", "Pending"][r % 2] : (c.includes("leave") ? ["Approved", "Pending", "Draft"][r % 3] : STATUS[r % STATUS.length]);
+  if (/leave type/.test(c)) return LEAVES[r % LEAVES.length];
+  if (/project/.test(c)) return PROJECTS[r % PROJECTS.length];
+  if (/bank|account/.test(c)) return /no$/.test(c) ? "••" + (1000 + r * 7) : BANKS[r % BANKS.length];
+  if (/component|head/.test(c)) return ["Basic Salary", "House Rent", "Conveyance"][r % 3];
+  if (/shift|type|category|reason|designation|reports to|cycle|mode|plan/.test(c)) return ["General", "Standard", "Q3 Review", "Resignation", "Senior Engineer"][r % 5];
+  if (/day|hours|count|leaves|applicant|interview|offer|score|point|utilization|tenure|number|total|position|celebrate/.test(c)) return String(1 + ((r * 3 + idx * 2) % 24));
+  return NAMES[r % NAMES.length];
+}
+
+export function reportRows(def: ReportDef, count = 6): string[][] {
+  return Array.from({ length: count }, (_, row) =>
+    def.columns.map((col, idx) => cellFor(col, idx, row)),
+  );
+}

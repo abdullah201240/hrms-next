@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +40,7 @@ export default function ReportsPage() {
                         {r.doctype}
                       </p>
                     </div>
-                    <Button variant="ghost" size="sm" className="shrink-0">
+                    <Button variant="ghost" size="sm" className="shrink-0" render={<Link href={`/reports/${r.slug}`} />}>
                       View
                       <ArrowRight className="size-4" />
                     </Button>

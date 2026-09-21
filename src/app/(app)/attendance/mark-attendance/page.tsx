@@ -48,7 +48,7 @@ export default function AttendanceToolPage() {
       </Card>
 
       <Card>
-        <CardContent className="divide-y divide-border p-0">
+        <CardContent className="p-0">
           {list.map((e) => (
             <div
               key={e.id}
