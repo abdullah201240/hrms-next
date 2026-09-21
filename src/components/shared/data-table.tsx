@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowUpDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type Column<T> = {
   key: string;
@@ -120,7 +121,7 @@ export function DataTable<T>({
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">
               {columns.map((c) => (
-                <TableHead key={c.key} className={align(c.align)}>
+                <TableHead key={c.key} className={cn(align(c.align), c.className)}>
                   {c.sortable ? (
                     <button
                       type="button"
@@ -148,7 +149,7 @@ export function DataTable<T>({
               paged.map((row, i) => (
                 <TableRow key={(row as { id?: string }).id ?? i}>
                   {columns.map((c) => (
-                    <TableCell key={c.key} className={c.className}>
+                    <TableCell key={c.key} className={cn(align(c.align), c.className)}>
                       {c.cell ? c.cell(row) : String((row as Record<string, unknown>)[c.key] ?? "—")}
                     </TableCell>
                   ))}

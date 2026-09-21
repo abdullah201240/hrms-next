@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemedToaster } from "@/components/themed-toaster";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,10 +24,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      // next-themes mutates <html class="dark"> on the client; suppress the
+      // resulting attribute-only hydration diff.
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster position="top-right" />
+      {/* suppressHydrationWarning: browser extensions inject attributes (e.g.
+          `cz-shortcut-listen`) onto <body>, which would otherwise trip a
+          hydration mismatch. This is the Next/React-recommended guard. */}
+      <body
+        className="min-h-full flex flex-col"
+        suppressHydrationWarning
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <ThemedToaster />
+        </ThemeProvider>
       </body>
     </html>
   );
