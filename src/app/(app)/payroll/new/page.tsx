@@ -22,7 +22,7 @@ import { salaryComponents } from "@/lib/mock/data-2";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 
-const CURRENCIES = ["USD", "EUR", "GBP", "INR", "AED"];
+const CURRENCIES = ["BDT"];
 const MODES = ["Bank", "Cash", "Cheque"];
 const componentNames = salaryComponents.map((c) => c.name);
 
@@ -31,7 +31,7 @@ export default function NewSalaryStructurePage() {
   const router = useRouter();
   const [v, setV] = useState<Record<string, string>>({
     companyName: company.name,
-    currency: "USD",
+    currency: "BDT",
     isActive: "Yes",
     payrollFrequency: "Monthly",
   });

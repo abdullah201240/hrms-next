@@ -14,7 +14,7 @@ const columns: Column<ExpenseClaim>[] = [
   { key: "category", header: "Category" },
   { key: "description", header: "Description", className: "hidden lg:table-cell text-muted-foreground" },
   { key: "date", header: "Date", sortable: true, cell: (x) => fmtDate(x.date) },
-  { key: "amount", header: "Amount", sortable: true, align: "right", cell: (x) => <span className="tabular-nums font-medium">${x.amount.toLocaleString()}</span> },
+  { key: "amount", header: "Amount", sortable: true, align: "right", cell: (x) => <span className="tabular-nums font-medium">৳{x.amount.toLocaleString()}</span> },
   { key: "status", header: "Status", cell: (x) => <StatusBadge status={x.status} /> },
 ];
 

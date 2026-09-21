@@ -70,7 +70,7 @@ export default function ExpenseApprovalsPage() {
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-3">
-                  <span className="tabular-nums font-semibold">${x.amount.toLocaleString()}</span>
+                  <span className="tabular-nums font-semibold">৳{x.amount.toLocaleString()}</span>
                   <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" onClick={() => decide(x.id, x.employeeName, "Rejected")}>
                       <X /> Reject

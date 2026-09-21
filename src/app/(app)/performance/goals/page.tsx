@@ -10,7 +10,7 @@ import { goals, fmtDate, fmtMoney, type Goal } from "@/lib/mock/data";
 import { Plus } from "lucide-react";
 
 const progress = (g: Goal) => Math.min(100, Math.round((g.current / g.target) * 100));
-const fmtVal = (n: number, unit: string) => (unit === "USD" ? fmtMoney(n) : `${n.toLocaleString()} ${unit}`);
+const fmtVal = (n: number, unit: string) => (unit === "BDT" ? fmtMoney(n) : `${n.toLocaleString()} ${unit}`);
 
 export default function GoalsPage() {
   return (

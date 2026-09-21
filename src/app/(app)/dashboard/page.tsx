@@ -185,7 +185,7 @@ export default function DashboardPage() {
                     <TableCell>{x.employeeName}</TableCell>
                     <TableCell>{x.category}</TableCell>
                     <TableCell className="text-right tabular-nums">
-                      ${x.amount.toLocaleString()}
+                      ৳{x.amount.toLocaleString()}
                     </TableCell>
                     <TableCell className="text-right">
                       <StatusBadge status={x.status} />

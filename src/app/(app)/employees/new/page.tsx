@@ -50,7 +50,7 @@ const OPTIONS = {
   blood: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
   yesNo: ["Yes", "No"],
   company: ["Acme"],
-  currency: ["USD", "EUR", "GBP", "INR", "AED"],
+  currency: ["BDT"],
   department: departments.map((d) => d.name),
   designation: designations.map((d) => d.name),
   branch: branches.map((b) => b.name),
@@ -199,7 +199,7 @@ export default function NewEmployeePage() {
     series: "HR-EMP-",
     status: "Active",
     salaryMode: "Bank",
-    salaryCurrency: "USD",
+    salaryCurrency: "BDT",
   });
   const set = (k: string, val: string) => setV((prev) => ({ ...prev, [k]: val }));
 

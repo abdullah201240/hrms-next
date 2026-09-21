@@ -49,7 +49,7 @@ export default function NewExpensePage() {
       return;
     }
     // This is where real uploads would run before saving the record.
-    toast.success(`Expense claim for $${Number(amount).toLocaleString()} submitted`);
+    toast.success(`Expense claim for ৳${Number(amount).toLocaleString()} submitted`);
     setCategory("");
     setAmount("");
     setDate("");
@@ -85,7 +85,7 @@ export default function NewExpensePage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="amount">Amount (USD)</Label>
+                <Label htmlFor="amount">Amount (BDT)</Label>
                 <Input id="amount" type="number" min="0" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
               </div>
             </div>

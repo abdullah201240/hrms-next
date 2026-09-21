@@ -230,7 +230,7 @@ const STATUS = ["Present", "Absent", "Leave", "Week Off"];
 const PROJECTS = ["Billing Platform", "Mobile Beta", "Data Pipeline", "Design System"];
 const BANKS = ["Chase", "HSBC", "Citibank", "Wells Fargo"];
 const LEAVES = ["Earned Leave", "Casual Leave", "Privileged Leave"];
-const money = (n: number) => "$" + n.toLocaleString("en-US");
+const money = (n: number) => "৳" + n.toLocaleString("en-US");
 
 function cellFor(col: string, idx: number, row: number): string {
   const c = col.toLowerCase();

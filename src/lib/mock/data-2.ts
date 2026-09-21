@@ -163,8 +163,8 @@ export const salaryComponents: SalaryComponent[] = [
 
 export interface SalaryStructureAssignment { id: ID; employee: string; salaryStructure: string; base: number; amount: number; payrollCompany: string; fromDate: string; currency: string; }
 export const salaryStructureAssignments: SalaryStructureAssignment[] = [
-  { id: "ssa1", employee: "Aisha Khan", salaryStructure: "Engineering — Senior", base: 138000, amount: 12500, payrollCompany: "Acme", fromDate: "2026-01-01", currency: "USD" },
-  { id: "ssa2", employee: "Sarah Chen", salaryStructure: "Engineering — Senior", base: 168000, amount: 14000, payrollCompany: "Acme", fromDate: "2026-01-01", currency: "USD" },
+  { id: "ssa1", employee: "Aisha Khan", salaryStructure: "Engineering — Senior", base: 138000, amount: 12500, payrollCompany: "Acme", fromDate: "2026-01-01", currency: "BDT" },
+  { id: "ssa2", employee: "Sarah Chen", salaryStructure: "Engineering — Senior", base: 168000, amount: 14000, payrollCompany: "Acme", fromDate: "2026-01-01", currency: "BDT" },
 ];
 
 export interface AdditionalSalary { id: ID; employee: string; component: string; amount: number; from: string; to: string; overwrite: boolean; }

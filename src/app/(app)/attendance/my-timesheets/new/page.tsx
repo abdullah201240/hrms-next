@@ -21,7 +21,7 @@ import { company, employees, departments } from "@/lib/mock/data";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 
-const CURRENCIES = ["USD", "EUR", "GBP", "INR", "AED"];
+const CURRENCIES = ["BDT"];
 const PROJECTS = ["Website Redesign", "Mobile App", "Internal Tools", "Client Portal", "HR Automation"];
 
 // Fields cloned from the ERPNext `Timesheet` doctype.
@@ -30,7 +30,7 @@ export default function NewTimesheetPage() {
   const [v, setV] = useState<Record<string, string>>({
     series: "TS-.YYYY.-",
     companyName: company.name,
-    currency: "USD",
+    currency: "BDT",
   });
   const set = (k: string, val: string) => setV((p) => ({ ...p, [k]: val }));
 

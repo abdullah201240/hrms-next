@@ -79,7 +79,7 @@ export default function SettingsPage() {
                   id="org-currency"
                   value={org.currency}
                   onChange={(val) => setOrg((p) => ({ ...p, currency: val }))}
-                  options={["USD", "EUR", "GBP", "INR", "BDT"]}
+                  options={["BDT"]}
                   addLabel="Currency"
                 />
               </div>

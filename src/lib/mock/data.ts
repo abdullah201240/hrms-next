@@ -205,7 +205,7 @@ export const company: Company = {
   phone: "+1 202 555 0100",
   address: "500 Market Street, San Francisco, CA",
   timezone: "America/Los_Angeles",
-  currency: "USD",
+  currency: "BDT",
 };
 
 export const departments: Department[] = [
@@ -288,17 +288,17 @@ export const attendanceRecords: AttendanceRecord[] = [
 
 export const salaryStructures: SalaryStructure[] = [
   {
-    id: "ss1", name: "Engineering — Senior", department: "Engineering", designation: "Senior Software Engineer", currency: "USD",
+    id: "ss1", name: "Engineering — Senior", department: "Engineering", designation: "Senior Software Engineer", currency: "BDT",
     earnings: [ { name: "Basic Salary", amount: 8400 }, { name: "House Rent Allowance", amount: 2600 }, { name: "Special Allowance", amount: 1500 } ],
     deductions: [ { name: "Health Insurance", amount: 200 }, { name: "Provident Fund", amount: 600 } ],
   },
   {
-    id: "ss2", name: "Engineering — Standard", department: "Engineering", designation: "Software Engineer", currency: "USD",
+    id: "ss2", name: "Engineering — Standard", department: "Engineering", designation: "Software Engineer", currency: "BDT",
     earnings: [ { name: "Basic Salary", amount: 6200 }, { name: "House Rent Allowance", amount: 1900 }, { name: "Special Allowance", amount: 1100 } ],
     deductions: [ { name: "Health Insurance", amount: 200 }, { name: "Provident Fund", amount: 450 } ],
   },
   {
-    id: "ss3", name: "Sales — Executive", department: "Sales", designation: "Sales Executive", currency: "USD",
+    id: "ss3", name: "Sales — Executive", department: "Sales", designation: "Sales Executive", currency: "BDT",
     earnings: [ { name: "Basic Salary", amount: 4800 }, { name: "Commission", amount: 1200 }, { name: "Conveyance", amount: 350 } ],
     deductions: [ { name: "Health Insurance", amount: 150 }, { name: "Provident Fund", amount: 320 } ],
   },
@@ -315,11 +315,11 @@ export const salarySlips: SalarySlip[] = [
 export const expenseCategories = ["Travel", "Meals", "Software", "Equipment", "Accommodation", "Training", "Other"];
 
 export const expenseClaims: ExpenseClaim[] = [
-  { id: "x1", claimId: "EXP-0001", employeeId: "EMP-0008", employeeName: "Dana Cole", category: "Travel", description: "Client visit — flights", amount: 640, currency: "USD", date: "2026-09-17", status: "Pending", approver: "Tom Becker" },
-  { id: "x2", claimId: "EXP-0002", employeeId: "EMP-0003", employeeName: "Aisha Khan", category: "Software", description: "IDE license renewal", amount: 120, currency: "USD", date: "2026-09-16", status: "Pending", approver: "Sarah Chen" },
-  { id: "x3", claimId: "EXP-0003", employeeId: "EMP-0006", employeeName: "Elena Vox", category: "Equipment", description: "Drawing tablet", amount: 380, currency: "USD", date: "2026-09-12", status: "Approved", approver: "Marcus Reed" },
-  { id: "x4", claimId: "EXP-0004", employeeId: "EMP-0009", employeeName: "Leo Martins", category: "Meals", description: "Team offsite lunch", amount: 210, currency: "USD", date: "2026-09-10", status: "Rejected", approver: "Sarah Chen" },
-  { id: "x5", claimId: "EXP-0005", employeeId: "EMP-0010", employeeName: "Nina Patel", category: "Travel", description: "Airport taxi", amount: 55, currency: "USD", date: "2026-09-05", status: "Paid", approver: "Sarah Chen" },
+  { id: "x1", claimId: "EXP-0001", employeeId: "EMP-0008", employeeName: "Dana Cole", category: "Travel", description: "Client visit — flights", amount: 640, currency: "BDT", date: "2026-09-17", status: "Pending", approver: "Tom Becker" },
+  { id: "x2", claimId: "EXP-0002", employeeId: "EMP-0003", employeeName: "Aisha Khan", category: "Software", description: "IDE license renewal", amount: 120, currency: "BDT", date: "2026-09-16", status: "Pending", approver: "Sarah Chen" },
+  { id: "x3", claimId: "EXP-0003", employeeId: "EMP-0006", employeeName: "Elena Vox", category: "Equipment", description: "Drawing tablet", amount: 380, currency: "BDT", date: "2026-09-12", status: "Approved", approver: "Marcus Reed" },
+  { id: "x4", claimId: "EXP-0004", employeeId: "EMP-0009", employeeName: "Leo Martins", category: "Meals", description: "Team offsite lunch", amount: 210, currency: "BDT", date: "2026-09-10", status: "Rejected", approver: "Sarah Chen" },
+  { id: "x5", claimId: "EXP-0005", employeeId: "EMP-0010", employeeName: "Nina Patel", category: "Travel", description: "Airport taxi", amount: 55, currency: "BDT", date: "2026-09-05", status: "Paid", approver: "Sarah Chen" },
 ];
 
 export const jobOpenings: JobOpening[] = [
@@ -350,14 +350,14 @@ export const goals: Goal[] = [
   { id: "go1", title: "Reduce API p95 latency", employeeName: "Aisha Khan", department: "Engineering", kpi: "Latency", target: 200, current: 240, unit: "ms", status: "At Risk", dueOn: "2026-12-31" },
   { id: "go2", title: "Ship mobile beta", employeeName: "Sarah Chen", department: "Engineering", kpi: "Milestones", target: 6, current: 5, unit: "done", status: "On Track", dueOn: "2026-11-30" },
   { id: "go3", title: "Hire 5 engineers", employeeName: "Priya Nair", department: "Human Resources", kpi: "Hires", target: 5, current: 5, unit: "hired", status: "Achieved", dueOn: "2026-09-30" },
-  { id: "go4", title: "Q3 revenue target", employeeName: "Dana Cole", department: "Sales", kpi: "Revenue", target: 900000, current: 640000, unit: "USD", status: "At Risk", dueOn: "2026-09-30" },
+  { id: "go4", title: "Q3 revenue target", employeeName: "Dana Cole", department: "Sales", kpi: "Revenue", target: 900000, current: 640000, unit: "BDT", status: "At Risk", dueOn: "2026-09-30" },
   { id: "go5", title: "Launch brand campaign", employeeName: "Leo Martins", department: "Marketing", kpi: "Reach", target: 250000, current: 260000, unit: "views", status: "Achieved", dueOn: "2026-09-20" },
 ];
 
 // --- Helpers -----------------------------------------------------------------
 
-export const fmtMoney = (n: number, currency = "USD") =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(n);
+export const fmtMoney = (n: number, _currency = "BDT") =>
+  `৳${new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n)}`;
 
 export const fmtDate = (iso: string) => {
   const d = new Date(iso);
