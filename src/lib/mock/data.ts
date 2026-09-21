@@ -50,6 +50,38 @@ export interface Employee {
   baseSalary: number;
   avatarColor: string;
   role: "employee" | "hr" | "admin" | "approver";
+  // Extended profile fields mirroring the Frappe HR Employee form.
+  salutation?: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  dateOfBirth?: string;
+  maritalStatus?: string;
+  bloodGroup?: string;
+  company?: string;
+  branch?: string;
+  grade?: string;
+  holidayList?: string;
+  salaryMode?: string;
+  salaryCurrency?: string;
+  ctc?: number;
+  bankName?: string;
+  bankAcno?: string;
+  companyEmail?: string;
+  personalEmail?: string;
+  userId?: string;
+  offerDate?: string;
+  confirmationDate?: string;
+  contractEndDate?: string;
+  retirementDate?: string;
+  noticeDays?: number;
+  attendanceDeviceId?: string;
+  permanentAddress?: string;
+  currentAddress?: string;
+  emergencyContactName?: string;
+  emergencyPhone?: string;
+  relation?: string;
+  bio?: string;
 }
 
 export interface LeaveType {
@@ -232,7 +264,7 @@ export const designations: Designation[] = [
 const palette = ["#c62828", "#1565c0", "#2e7d32", "#ef6c00", "#6a1b9a", "#00838f", "#ad1457", "#4527a0"];
 const pick = (i: number) => palette[i % palette.length];
 
-export const employees: Employee[] = [
+const EMPLOYEE_BASE: Employee[] = [
   { id: "e1", employeeId: "EMP-0001", name: "Sarah Chen", email: "sarah.chen@acme.test", phone: "+1 202 555 0111", department: "Engineering", designation: "Engineering Manager", reportsTo: "VP Engineering", joinDate: "2019-03-11", status: "Active", workLocation: "San Francisco", baseSalary: 168000, avatarColor: pick(0), role: "admin" },
   { id: "e2", employeeId: "EMP-0002", name: "Marcus Reed", email: "marcus.reed@acme.test", phone: "+1 202 555 0112", department: "Product", designation: "Product Manager", reportsTo: "VP Product", joinDate: "2020-07-01", status: "Active", workLocation: "Remote", baseSalary: 142000, avatarColor: pick(1), role: "approver" },
   { id: "e3", employeeId: "EMP-0003", name: "Aisha Khan", email: "aisha.khan@acme.test", phone: "+1 202 555 0113", department: "Engineering", designation: "Senior Software Engineer", reportsTo: "Sarah Chen", joinDate: "2021-01-18", status: "Active", workLocation: "San Francisco", baseSalary: 138000, avatarColor: pick(2), role: "employee" },
@@ -246,6 +278,24 @@ export const employees: Employee[] = [
   { id: "e11", employeeId: "EMP-0011", name: "Owen Wright", email: "owen.wright@acme.test", phone: "+1 202 555 0121", department: "Sales", designation: "Sales Executive", reportsTo: "Dana Cole", joinDate: "2022-04-19", status: "Inactive", workLocation: "Remote", baseSalary: 76000, avatarColor: pick(3), role: "employee" },
   { id: "e12", employeeId: "EMP-0012", name: "Yuki Tanaka", email: "yuki.tanaka@acme.test", phone: "+1 202 555 0122", department: "Design", designation: "Product Designer", reportsTo: "Elena Vox", joinDate: "2023-09-01", status: "On Probation", workLocation: "Remote", baseSalary: 92000, avatarColor: pick(4), role: "employee" },
 ];
+
+// Extended profile records keyed by employee id — mirror the Frappe Employee form.
+const EMPLOYEE_PROFILES: Record<string, Partial<Employee>> = {
+  e1: { salutation: "Ms.", firstName: "Sarah", lastName: "Chen", gender: "Female", dateOfBirth: "1988-04-12", maritalStatus: "Married", bloodGroup: "O+", company: "Acme Technologies Ltd.", branch: "San Francisco", grade: "G4 — Senior Management", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 218000, bankName: "City Bank", bankAcno: "•••• 4021", companyEmail: "sarah.chen@acme.test", personalEmail: "sarah.c@gmail.com", userId: "sarah.chen@acme.test", offerDate: "2019-02-01", confirmationDate: "2019-09-11", noticeDays: 60, attendanceDeviceId: "BIO-0001", permanentAddress: "42 Pine St, San Francisco, CA", currentAddress: "42 Pine St, San Francisco, CA", emergencyContactName: "Daniel Chen", emergencyPhone: "+1 202 555 0901", relation: "Spouse", bio: "Engineering leader with 12+ years building distributed platforms." },
+  e2: { salutation: "Mr.", firstName: "Marcus", lastName: "Reed", gender: "Male", dateOfBirth: "1986-11-02", maritalStatus: "Single", bloodGroup: "A+", company: "Acme Technologies Ltd.", branch: "London", grade: "G3 — Management", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 185000, bankName: "HSBC", bankAcno: "•••• 7788", companyEmail: "marcus.reed@acme.test", personalEmail: "m.reed@outlook.com", userId: "marcus.reed@acme.test", offerDate: "2020-06-01", confirmationDate: "2021-01-01", noticeDays: 60, attendanceDeviceId: "BIO-0002", permanentAddress: "12 Baker St, London", currentAddress: "12 Baker St, London", emergencyContactName: "Alice Reed", emergencyPhone: "+44 20 5550 118", relation: "Sibling", bio: "Product leader focused on roadmap execution." },
+  e3: { salutation: "Ms.", firstName: "Aisha", lastName: "Khan", gender: "Female", dateOfBirth: "1993-07-19", maritalStatus: "Married", bloodGroup: "B+", company: "Acme Technologies Ltd.", branch: "Dhaka", grade: "G2 — Senior", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 179000, bankName: "BRAC Bank", bankAcno: "•••• 1290", companyEmail: "aisha.khan@acme.test", personalEmail: "aisha.khan@gmail.com", userId: "aisha.khan@acme.test", offerDate: "2020-12-01", confirmationDate: "2021-07-18", noticeDays: 45, attendanceDeviceId: "BIO-0003", permanentAddress: "House 22, Road 7, Dhanmondi, Dhaka", currentAddress: "House 22, Road 7, Dhanmondi, Dhaka", emergencyContactName: "Rahim Khan", emergencyPhone: "+880 1700 000003", relation: "Parent", bio: "Senior engineer specialising in backend systems." },
+  e4: { salutation: "Mr.", firstName: "Diego", lastName: "Torres", gender: "Male", dateOfBirth: "1996-02-28", maritalStatus: "Single", bloodGroup: "AB+", company: "Acme Technologies Ltd.", branch: "San Francisco", grade: "G1 — Individual", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 135000, bankName: "Chase", bankAcno: "•••• 5567", companyEmail: "diego.torres@acme.test", personalEmail: "diego.t@yahoo.com", userId: "diego.torres@acme.test", offerDate: "2022-08-01", noticeDays: 30, attendanceDeviceId: "BIO-0004", permanentAddress: "88 Elm Ave, Austin, TX", currentAddress: "88 Elm Ave, Austin, TX", emergencyContactName: "Maria Torres", emergencyPhone: "+1 202 555 0904", relation: "Parent", bio: "Software engineer, payments team." },
+  e5: { salutation: "Ms.", firstName: "Priya", lastName: "Nair", gender: "Female", dateOfBirth: "1985-09-09", maritalStatus: "Married", bloodGroup: "O-", company: "Acme Technologies Ltd.", branch: "Dhaka", grade: "G3 — Management", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 164000, bankName: "Eastern Bank", bankAcno: "•••• 3311", companyEmail: "priya.nair@acme.test", personalEmail: "priya.nair@gmail.com", userId: "priya.nair@acme.test", offerDate: "2018-04-01", confirmationDate: "2018-11-21", noticeDays: 60, attendanceDeviceId: "BIO-0005", permanentAddress: "Gulshan Avenue, Dhaka", currentAddress: "Gulshan Avenue, Dhaka", emergencyContactName: "Arjun Nair", emergencyPhone: "+880 1700 000005", relation: "Spouse", bio: "HR manager driving people operations." },
+  e6: { salutation: "Ms.", firstName: "Elena", lastName: "Vox", gender: "Female", dateOfBirth: "1990-12-15", maritalStatus: "Single", bloodGroup: "A-", company: "Acme Technologies Ltd.", branch: "London", grade: "G2 — Senior", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 171000, bankName: "Barclays", bankAcno: "•••• 9021", companyEmail: "elena.vox@acme.test", personalEmail: "elena.vox@gmail.com", userId: "elena.vox@acme.test", offerDate: "2020-10-15", confirmationDate: "2021-05-30", noticeDays: 45, attendanceDeviceId: "BIO-0006", permanentAddress: "5 River Rd, London", currentAddress: "5 River Rd, London", emergencyContactName: "Sofia Vox", emergencyPhone: "+44 20 5550 122", relation: "Sibling", bio: "Design lead for the product org." },
+  e7: { salutation: "Mr.", firstName: "Tom", lastName: "Becker", gender: "Male", dateOfBirth: "1983-06-21", maritalStatus: "Married", bloodGroup: "B-", company: "Acme Technologies Ltd.", branch: "San Francisco", grade: "G3 — Management", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 192000, bankName: "Wells Fargo", bankAcno: "•••• 1180", companyEmail: "tom.becker@acme.test", personalEmail: "tom.becker@gmail.com", userId: "tom.becker@acme.test", offerDate: "2017-07-01", confirmationDate: "2018-02-14", noticeDays: 60, attendanceDeviceId: "BIO-0007", permanentAddress: "300 Market St, San Francisco, CA", currentAddress: "300 Market St, San Francisco, CA", emergencyContactName: "Grace Becker", emergencyPhone: "+1 202 555 0907", relation: "Spouse", bio: "Finance manager overseeing budgeting." },
+  e8: { salutation: "Ms.", firstName: "Dana", lastName: "Cole", gender: "Female", dateOfBirth: "1991-03-30", maritalStatus: "Divorced", bloodGroup: "O+", company: "Acme Technologies Ltd.", branch: "London", grade: "G2 — Senior", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 156000, bankName: "HSBC", bankAcno: "•••• 6642", companyEmail: "dana.cole@acme.test", personalEmail: "dana.cole@gmail.com", userId: "dana.cole@acme.test", offerDate: "2019-11-01", confirmationDate: "2020-06-02", noticeDays: 30, attendanceDeviceId: "BIO-0008", permanentAddress: "77 Oak Ln, London", currentAddress: "77 Oak Ln, London", emergencyContactName: "Ivy Cole", emergencyPhone: "+44 20 5550 128", relation: "Parent", bio: "Sales manager, enterprise accounts." },
+  e9: { salutation: "Mr.", firstName: "Leo", lastName: "Martins", gender: "Male", dateOfBirth: "1994-08-08", maritalStatus: "Single", bloodGroup: "A+", company: "Acme Technologies Ltd.", branch: "Dhaka", grade: "G2 — Senior", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 146000, bankName: "City Bank", bankAcno: "•••• 2205", companyEmail: "leo.martins@acme.test", personalEmail: "leo.martins@gmail.com", userId: "leo.martins@acme.test", offerDate: "2021-05-01", confirmationDate: "2021-12-15", noticeDays: 45, attendanceDeviceId: "BIO-0009", permanentAddress: "Banani DOHS, Dhaka", currentAddress: "Banani DOHS, Dhaka", emergencyContactName: "Ruth Martins", emergencyPhone: "+880 1700 000009", relation: "Sibling", bio: "Marketing lead, growth and brand." },
+  e10: { salutation: "Ms.", firstName: "Nina", lastName: "Patel", gender: "Female", dateOfBirth: "1997-01-11", maritalStatus: "Single", bloodGroup: "B+", company: "Acme Technologies Ltd.", branch: "San Francisco", grade: "G1 — Individual", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 127000, bankName: "Chase", bankAcno: "•••• 8890", companyEmail: "nina.patel@acme.test", personalEmail: "nina.patel@gmail.com", userId: "nina.patel@acme.test", offerDate: "2023-01-15", noticeDays: 30, attendanceDeviceId: "BIO-0010", permanentAddress: "14 Cedar St, San Jose, CA", currentAddress: "14 Cedar St, San Jose, CA", emergencyContactName: "Kiran Patel", emergencyPhone: "+1 202 555 0910", relation: "Parent", bio: "Software engineer, frontend." },
+  e11: { salutation: "Mr.", firstName: "Owen", lastName: "Wright", gender: "Male", dateOfBirth: "1995-05-17", maritalStatus: "Married", bloodGroup: "O+", company: "Acme Technologies Ltd.", branch: "London", grade: "G1 — Individual", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 98000, bankName: "Barclays", bankAcno: "•••• 3345", companyEmail: "owen.wright@acme.test", personalEmail: "owen.wright@gmail.com", userId: "owen.wright@acme.test", offerDate: "2022-03-01", confirmationDate: "2022-10-19", noticeDays: 30, attendanceDeviceId: "BIO-0011", permanentAddress: "9 Maple Ave, Manchester", currentAddress: "9 Maple Ave, Manchester", emergencyContactName: "Helen Wright", emergencyPhone: "+44 20 5550 131", relation: "Spouse", bio: "Sales executive." },
+  e12: { salutation: "Ms.", firstName: "Yuki", lastName: "Tanaka", gender: "Female", dateOfBirth: "1998-10-05", maritalStatus: "Single", bloodGroup: "AB-", company: "Acme Technologies Ltd.", branch: "Dhaka", grade: "G1 — Individual", holidayList: "2026 Holidays", salaryMode: "Bank", salaryCurrency: "BDT", ctc: 119000, bankName: "BRAC Bank", bankAcno: "•••• 7712", companyEmail: "yuki.tanaka@acme.test", personalEmail: "yuki.tanaka@gmail.com", userId: "yuki.tanaka@acme.test", offerDate: "2023-08-01", noticeDays: 30, attendanceDeviceId: "BIO-0012", permanentAddress: "Uttara Sector 7, Dhaka", currentAddress: "Uttara Sector 7, Dhaka", emergencyContactName: "Hiro Tanaka", emergencyPhone: "+880 1700 000012", relation: "Parent", bio: "Product designer." },
+};
+
+export const employees: Employee[] = EMPLOYEE_BASE.map((e) => ({ ...e, ...EMPLOYEE_PROFILES[e.id] }));
 
 // The signed-in user (UI stands in for future auth session)
 export const currentUser = employees[4]; // Priya Nair — HR

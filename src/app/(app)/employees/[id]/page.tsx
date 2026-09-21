@@ -26,16 +26,29 @@ import {
   leaveApplications,
   attendanceRecords,
 } from "@/lib/mock/data";
-import { ArrowLeft, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowLeft, Mail, Phone, MapPin, Pencil } from "lucide-react";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="space-y-0.5">
       <dt className="text-xs uppercase tracking-wide text-muted-foreground">{label}</dt>
-      <dd className="text-sm font-medium">{value}</dd>
+      <dd className="text-sm font-medium">{value ?? <span className="font-normal text-muted-foreground">—</span>}</dd>
     </div>
   );
 }
+
+function InfoCard({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
+  return (
+    <Card className={className}>
+      <CardHeader><CardTitle className="text-base">{title}</CardTitle></CardHeader>
+      <CardContent>
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">{children}</dl>
+      </CardContent>
+    </Card>
+  );
+}
+
+const dash = (s?: string) => (s && s.trim() ? s : undefined);
 
 export default async function EmployeeDetailPage({
   params,
@@ -46,7 +59,7 @@ export default async function EmployeeDetailPage({
   const emp = getEmployee(id);
   if (!emp) notFound();
 
-  const initials = emp.name.split("").map((s) => s[0]).slice(0, 2).join("");
+  const initials = (emp.firstName && emp.lastName ? emp.firstName[0] + emp.lastName[0] : emp.name.split("").map((s) => s[0]).slice(0, 2).join("")).toUpperCase();
   const myLeaves = leaveApplications.filter((l) => l.employeeId === emp.employeeId);
   const myAttendance = attendanceRecords.filter((a) => a.employeeId === emp.employeeId);
 
@@ -74,7 +87,9 @@ export default async function EmployeeDetailPage({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline">Edit</Button>
+          <Button render={<Link href={`/employees/${emp.id}/edit`} />}>
+            <Pencil /> Edit
+          </Button>
           <Button variant="outline" render={<Link href="/payroll/slips" />}>Salary Slips</Button>
         </div>
       </div>
@@ -83,29 +98,89 @@ export default async function EmployeeDetailPage({
         <Card>
           <CardHeader><CardTitle className="text-base">Contact</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
-            <div className="flex items-center gap-2"><Mail className="size-4 text-muted-foreground" /> {emp.email}</div>
-            <div className="flex items-center gap-2"><Phone className="size-4 text-muted-foreground" /> {emp.phone}</div>
-            <div className="flex items-center gap-2"><MapPin className="size-4 text-muted-foreground" /> {emp.workLocation}</div>
+            <div className="flex items-center gap-2"><Mail className="size-4 shrink-0 text-muted-foreground" /> <span className="truncate">{emp.companyEmail || emp.email}</span></div>
+            <div className="flex items-center gap-2"><Phone className="size-4 shrink-0 text-muted-foreground" /> {emp.phone}</div>
+            <div className="flex items-center gap-2"><MapPin className="size-4 shrink-0 text-muted-foreground" /> {emp.workLocation}</div>
+            {dash(emp.personalEmail) && (
+              <div className="flex items-center gap-2"><Mail className="size-4 shrink-0 text-muted-foreground" /> <span className="truncate text-muted-foreground">{emp.personalEmail} (personal)</span></div>
+            )}
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2">
-          <CardHeader><CardTitle className="text-base">Employment Details</CardTitle></CardHeader>
-          <CardContent>
-            <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">
-              <Field label="Employee ID" value={emp.employeeId} />
-              <Field label="Department" value={emp.department} />
-              <Field label="Designation" value={emp.designation} />
-              <Field label="Reports To" value={emp.reportsTo} />
-              <Field label="Date of Joining" value={fmtDate(emp.joinDate)} />
-              <Field label="Work Location" value={emp.workLocation} />
-              <Field label="Base Salary" value={`${fmtMoney(emp.baseSalary)} / yr`} />
-              <Field label="Role" value={<Badge variant="secondary" className="capitalize">{emp.role}</Badge>} />
-              <Field label="Status" value={<StatusBadge status={emp.status} />} />
-            </dl>
+        <InfoCard title="Personal" className="lg:col-span-2">
+          <Field label="Salutation" value={dash(emp.salutation)} />
+          <Field label="Full Name" value={emp.name} />
+          <Field label="Gender" value={dash(emp.gender)} />
+          <Field label="Date of Birth" value={emp.dateOfBirth ? fmtDate(emp.dateOfBirth) : undefined} />
+          <Field label="Marital Status" value={dash(emp.maritalStatus)} />
+          <Field label="Blood Group" value={dash(emp.bloodGroup)} />
+          <Field label="Company" value={dash(emp.company)} />
+          <Field label="Branch" value={dash(emp.branch)} />
+          <Field label="Holiday List" value={dash(emp.holidayList)} />
+        </InfoCard>
+      </div>
+
+      <InfoCard title="Employment">
+        <Field label="Employee ID" value={emp.employeeId} />
+        <Field label="Department" value={emp.department} />
+        <Field label="Designation" value={emp.designation} />
+        <Field label="Reports To" value={dash(emp.reportsTo)} />
+        <Field label="Grade" value={dash(emp.grade)} />
+        <Field label="Date of Joining" value={fmtDate(emp.joinDate)} />
+        <Field label="Work Location" value={emp.workLocation} />
+        <Field label="Role" value={<Badge variant="secondary" className="capitalize">{emp.role}</Badge>} />
+        <Field label="Status" value={<StatusBadge status={emp.status} />} />
+      </InfoCard>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <InfoCard title="Salary & Compensation">
+          <Field label="Currency" value={dash(emp.salaryCurrency)} />
+          <Field label="Salary Mode" value={dash(emp.salaryMode)} />
+          <Field label="Base Salary" value={`${fmtMoney(emp.baseSalary)} / yr`} />
+          <Field label="CTC" value={emp.ctc ? `${fmtMoney(emp.ctc)} / yr` : undefined} />
+          <Field label="Bank Name" value={dash(emp.bankName)} />
+          <Field label="Bank A/C No." value={dash(emp.bankAcno)} />
+        </InfoCard>
+
+        <InfoCard title="Terms & Dates">
+          <Field label="Offer Date" value={emp.offerDate ? fmtDate(emp.offerDate) : undefined} />
+          <Field label="Confirmation Date" value={emp.confirmationDate ? fmtDate(emp.confirmationDate) : undefined} />
+          <Field label="Contract End Date" value={emp.contractEndDate ? fmtDate(emp.contractEndDate) : undefined} />
+          <Field label="Retirement Date" value={emp.retirementDate ? fmtDate(emp.retirementDate) : undefined} />
+          <Field label="Notice Period" value={emp.noticeDays ? `${emp.noticeDays} days` : undefined} />
+          <Field label="Attendance Device ID" value={dash(emp.attendanceDeviceId)} />
+        </InfoCard>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader><CardTitle className="text-base">Address</CardTitle></CardHeader>
+          <CardContent className="space-y-4 text-sm">
+            <div className="space-y-1">
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">Permanent Address</dt>
+              <dd className="font-medium">{dash(emp.permanentAddress) ?? <span className="font-normal text-muted-foreground">—</span>}</dd>
+            </div>
+            <Separator />
+            <div className="space-y-1">
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">Current Address</dt>
+              <dd className="font-medium">{dash(emp.currentAddress) ?? <span className="font-normal text-muted-foreground">—</span>}</dd>
+            </div>
           </CardContent>
         </Card>
+
+        <InfoCard title="Emergency Contact">
+          <Field label="Contact Name" value={dash(emp.emergencyContactName)} />
+          <Field label="Relation" value={dash(emp.relation)} />
+          <Field label="Phone" value={dash(emp.emergencyPhone)} />
+        </InfoCard>
       </div>
+
+      {dash(emp.bio) && (
+        <Card>
+          <CardHeader><CardTitle className="text-base">Bio</CardTitle></CardHeader>
+          <CardContent><p className="text-sm text-muted-foreground">{emp.bio}</p></CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
