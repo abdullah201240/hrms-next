@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
@@ -29,7 +30,7 @@ export default function DepartmentsPage() {
   return (
     <>
       <PageHeader title="Departments" description={`${departments.length} departments · ${total} employees`}>
-        <Button><Plus /> New Department</Button>
+        <Button render={<Link href="/departments/new" />}><Plus /> New Department</Button>
       </PageHeader>
       <DataTable columns={columns} rows={departments} searchKeys={["name", "head"]} pageSize={10} />
     </>

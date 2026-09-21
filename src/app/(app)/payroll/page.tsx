@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
@@ -26,7 +27,7 @@ export default function SalaryStructuresPage() {
   return (
     <>
       <PageHeader title="Salary Structures" description="Reusable compensation templates.">
-        <Button><Plus /> New Structure</Button>
+        <Button render={<Link href="/payroll/new" />}><Plus /> New Structure</Button>
       </PageHeader>
 
       <div className="grid gap-4 sm:grid-cols-3">

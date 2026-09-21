@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/shared/page-header";
@@ -19,7 +20,7 @@ export default function DesignationsPage() {
   return (
     <>
       <PageHeader title="Designations" description={`${designations.length} roles defined`}>
-        <Button><Plus /> New Designation</Button>
+        <Button render={<Link href="/designations/new" />}><Plus /> New Designation</Button>
       </PageHeader>
       <DataTable columns={columns} rows={designations} searchKeys={["name", "department", "grade"]} pageSize={10} />
     </>

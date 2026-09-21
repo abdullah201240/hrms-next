@@ -30,3 +30,10 @@ Any PR/new screen violating these is non-conforming and must be fixed.
 ## 4. After ANY `shadcn add` — also strip borders
 - New shadcn components also ship `border-*`/`divide-*` classes. The global `border-width: 0 !important` already hides them visually, but to keep source conforming run `node scripts/strip-borders.mjs` over app/shared pages when you hand-write new screens.
 - Status/semantic pills use background tint (`bg-emerald-50`, etc.) instead of colored borders.
+
+## 5. Dropdowns — always use the shared `SearchSelect` (MANDATORY)
+- Every picker/dropdown in forms and tools MUST use `SearchSelect` from `src/components/shared/search-select.tsx` — a thin composition of the shadcn Base UI `Combobox` that gives every dropdown the SAME look and behavior: type-to-filter search, a clear (✕) button, a "No matches found." empty state, and an optional `+ Add {Doctype}` quick-create (pass `addLabel`).
+- Do NOT use the plain shadcn `Select` for record/option pickers. `SearchSelect` props: `value`, `onChange(v: string)`, `options: readonly string[]`, `placeholder?`, `addLabel?` (enables quick-create), `id?`, `className?` (default `w-full`; e.g. `w-40`, `w-56`).
+- Base UI ships NO default filter — `SearchSelect` already bakes in a case-insensitive substring `filter`. If you ever wrap `Combobox` directly, you MUST pass a `filter` or the list will not search.
+- Only exception: the compact "Rows" page-size control in `src/components/shared/data-table.tsx` stays a plain `Select` (a search box would clutter every list page footer).
+- Existing users: `/employees/new`, `/expenses/new`, `/leave/apply`, `/attendance/shift-assignment-tool`, `/attendance/mark-attendance`, `/payroll/bulk-assignment`, `/payroll/processing`, `/settings`.

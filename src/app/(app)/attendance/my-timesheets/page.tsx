@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatCard } from "@/components/shared/stat-card";
 import { DataTable, type Column } from "@/components/shared/data-table";
@@ -24,7 +25,7 @@ export default function MyTimesheetsPage() {
   return (
     <>
       <PageHeader title="My Timesheets" description="Time you have logged against projects.">
-        <Button>
+        <Button render={<Link href="/attendance/my-timesheets/new" />}>
           <Plus className="size-4" />
           Log Time
         </Button>
