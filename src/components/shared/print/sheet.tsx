@@ -18,13 +18,10 @@ export const pdate = (iso?: string) => {
   return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 };
 
-/** One A4 sheet. `id="print-root"` is what the @media print CSS isolates. */
+/** One A4 sheet. PrintDialog portals a print-only copy (#print-portal). */
 export function PrintSheet({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      id="print-root"
-      className="mx-auto w-full max-w-[210mm] bg-white px-[12mm] py-[10mm] text-[12.5px] leading-relaxed text-neutral-900 print:max-w-none print:px-0 print:py-0"
-    >
+    <div className="mx-auto w-full max-w-[210mm] bg-white px-[12mm] py-[10mm] text-[12.5px] leading-relaxed text-neutral-900">
       {children}
     </div>
   );

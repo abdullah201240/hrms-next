@@ -43,7 +43,7 @@ export function CrudPrintButton({ doctype, id, variant = "outline", size = "sm",
     }
     // doctype = route key keeps the format-registry lookup disjoint from label
     // collisions (e.g. CRUD "Salary Slip" must not hit the typed formats).
-    const payload: GenericPrint = { doctype, name: id, title, row, extra, company: company.name };
+    const payload: GenericPrint = { doctype, label: config.label, name: id, title, row, extra, company: company.name };
     return payload;
   };
   return <PrintButton data={build} variant={variant} size={size} label={label} />;

@@ -61,7 +61,7 @@ export type EmployeePrint = {
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type GenericPrint = { doctype: string; name: string; title: string; row: any; extra?: [string, string][]; company: string };
+export type GenericPrint = { doctype: string; name: string; title: string; row: any; extra?: [string, string][]; company: string; /** Human doctype label for the sheet header (doctype stays the route key for registry lookup). */ label?: string };
 
 export type Printable =
   | SalarySlipPrint

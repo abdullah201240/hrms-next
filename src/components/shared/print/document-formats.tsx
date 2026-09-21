@@ -161,13 +161,14 @@ export function EmployeeStandard({ data }: { data: EmployeePrint }) {
 /* ── Generic "Standard" — mirrors Frappe's builder-generated standard print
    for any doctype row: heading, key/value fields, optional notes. ── */
 export function GenericStandard({ data }: { data: GenericPrint }) {
+  const label = data.label ?? data.doctype;
   return (
     <PrintSheet>
-      <SheetHeader title={data.doctype} docName={data.name} date={new Date().toISOString()} />
+      <SheetHeader title={label} docName={data.name} date={new Date().toISOString()} />
       <div className="mb-2 text-sm font-medium text-neutral-500">{data.title}</div>
       <Rule />
       <MetaGrid items={data.extra?.map(([k, v]) => [k, v] as [string, React.ReactNode]) ?? []} cols={2} />
-      <SignFooter note={`Printed from the ${data.company} HR portal — ${data.doctype} standard format.`} />
+      <SignFooter note={`Printed from the ${data.company} HR portal — ${label} standard format.`} />
     </PrintSheet>
   );
 }

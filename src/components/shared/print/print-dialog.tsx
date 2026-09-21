@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -50,7 +51,7 @@ export function PrintButton({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-[92vw] sm:max-w-[860px]">
           <DialogHeader>
-            <DialogTitle>Print: {payload.doctype}</DialogTitle>
+            <DialogTitle>Print: {"label" in payload && payload.label ? payload.label : payload.doctype}</DialogTitle>
             <DialogDescription>Choose a print format, then print or save as PDF.</DialogDescription>
           </DialogHeader>
 
@@ -70,7 +71,7 @@ export function PrintButton({
             </Select>
           </div>
 
-          {/* A4 preview surface — the sheet itself carries id="print-root". */}
+          {/* A4 preview — screen only. The paper copy is portalled below. */}
           <div className="max-h-[60vh] overflow-y-auto bg-neutral-200 dark:bg-neutral-800">
             <div className="origin-top scale-[0.72] sm:scale-90">
               {format.render(payload)}
@@ -87,6 +88,19 @@ export function PrintButton({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Print-only A4 copy — a direct child of <body>, outside the dialog
+          overlay/transform chain; hidden on screen, isolated by @media print
+          (see globals.css PRINT block). */}
+      {open &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div id="print-portal" className="hidden">
+            {format.render(payload)}
+          </div>,
+          document.body,
+          "print-portal",
+        )}
     </>
   );
 }

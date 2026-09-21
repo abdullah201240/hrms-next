@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           `cz-shortcut-listen`) onto <body>, which would otherwise trip a
           hydration mismatch. This is the Next/React-recommended guard. */}
       <body
-        className="min-h-full flex flex-col print-hide"
+        className="min-h-full flex flex-col"
         suppressHydrationWarning
       >
         <ThemeProvider
