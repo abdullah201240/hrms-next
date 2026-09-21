@@ -114,3 +114,52 @@ export const notifications: Notification[] = [
   { id: "nt3", title: "Expense claim pending", body: "Claim EXP/2026/0031 needs a receipt to proceed.", from: "Finance", read: true, docType: "Expense Claim", when: "2026-09-18 11:25" },
   { id: "nt4", title: "Shift request reminder", body: "Please confirm your shift change for 25–26 Sep.", from: "System", read: true, docType: "Shift Request", when: "2026-09-17 08:00" },
 ];
+
+// --- HR Setup masters (Interview Type, Feedback Criteria, etc.) -------------
+
+export interface InterviewType { id: ID; name: string; description: string; }
+export const interviewTypes: InterviewType[] = [
+  { id: "it1", name: "Technical Interview", description: "Hands-on skills assessment by the hiring team." },
+  { id: "it2", name: "HR Screening", description: "Culture-fit and compensation expectations call." },
+  { id: "it3", name: "Manager Round", description: "Team lead evaluation of overall role fit." },
+];
+
+export interface FeedbackCriteria { id: ID; name: string; category: "Technical" | "Behavioural" | "Performance" | "Administrative"; }
+export const feedbackCriteria: FeedbackCriteria[] = [
+  { id: "fc1", name: "Communication Skills", category: "Behavioural" },
+  { id: "fc2", name: "Problem Solving", category: "Technical" },
+  { id: "fc3", name: "Goal Achievement", category: "Performance" },
+  { id: "fc4", name: "Documentation Quality", category: "Administrative" },
+];
+
+export interface HolidayListAssignment { id: ID; employee: string; holidayList: string; company: string; status: "Active" | "Inactive"; }
+export const holidayListAssignments: HolidayListAssignment[] = [
+  { id: "hla1", employee: "Aisha Khan", holidayList: "India Holidays 2026", company: "Acme", status: "Active" },
+  { id: "hla2", employee: "Tom Becker", holidayList: "US Holidays 2026", company: "Acme", status: "Active" },
+  { id: "hla3", employee: "Nina Patel", holidayList: "India Holidays 2026", company: "Acme", status: "Inactive" },
+];
+
+export interface JobOpeningTemplate { id: ID; name: string; description: string; }
+export const jobOpeningTemplates: JobOpeningTemplate[] = [
+  { id: "jot1", name: "Engineering — Standard", description: "Reusable description for senior/backend engineer openings." },
+  { id: "jot2", name: "Customer Success", description: "CS open position template with shift expectations." },
+];
+
+export interface JobOfferTermTemplate { id: ID; name: string; offerTerm: string; weight: number; }
+export const jobOfferTermTemplates: JobOfferTermTemplate[] = [
+  { id: "jott1", name: "Probation Period", offerTerm: "Employment Type", weight: 100 },
+  { id: "jott2", name: "Notice Period", offerTerm: "Terms", weight: 100 },
+  { id: "jott3", name: "Relocation Support", offerTerm: "Benefits", weight: 50 },
+];
+
+export interface AppointmentLetterTemplate { id: ID; name: string; company: string; basedOn: "Date of Joining" | "Confirmation"; }
+export const appointmentLetterTemplates: AppointmentLetterTemplate[] = [
+  { id: "alt1", name: "Standard Appointment Letter", company: "Acme", basedOn: "Date of Joining" },
+  { id: "alt2", name: "Confirmation Letter", company: "Acme", basedOn: "Confirmation" },
+];
+
+export interface TrainingFeedback { id: ID; employee: string; trainingEvent: string; trainerName: string; rating: number; status: "Pending" | "Complete"; }
+export const trainingFeedback: TrainingFeedback[] = [
+  { id: "tf1", employee: "Aisha Khan", trainingEvent: "TRN-EVT-2026-05", trainerName: "Rahul Verma", rating: 90, status: "Complete" },
+  { id: "tf2", employee: "Owen Wright", trainingEvent: "TRN-EVT-2026-07", trainerName: "External Vendor", rating: 75, status: "Pending" },
+];
