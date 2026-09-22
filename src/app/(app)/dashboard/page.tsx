@@ -129,6 +129,7 @@ const departmentStats = [
     leave: 2,
     late: 2,
     vacancy: "4.6%",
+    bar: "bg-sky-500",
     vacancyColor: "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400",
   },
   {
@@ -141,7 +142,8 @@ const departmentStats = [
     leave: 2,
     late: 1,
     vacancy: "10.4%",
-    vacancyColor: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400",
+    bar: "bg-rose-500",
+    vacancyColor: "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-400",
   },
   {
     name: "Product",
@@ -153,6 +155,7 @@ const departmentStats = [
     leave: 1,
     late: 1,
     vacancy: "8.6%",
+    bar: "bg-amber-500",
     vacancyColor: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400",
   },
   {
@@ -165,6 +168,7 @@ const departmentStats = [
     leave: 1,
     late: 1,
     vacancy: "7.1%",
+    bar: "bg-emerald-500",
     vacancyColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
   },
   {
@@ -177,6 +181,7 @@ const departmentStats = [
     leave: 1,
     late: 0,
     vacancy: "4.5%",
+    bar: "bg-emerald-500",
     vacancyColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
   },
   {
@@ -189,6 +194,7 @@ const departmentStats = [
     leave: 1,
     late: 0,
     vacancy: "10.0%",
+    bar: "bg-purple-500",
     vacancyColor: "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-400",
   },
 ];
@@ -205,8 +211,8 @@ const recentActivities = [
   {
     name: "Diego Torres",
     initials: "DT",
-    time: "5 hours ago",
-    detail: "submitted an expense claim",
+    time: "3 hours ago",
+    detail: "Expense claim",
     badge: "Expense",
     badgeColor: "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400",
   },
@@ -214,7 +220,7 @@ const recentActivities = [
     name: "Nina Patel",
     initials: "NP",
     time: "4 hours ago",
-    detail: "Checked in (On time)",
+    detail: "On time",
     badge: "Attendance",
     badgeColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
   },
@@ -230,7 +236,7 @@ const recentActivities = [
     name: "New Joiner",
     initials: "NJ",
     time: "6 hours ago",
-    detail: "Joined as Software Engineer",
+    detail: "Software Engineer",
     badge: "Onboarding",
     badgeColor: "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400",
   },
@@ -291,7 +297,7 @@ function CircularMeter({
           {pct}%
         </span>
       </div>
-      <p className="mt-1 text-xs font-semibold text-foreground">{label}</p>
+      <p className="mt-1 text-[10px] font-semibold leading-tight text-foreground">{label}</p>
       <p className="text-[11px] text-muted-foreground">{used}/{entitled} used</p>
     </div>
   );
@@ -305,7 +311,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="dash space-y-6">
       <PageHeader
         title="Dashboard"
         description="People-operations overview for your organization."
@@ -370,7 +376,7 @@ export default function DashboardPage() {
           <CardContent className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between gap-2 pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
                   <Activity className="size-4" />
                 </div>
                 <div>
@@ -416,7 +422,7 @@ export default function DashboardPage() {
 
               {/* Callout Box on Right */}
               <div className="flex flex-col justify-center bg-sky-50/50 p-3 dark:bg-sky-950/30 sm:col-span-1">
-                <div className="mb-2 flex size-7 items-center justify-center bg-white text-sky-600 dark:bg-card">
+                <div className="mb-2 flex size-7 items-center justify-center chip bg-white text-sky-600 dark:bg-card">
                   <TrendingUp className="size-3.5" />
                 </div>
                 <p className="text-xl font-bold tracking-tight text-foreground">88.3%</p>
@@ -435,7 +441,7 @@ export default function DashboardPage() {
           <CardContent className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between gap-2 pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+                <div className="flex size-8 items-center justify-center chip bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
                   <Zap className="size-4" />
                 </div>
                 <div>
@@ -456,7 +462,7 @@ export default function DashboardPage() {
                   className="flex items-center justify-between p-2 transition-colors hover:bg-muted/50"
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`flex size-7 items-center justify-center text-xs font-bold ${item.color}`}>
+                    <span className={`flex size-7 items-center justify-center chip text-xs font-bold ${item.color}`}>
                       {item.count}
                     </span>
                     <div>
@@ -476,7 +482,7 @@ export default function DashboardPage() {
           <CardContent className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between gap-2 pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
                   <Calendar className="size-4" />
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">Upcoming Leave Schedule</h3>
@@ -502,7 +508,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <span
-                    className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold ${
+                    className={`pill shrink-0 px-2 py-0.5 text-[10px] font-semibold ${
                       l.status === "Approved"
                         ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
                         : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
@@ -524,7 +530,7 @@ export default function DashboardPage() {
           <CardContent className="p-5">
             <div className="flex items-center justify-between gap-2 pb-4">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
                   <Building2 className="size-4" />
                 </div>
                 <div>
@@ -542,7 +548,7 @@ export default function DashboardPage() {
                 <thead>
                   <tr className="text-muted-foreground">
                     <th className="pb-2.5 font-medium">Department</th>
-                    <th className="pb-2.5 text-center font-medium">Total</th>
+                    <th className="pb-2.5 text-center font-medium">Total Employees</th>
                     <th className="pb-2.5 text-center font-medium">Present</th>
                     <th className="pb-2.5 text-center font-medium">Absent</th>
                     <th className="pb-2.5 text-center font-medium">On Leave</th>
@@ -554,7 +560,7 @@ export default function DashboardPage() {
                   {departmentStats.map((d) => (
                     <tr key={d.name} className="hover:bg-muted/40 transition-colors">
                       <td className="py-2 font-medium flex items-center gap-2">
-                        <div className={`flex size-6 items-center justify-center ${d.iconColor}`}>
+                        <div className={`flex size-6 items-center justify-center chip ${d.iconColor}`}>
                           <d.icon className="size-3.5" />
                         </div>
                         <span className="text-foreground">{d.name}</span>
@@ -565,9 +571,17 @@ export default function DashboardPage() {
                       <td className="py-2 text-center text-muted-foreground tabular-nums">{d.leave}</td>
                       <td className="py-2 text-center text-muted-foreground tabular-nums">{d.late}</td>
                       <td className="py-2 text-right">
-                        <span className={`px-1.5 py-0.5 font-semibold text-[10px] ${d.vacancyColor}`}>
-                          {d.vacancy}
-                        </span>
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="bar-track h-1.5 w-14 overflow-hidden bg-muted">
+                            <span
+                              className={`block h-full ${d.bar}`}
+                              style={{ width: `${Math.min(100, parseFloat(d.vacancy) * 8)}%` }}
+                            />
+                          </span>
+                          <span className={`pill px-1.5 py-0.5 font-semibold text-[10px] ${d.vacancyColor}`}>
+                            {d.vacancy}
+                          </span>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -582,7 +596,7 @@ export default function DashboardPage() {
           <CardContent className="p-5">
             <div className="flex items-center justify-between gap-2 pb-4">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
                   <Clock className="size-4" />
                 </div>
                 <div>
@@ -611,7 +625,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
                   </div>
-                  <span className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold ${act.badgeColor}`}>
+                  <span className={`pill shrink-0 px-2 py-0.5 text-[10px] font-semibold ${act.badgeColor}`}>
                     {act.badge}
                   </span>
                 </div>
@@ -627,7 +641,7 @@ export default function DashboardPage() {
             <CardContent className="p-5">
               <div className="flex items-center justify-between gap-2 pb-4">
                 <div className="flex items-center gap-2">
-                  <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                  <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
                     <PieChart className="size-4" />
                   </div>
                   <h3 className="text-sm font-semibold text-foreground">Leave Balance Overview</h3>
@@ -644,7 +658,7 @@ export default function DashboardPage() {
                     pct={lb.pct}
                     used={lb.used}
                     entitled={lb.entitled}
-                    label={lb.label.split(" ")[0]}
+                    label={lb.label}
                     color={lb.color}
                   />
                 ))}
