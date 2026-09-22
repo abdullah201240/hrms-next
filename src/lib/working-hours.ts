@@ -16,16 +16,21 @@ import { holidayListAssignments } from "@/lib/mock/data-4";
 import {
   addDays,
   addWeeklyOffHolidays,
+  addHolidayRange,
+  groupPublicHolidays,
   holidayOn,
   holidayRowsFor,
   isHalfHoliday,
   publicHolidays,
+  removeHolidayRowsByDates,
   toMinutes,
+  totalHolidays,
   totalLeaveDays,
   weekdayName,
   weeklyOffDates,
   WEEK_DAYS,
   type HolidayAssignmentLike,
+  type HolidayOccurrence,
   type HolidayRow,
   type WeekDay,
 } from "@/lib/holidays";
@@ -140,36 +145,88 @@ export function isNonWorkingDay(employeeName: string, date: string): boolean {
 /* weekly-off day while keeping the list as the single source of truth.        */
 /* -------------------------------------------------------------------------- */
 
-/** Weekly-off weekday of a holiday list (defaults to the company default list). */
-export function getWeeklyOff(listName?: string): string {
+/**
+ * Weekly-off weekdays of a holiday list (defaults to the company default list).
+ * Derived from the generated weekly-off rows (the true source `dayState` reads),
+ * ordered Sunday→Saturday. Falls back to the single `weekly_off` field when the
+ * list has no generated rows yet.
+ */
+export function getWeeklyOff(listName?: string): string[] {
   const name = listName || workingHoursSettings.defaultHolidayList;
-  return holidayLists.find((l) => l.name === name)?.weeklyOff ?? "";
+  const list = holidayLists.find((l) => l.name === name);
+  if (!list) return [];
+  const days = new Set(
+    list.holidays.filter((r) => r.weeklyOff && r.date).map((r) => weekdayName(r.date) as string),
+  );
+  const ordered = WEEK_DAYS.filter((d) => days.has(d));
+  if (ordered.length) return [...ordered];
+  return list.weeklyOff ? [list.weeklyOff] : [];
 }
 
 /**
- * Set the weekly-off day on a holiday list and regenerate its weekly-off rows,
- * preserving public holidays. Mirrors Holiday List's `weekly_off` field +
- * `get_weekly_off_dates` ("Add to Holidays"). Mutates the in-memory master so
- * roster / attendance / leave resolve the new weekly off within the session.
+ * Set the weekly-off day(s) on a holiday list and regenerate its weekly-off
+ * rows, preserving public holidays. Mirrors Holiday List's `weekly_off` field +
+ * `get_weekly_off_dates` ("Add to Holidays"), but allows multiple off days.
+ * Mutates the in-memory master so roster / attendance / leave resolve the new
+ * weekly offs within the session. `list.weeklyOff` keeps the first picked day
+ * so the single-select Holiday List form still renders sanely.
  */
-export function setWeeklyOff(day: string, listName?: string): void {
+export function setWeeklyOff(days: string[], listName?: string): void {
   const name = listName || workingHoursSettings.defaultHolidayList;
   const list = holidayLists.find((l) => l.name === name);
   if (!list) return;
-  list.weeklyOff = day;
-  const publicRows = list.holidays.filter((r) => !r.weeklyOff);
-  list.holidays = addWeeklyOffHolidays(publicRows, {
-    from: list.from,
-    to: list.to,
-    weeklyOff: day,
-  });
+  const picked: string[] = WEEK_DAYS.filter((d) => days.includes(d));
+  list.weeklyOff = picked[0] ?? "";
+  let rows = list.holidays.filter((r) => !r.weeklyOff);
+  for (const d of picked) {
+    rows = addWeeklyOffHolidays(rows, { from: list.from, to: list.to, weeklyOff: d });
+  }
+  list.holidays = rows;
+  list.totalHolidays = totalHolidays(rows);
 }
 
-/** Upcoming weekly-off dates for a weekday name, from a start date. */
-export function nextWeeklyOffDates(day: string, from: string, count = 4): string[] {
-  if (!day) return [];
-  return weeklyOffDates(from, addDays(from, 60), day).slice(0, count);
+/** Upcoming weekly-off dates for a set of weekday names, from a start date. */
+export function nextWeeklyOffDates(days: string[], from: string, count = 4): string[] {
+  if (!days.length) return [];
+  const to = addDays(from, 60);
+  const set = new Set<string>();
+  for (const d of days) for (const x of weeklyOffDates(from, to, d)) set.add(x);
+  return [...set].sort().slice(0, count);
 }
 
-export { WEEK_DAYS, weekdayName, isHalfHoliday, toMinutes, publicHolidays };
+/* -------------------------------------------------------------------------- */
+/* Public/government holiday authoring for the simple Holiday Manager          */
+/* Operates on the company DEFAULT list; stores one `Holiday` row per day but   */
+/* presents them grouped by occasion so a "Durga Puja · 17→20 Oct" is one item. */
+/* -------------------------------------------------------------------------- */
+
+/** The holiday list the manager edits (company default unless a name is given). */
+export function holidayList(listName?: string) {
+  return holidayLists.find((l) => l.name === (listName || workingHoursSettings.defaultHolidayList));
+}
+
+/** Public/national holiday occasions on the default list, grouped by name. */
+export function holidayOccasions(listName?: string): HolidayOccurrence[] {
+  return groupPublicHolidays(holidayList(listName)?.holidays ?? []);
+}
+
+/** Add a government/public holiday occasion — a date range sharing one name. */
+export function addHolidayOccasion(description: string, from: string, to?: string, halfDay = false, listName?: string): boolean {
+  const list = holidayList(listName);
+  if (!list || !description.trim() || !from) return false;
+  list.holidays = addHolidayRange(list.holidays, { from, to, description: description.trim(), halfDay });
+  list.totalHolidays = totalHolidays(list.holidays);
+  return true;
+}
+
+/** Remove every row belonging to an occasion (matched by its description). */
+export function removeHolidayOccasion(description: string, listName?: string): void {
+  const list = holidayList(listName);
+  if (!list) return;
+  const dates = new Set(list.holidays.filter((r) => !r.weeklyOff && r.description === description).map((r) => r.date));
+  list.holidays = removeHolidayRowsByDates(list.holidays, dates);
+  list.totalHolidays = totalHolidays(list.holidays);
+}
+
+export { WEEK_DAYS, weekdayName, isHalfHoliday, toMinutes, publicHolidays, totalHolidays };
 export { workingHoursSettings };

@@ -39,11 +39,6 @@ import {
   GitBranch,
   Star,
   LineChart,
-  DoorOpen,
-  ArrowRightLeft,
-  Flag,
-  Sparkles,
-  GraduationCap,
   BarChart3,
   Settings,
   UserCog,
@@ -52,7 +47,6 @@ import {
   SlidersHorizontal,
   ClipboardCheck,
   Mail,
-  HeartPulse,
   History,
   Wrench,
   Banknote,
@@ -78,7 +72,7 @@ export type NavSection = {
 
 // Sidebar information architecture — mirrors the Frappe HR workspace set
 // (HR Setup, Shift & Attendance, Leaves, Payroll, Expenses, Recruitment,
-// Performance, Tenure, Tax & Benefits, Reports).
+// Performance, Reports).
 export const navSections: NavSection[] = [
   {
     label: "Overview",
@@ -154,7 +148,7 @@ export const navSections: NavSection[] = [
       { title: "Leave Period", href: "/leave/periods", icon: CalendarClock },
       { title: "Leave Policy", href: "/leave/policies", icon: Shield },
       { title: "Policy Assignment", href: "/leave/policy-assignments", icon: UserCog },
-      { title: "Holiday List", href: "/leave/holidays", icon: CalendarCheck },
+      { title: "Holidays", href: "/leave/holidays", icon: CalendarCheck },
       { title: "Holiday List Assignment", href: "/leave/holiday-list-assignment", icon: UserCheck },
       { title: "Leave Block List", href: "/leave/block-list", icon: Ban },
       { title: "Leave Encashment", href: "/leave/encashment", icon: HandCoins },
@@ -234,37 +228,6 @@ export const navSections: NavSection[] = [
       { title: "Promotions", href: "/performance/promotions", icon: TrendingUp },
       { title: "Performance Feedback", href: "/performance/feedback", icon: MessagesSquare },
       { title: "Feedback Criteria", href: "/performance/feedback-criteria", icon: ListChecks },
-    ],
-  },
-  {
-    label: "Tenure",
-    icon: GraduationCap,
-    items: [
-      { title: "Employee Onboarding", href: "/tenure/onboarding", icon: UserPlus },
-      { title: "Employee Separation", href: "/tenure/separations", icon: DoorOpen },
-      { title: "Exit Interviews", href: "/tenure/exit-interviews", icon: MessagesSquare },
-      { title: "Transfers", href: "/tenure/transfers", icon: ArrowRightLeft },
-      { title: "Grievances", href: "/tenure/grievances", icon: Flag },
-      { title: "Grievance Types", href: "/tenure/grievance-types", icon: Layers },
-      { title: "Skill Maps", href: "/tenure/skill-maps", icon: Sparkles },
-      { title: "Employee Skills", href: "/tenure/skills", icon: Star },
-      { title: "Training Records", href: "/tenure/training-records", icon: GraduationCap },
-      { title: "Training Programs", href: "/tenure/training-programs", icon: GraduationCap },
-      { title: "Training Events", href: "/tenure/training-events", icon: CalendarDays },
-      { title: "Training Feedback", href: "/tenure/training-feedback", icon: MessagesSquare },
-    ],
-  },
-  {
-    label: "Tax & Benefits",
-    icon: Shield,
-    items: [
-      { title: "Exemption Declarations", href: "/tax-benefits/declarations", icon: FileText },
-      { title: "Exemption Proof Submission", href: "/tax-benefits/proofs", icon: FileSignature },
-      { title: "Exemption Categories", href: "/tax-benefits/exemption-categories", icon: ListChecks },
-      { title: "Benefit Applications", href: "/tax-benefits/benefit-applications", icon: ClipboardList },
-      { title: "Benefit Claims", href: "/tax-benefits/benefit-claims", icon: HandCoins },
-      { title: "Benefit Ledger", href: "/tax-benefits/benefit-ledger", icon: BookOpen },
-      { title: "Health Insurance", href: "/tax-benefits/health-insurance", icon: HeartPulse },
     ],
   },
   {

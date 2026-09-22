@@ -193,6 +193,61 @@ export function holidaysBetween(rows: HolidayRow[], from: string, to: string, op
 }
 
 /* -------------------------------------------------------------------------- */
+/* Public-holiday authoring — "add an occasion" (range) + grouping by name      */
+/* Lets HR file "Durga Puja · 17→20 Oct" as one action instead of four rows,   */
+/* while still storing one `Holiday` row per day (Frappe's shape).             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Add a public/national holiday that spans a date range — one row per day, all
+ * sharing the occasion `description`. Duplicate dates are skipped (a weekly off
+ * or an existing holiday on that day wins).
+ */
+export function addHolidayRange(
+  rows: HolidayRow[],
+  opts: { from: string; to?: string; description: string; halfDay?: boolean },
+): HolidayRow[] {
+  if (!opts.from || !opts.description) return rows;
+  const to = opts.to && opts.to >= opts.from ? opts.to : opts.from;
+  const existing = new Set(rows.map((r) => r.date));
+  const added: HolidayRow[] = [];
+  let cursor = opts.from;
+  for (let guard = 0; guard <= 400 && cursor <= to; guard++) {
+    if (!existing.has(cursor)) {
+      added.push({ date: cursor, description: opts.description, weeklyOff: false, halfDay: !!opts.halfDay });
+    }
+    cursor = addDays(cursor, 1);
+  }
+  return sortHolidayRows([...rows, ...added]);
+}
+
+/** Remove rows whose date is in `dates` — deleting an occasion or a stray day. */
+export function removeHolidayRowsByDates(rows: HolidayRow[], dates: Set<string>): HolidayRow[] {
+  return rows.filter((r) => !dates.has(r.date));
+}
+
+/** A grouped public-holiday occasion: one name covering one or more dates. */
+export type HolidayOccurrence = { description: string; dates: string[]; halfDay: boolean };
+
+/**
+ * Group public (non weekly-off) rows into occasions keyed by description, so a
+ * multi-day "Durga Puja" stored as 4 rows surfaces as a single item.
+ */
+export function groupPublicHolidays(rows: HolidayRow[]): HolidayOccurrence[] {
+  const map = new Map<string, HolidayOccurrence>();
+  for (const r of publicHolidays(rows)) {
+    if (!r.description) continue;
+    const g = map.get(r.description) ?? { description: r.description, dates: [], halfDay: false };
+    g.dates.push(r.date);
+    g.halfDay = g.halfDay || r.halfDay;
+    map.set(r.description, g);
+  }
+  return [...map.values()]
+    .map((g) => ({ ...g, dates: [...new Set(g.dates)].sort() }))
+    .sort((a, b) => (a.dates[0] < b.dates[0] ? -1 : 1));
+}
+
+/* -------------------------------------------------------------------------- */
 /* Assignment resolution — hrms/utils/holiday_list.py                          */
 /* -------------------------------------------------------------------------- */
 

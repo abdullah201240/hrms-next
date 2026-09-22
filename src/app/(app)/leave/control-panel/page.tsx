@@ -30,7 +30,7 @@ const tools = [
   { href: "/leave/periods", label: "Leave Period", desc: "Define allocation periods", icon: CalendarClock },
   { href: "/leave/policies", label: "Leave Policy", desc: "Bundled allocation templates", icon: Shield },
   { href: "/leave/policy-assignments", label: "Policy Assignment", desc: "Assign policies to employees", icon: UserCog },
-  { href: "/leave/holidays", label: "Holiday List", desc: "Manage company holidays", icon: CalendarCheck },
+  { href: "/leave/holidays", label: "Holidays", desc: "Weekly offs & public holidays", icon: CalendarCheck },
   { href: "/leave/block-list", label: "Leave Block List", desc: "Restrict leave on key dates", icon: Ban },
   { href: "/leave/encashment", label: "Leave Encashment", desc: "Cash out unused balances", icon: HandCoins },
 ];

@@ -67,21 +67,26 @@ function buildHolidayList(opts: {
   name: string;
   from: string;
   to: string;
-  weeklyOff: string;
+  weeklyOffs: string[];
   color: string;
   country: string;
   publicHolidays: PublicHoliday[];
 }): HolidayList {
-  const rows = addWeeklyOffHolidays(
-    opts.publicHolidays.map((h) => ({ date: h.date, description: h.description, weeklyOff: false, halfDay: !!h.halfDay })),
-    { from: opts.from, to: opts.to, weeklyOff: opts.weeklyOff },
-  );
+  let rows: HolidayRow[] = opts.publicHolidays.map((h) => ({
+    date: h.date,
+    description: h.description,
+    weeklyOff: false,
+    halfDay: !!h.halfDay,
+  }));
+  for (const day of opts.weeklyOffs) {
+    rows = addWeeklyOffHolidays(rows, { from: opts.from, to: opts.to, weeklyOff: day });
+  }
   return {
     id: opts.id,
     name: opts.name,
     from: opts.from,
     to: opts.to,
-    weeklyOff: opts.weeklyOff,
+    weeklyOff: opts.weeklyOffs[0] ?? "",
     color: opts.color,
     country: opts.country,
     holidays: rows,
@@ -90,49 +95,54 @@ function buildHolidayList(opts: {
 }
 
 export const holidayLists: HolidayList[] = [
-  // Head office (Dhaka) calendar — also Company.default_holiday_list. Lunar dates
-  // are indicative until HR confirms them against the government circular.
+  // Head office (Dhaka) calendar — also Company.default_holiday_list. The company
+  // works a 5-day week: Friday + Saturday are the weekly offs (Sunday is a normal
+  // working day). Public holidays are grouped by occasion name so a multi-day
+  // festival like Durga Puja (17→20 Oct) shows as one entry.
   buildHolidayList({
-    id: "hl1", name: "2026 Holidays", from: "2026-01-01", to: "2026-12-31", weeklyOff: "Sunday", color: "#10b981", country: "Bangladesh",
+    id: "hl1", name: "2026 Holidays", from: "2026-01-01", to: "2026-12-31", weeklyOffs: ["Friday", "Saturday"], color: "#10b981", country: "Bangladesh",
     publicHolidays: [
       { date: "2026-02-21", description: "Shaheed Day — International Mother Language Day" },
-      { date: "2026-03-20", description: "Eid-ul-Fitr (Holiday 1)" },
-      { date: "2026-03-21", description: "Eid-ul-Fitr (Holiday 2)" },
-      { date: "2026-03-22", description: "Eid-ul-Fitr (Holiday 3)" },
+      { date: "2026-03-20", description: "Eid-ul-Fitr" },
+      { date: "2026-03-21", description: "Eid-ul-Fitr" },
+      { date: "2026-03-22", description: "Eid-ul-Fitr" },
       { date: "2026-03-26", description: "Independence Day" },
       { date: "2026-04-14", description: "Pohela Boishakh — Bengali New Year" },
       { date: "2026-05-01", description: "May Day" },
-      { date: "2026-05-27", description: "Eid-ul-Adha (Holiday 1)" },
-      { date: "2026-05-28", description: "Eid-ul-Adha (Holiday 2)" },
-      { date: "2026-05-29", description: "Eid-ul-Adha (Holiday 3)" },
+      { date: "2026-05-27", description: "Eid-ul-Adha" },
+      { date: "2026-05-28", description: "Eid-ul-Adha" },
+      { date: "2026-05-29", description: "Eid-ul-Adha" },
       { date: "2026-05-31", description: "Buddha Purnima" },
       { date: "2026-06-26", description: "Ashura" },
       { date: "2026-08-25", description: "Eid-e-Miladunnabi" },
       { date: "2026-09-04", description: "Janmashtami" },
-      { date: "2026-10-20", description: "Durga Puja — Bijoya Dashami" },
+      { date: "2026-10-17", description: "Durga Puja" },
+      { date: "2026-10-18", description: "Durga Puja" },
+      { date: "2026-10-19", description: "Durga Puja" },
+      { date: "2026-10-20", description: "Durga Puja" },
       { date: "2026-12-24", description: "Christmas Eve", halfDay: true },
       { date: "2026-12-25", description: "Christmas Day" },
     ],
   }),
   buildHolidayList({
-    id: "hl2", name: "2027 Holidays", from: "2027-01-01", to: "2027-12-31", weeklyOff: "Sunday", color: "#10b981", country: "Bangladesh",
+    id: "hl2", name: "2027 Holidays", from: "2027-01-01", to: "2027-12-31", weeklyOffs: ["Friday", "Saturday"], color: "#10b981", country: "Bangladesh",
     publicHolidays: [
       { date: "2027-02-21", description: "Shaheed Day — International Mother Language Day" },
-      { date: "2027-03-09", description: "Eid-ul-Fitr (Holiday 1)" },
-      { date: "2027-03-10", description: "Eid-ul-Fitr (Holiday 2)" },
-      { date: "2027-03-11", description: "Eid-ul-Fitr (Holiday 3)" },
+      { date: "2027-03-09", description: "Eid-ul-Fitr" },
+      { date: "2027-03-10", description: "Eid-ul-Fitr" },
+      { date: "2027-03-11", description: "Eid-ul-Fitr" },
       { date: "2027-03-26", description: "Independence Day" },
       { date: "2027-04-14", description: "Pohela Boishakh — Bengali New Year" },
       { date: "2027-05-01", description: "May Day" },
-      { date: "2027-05-17", description: "Eid-ul-Adha (Holiday 1)" },
-      { date: "2027-05-18", description: "Eid-ul-Adha (Holiday 2)" },
-      { date: "2027-05-19", description: "Eid-ul-Adha (Holiday 3)" },
+      { date: "2027-05-17", description: "Eid-ul-Adha" },
+      { date: "2027-05-18", description: "Eid-ul-Adha" },
+      { date: "2027-05-19", description: "Eid-ul-Adha" },
       { date: "2027-12-25", description: "Christmas Day" },
     ],
   }),
   // US office (San Francisco) — the branch-specific list the assignment doctype exists for.
   buildHolidayList({
-    id: "hl3", name: "US Holidays 2026", from: "2026-01-01", to: "2026-12-31", weeklyOff: "Sunday", color: "#3b82f6", country: "United States",
+    id: "hl3", name: "US Holidays 2026", from: "2026-01-01", to: "2026-12-31", weeklyOffs: ["Sunday"], color: "#3b82f6", country: "United States",
     publicHolidays: [
       { date: "2026-01-01", description: "New Year's Day" },
       { date: "2026-01-19", description: "Martin Luther King Jr. Day" },
@@ -148,7 +158,7 @@ export const holidayLists: HolidayList[] = [
   }),
   // London office — weekly off stays Sunday, plus the UK statutory bank holidays.
   buildHolidayList({
-    id: "hl4", name: "UK Holidays 2026", from: "2026-01-01", to: "2026-12-31", weeklyOff: "Sunday", color: "#8b5cf6", country: "United Kingdom",
+    id: "hl4", name: "UK Holidays 2026", from: "2026-01-01", to: "2026-12-31", weeklyOffs: ["Sunday"], color: "#8b5cf6", country: "United Kingdom",
     publicHolidays: [
       { date: "2026-01-01", description: "New Year's Day" },
       { date: "2026-04-03", description: "Good Friday" },

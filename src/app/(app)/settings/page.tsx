@@ -17,12 +17,6 @@ import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { company } from "@/lib/mock/data";
 import { shiftTypes, holidayLists, workingHoursSettings } from "@/lib/mock/data-2";
-import { WEEK_DAYS } from "@/lib/holidays";
-import {
-  getWeeklyOff,
-  setWeeklyOff as applyWeeklyOff,
-  nextWeeklyOffDates,
-} from "@/lib/working-hours";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
 import Link from "next/link";
@@ -52,17 +46,11 @@ export default function SettingsPage() {
   const [holidays, setHolidays] = useState(true);
   const [twoFa, setTwoFa] = useState(false);
   const [wh, setWh] = useState(workingHoursSettings);
-  // Weekly holiday (weekly off) of the Default Holiday List — single source of truth.
-  const [weeklyOff, setWeeklyOff] = useState<string>(() => getWeeklyOff());
-  const today = new Date().toISOString().slice(0, 10);
 
   const set = (k: keyof typeof org) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setOrg((p) => ({ ...p, [k]: e.target.value }));
 
-  const save = () => {
-    applyWeeklyOff(weeklyOff);
-    toast.success("Settings saved — weekly off applied to the default holiday list");
-  };
+  const save = () => toast.success("Settings saved");
 
   return (
     <>
@@ -114,7 +102,10 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="text-base">Working Hours &amp; Holidays</CardTitle>
             <CardDescription>
-              HR Settings — the office window, the fallback holiday list and reminder behaviour.
+              HR Settings — the office window and the fallback holiday list. Weekly offs and public
+              holidays are managed on the{" "}
+              <Link href="/leave/holidays" className="font-medium text-primary hover:underline">Holidays</Link>{" "}
+              page.
             </CardDescription>
           </CardHeader>
           <CardContent className="max-w-2xl space-y-5">
@@ -161,20 +152,6 @@ export default function SettingsPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="wh-weekly" className="text-xs font-semibold">Weekly Off (Weekly Holiday)</Label>
-                <SearchSelect
-                  id="wh-weekly"
-                  value={weeklyOff}
-                  onChange={(val) => setWeeklyOff(val)}
-                  options={[...WEEK_DAYS]}
-                />
-                <p className="text-xs text-muted-foreground">
-                  The recurring weekly holiday for the{" "}
-                  <Link href="/leave/holidays" className="text-primary hover:underline">Default Holiday List</Link> —
-                  employees are off every <span className="font-medium text-foreground">{weeklyOff || "—"}</span>.
-                </p>
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="wh-remind" className="text-xs font-semibold">Remind Before Holiday (hh:mm)</Label>
                 <Input
                   id="wh-remind"
@@ -196,19 +173,6 @@ export default function SettingsPage() {
                 />
               </div>
             </div>
-            {weeklyOff && (
-              <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-900/40">
-                <p className="text-xs font-semibold text-slate-700 dark:text-slate-200">
-                  Weekly holiday preview
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Next {weeklyOff} days off:{" "}
-                  <span className="font-medium text-foreground">
-                    {nextWeeklyOffDates(weeklyOff, today).join(" · ") || "—"}
-                  </span>
-                </p>
-              </div>
-            )}
             <div className="space-y-1">
               <Setting
                 label="Allow multiple shift assignments"

@@ -72,18 +72,18 @@ const actionItems = [
     href: "/attendance/attendance-requests",
   },
   {
-    count: 3,
+    count: 5,
     color: "bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400",
-    title: "Resignation notices",
-    desc: "HR review required",
-    href: "/tenure/resignations",
+    title: "Job applicants to review",
+    desc: "Shortlist candidate pipeline",
+    href: "/recruitment/pipeline",
   },
   {
-    count: 2,
+    count: 3,
     color: "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400",
-    title: "New joiner onboarding",
-    desc: "Documents pending",
-    href: "/tenure/onboarding",
+    title: "Shift assignments pending",
+    desc: "Roster scheduling check",
+    href: "/attendance/shift-assignment-tool",
   },
 ];
 
