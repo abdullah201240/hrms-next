@@ -144,7 +144,7 @@ export function DataTable<T>({
     a === "right" ? "text-right" : a === "center" ? "text-center" : "text-left";
 
   return (
-    <Card className="rounded-2xl border border-slate-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+    <Card className="rounded-2xl border border-slate-100 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
       <CardContent className="space-y-5 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-1 flex-wrap items-center gap-3">
@@ -158,7 +158,7 @@ export function DataTable<T>({
                     setPage(1);
                   }}
                   placeholder={searchPlaceholder}
-                  className="h-10 rounded-xl border-slate-200/90 bg-white pl-10 text-sm text-slate-700 placeholder:text-slate-400 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
+                  className="h-10 rounded-xl border-slate-200/50 bg-white pl-10 text-sm text-slate-700 placeholder:text-slate-400 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:placeholder:text-slate-500"
                 />
               </div>
             ) : null}
@@ -230,7 +230,7 @@ export function DataTable<T>({
                     <TableRow
                       key={id}
                       data-state={isSel ? "selected" : undefined}
-                      className="border-b border-slate-100 hover:bg-slate-50/50 dark:border-slate-800/80 dark:hover:bg-slate-900/40"
+                      className="border-b border-slate-100 hover:bg-slate-50/50 dark:border-slate-800/40 dark:hover:bg-slate-900/40"
                     >
                       {selectable ? (
                         <TableCell className="w-12 pl-4">
@@ -271,7 +271,7 @@ export function DataTable<T>({
                 setPage(1);
               }}
             >
-              <SelectTrigger className="h-7 w-16 rounded-lg border border-slate-200 bg-white text-xs font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+              <SelectTrigger className="h-7 w-16 rounded-lg border border-slate-200 bg-white text-xs font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="rounded-xl dark:border-slate-800 dark:bg-[#121826]">
@@ -291,7 +291,7 @@ export function DataTable<T>({
               <Button
                 variant="outline"
                 size="icon"
-                className="size-7 rounded-lg border-slate-200/80 bg-white text-slate-300 hover:text-slate-600 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:text-slate-200 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+                className="size-7 rounded-lg border-slate-200/50 bg-white text-slate-300 hover:text-slate-600 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:text-slate-200"
                 disabled={current <= 1}
                 onClick={() => setPage(current - 1)}
               >
@@ -300,7 +300,7 @@ export function DataTable<T>({
               <Button
                 variant="outline"
                 size="icon"
-                className="size-7 rounded-lg border-slate-200/80 bg-white text-slate-300 hover:text-slate-600 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:text-slate-200 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+                className="size-7 rounded-lg border-slate-200/50 bg-white text-slate-300 hover:text-slate-600 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:text-slate-200"
                 disabled={current >= pageCount}
                 onClick={() => setPage(current + 1)}
               >

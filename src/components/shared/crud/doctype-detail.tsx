@@ -64,7 +64,7 @@ function ReadOnlyChildTable({ def, data }: { def: ChildTableDef; data: unknown }
     return k;
   };
   return (
-    <Card className="lg:col-span-2 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+    <Card className="lg:col-span-2 rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
       <CardHeader>
         <CardTitle className="text-base">{def.title}</CardTitle>
         {def.desc && <CardDescription>{def.desc}</CardDescription>}
@@ -131,14 +131,14 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
         <CrudPrintButton doctype={doctype} id={id} />
         <Button
           render={<Link href={`${config.route}/${id}/edit`} />}
-          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Pencil className="size-4" /> Edit
         </Button>
         <Button
           variant="outline"
           render={<Link href={`${config.route}/new`} />}
-          className="h-10 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="h-10 rounded-xl border border-slate-200/50 bg-white px-3.5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           <Plus className="size-4" /> New {config.label}
         </Button>
@@ -151,7 +151,7 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
             .filter((e) => e.value !== undefined);
           if (!entries.length) return null;
           return (
-            <Card key={s.title} className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+            <Card key={s.title} className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
               <CardHeader>
                 <CardTitle className="text-base">{s.title}</CardTitle>
                 {s.desc && <CardDescription>{s.desc}</CardDescription>}

@@ -16,16 +16,15 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageHeader } from "@/components/shared/page-header";
 import { SearchSelect } from "@/components/shared/search-select";
 import { employees, currentUser } from "@/lib/mock/data";
@@ -41,11 +40,9 @@ import {
   labelize,
   type HRLetter,
   type LetterStatus,
-  type LetterCategory,
 } from "@/lib/letters";
 import { createLetter, updateLetter, getLetter } from "@/lib/mock/letters-store";
 import { renderLetter, LetterPrintButton } from "@/components/letters";
-import { LetterStatusBadge, LetterTypeChip } from "@/components/letters/badges";
 import { toast } from "sonner";
 import {
   Save,
@@ -60,16 +57,15 @@ import {
   Sparkles,
   ZoomIn,
   ZoomOut,
-  Maximize2,
   FileText,
   Lock,
   User,
-  LayoutGrid,
-  Columns2,
   FileCheck2,
   CheckCircle2,
-  Shield,
   HelpCircle,
+  ArrowDown,
+  ArrowUp,
+  Search,
 } from "lucide-react";
 
 const STATUSES: LetterStatus[] = ["Draft", "Sent", "Signed", "Archived"];
@@ -96,36 +92,20 @@ function NewLetterPageInner() {
   const [status, setStatus] = useState<LetterStatus>(existing?.status ?? "Draft");
   const [body, setBody] = useState(existing?.body ?? "");
   const [fields, setFields] = useState<Record<string, string>>(existing?.fields ?? {});
-  
-  // UI view controls: split (side-by-side), form (full width form), preview (full width preview)
-  const [viewMode, setViewMode] = useState<"split" | "form" | "preview">("split");
-  const [previewZoom, setPreviewZoom] = useState<number>(0.85);
-  const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
+
+  const [previewZoom, setPreviewZoom] = useState<number>(0.9);
+  const [templateSheetOpen, setTemplateSheetOpen] = useState(false);
   const [selectedCategoryTab, setSelectedCategoryTab] = useState<string>("all");
+  const [templateSearch, setTemplateSearch] = useState("");
 
   const cfg = getLetterType(type)!;
   const emp = employees.find((e) => e.id === employeeId);
-
-  // Template fields + signatories
-  const formFields = useMemo(
-    () => [...cfg.templateFields, "signatoryName", "signatoryDesignation"],
-    [cfg],
-  );
 
   const employeeOptions = useMemo(
     () =>
       employees.map((e) => ({
         value: e.id,
         label: `${e.name} (${e.employeeId}) · ${e.designation} [${e.department}]`,
-      })),
-    [],
-  );
-
-  const letterTypeOptions = useMemo(
-    () =>
-      LETTER_TYPES.map((t) => ({
-        value: t.id,
-        label: `${t.name} — ${getCategoryShort(t.category)}`,
       })),
     [],
   );
@@ -145,7 +125,7 @@ function NewLetterPageInner() {
     setSubject(defaultSubject(c));
     const name = emp?.name ?? "";
     setBody(defaultBody(c, name, effectiveDate, fields));
-    setTemplateDialogOpen(false);
+    setTemplateSheetOpen(false);
     toast.info(`Switched template to ${c.name}`);
   };
 
@@ -153,7 +133,6 @@ function NewLetterPageInner() {
     if (!targetEmp) return;
     setFields((prev) => {
       const next = { ...prev };
-      // Map relevant employee fields if currently empty
       if (!next.department && targetEmp.department) next.department = targetEmp.department;
       if (!next.designation && targetEmp.designation) next.designation = targetEmp.designation;
       if (!next.confirmedDesignation && targetEmp.designation) next.confirmedDesignation = targetEmp.designation;
@@ -210,6 +189,14 @@ function NewLetterPageInner() {
 
   const insertToken = (token: string) => {
     setBody((prev) => `${prev} ${token}`);
+  };
+
+  const scrollToPreview = () => {
+    document.getElementById("letter-preview-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const draft: HRLetter = {
@@ -278,12 +265,24 @@ function NewLetterPageInner() {
   const TypeIcon = cfg.icon;
 
   const filteredLetterTypes = useMemo(() => {
-    if (selectedCategoryTab === "all") return LETTER_TYPES;
-    return LETTER_TYPES.filter((t) => t.category === selectedCategoryTab);
-  }, [selectedCategoryTab]);
+    let list = LETTER_TYPES;
+    if (selectedCategoryTab !== "all") {
+      list = list.filter((t) => t.category === selectedCategoryTab);
+    }
+    if (templateSearch.trim()) {
+      const q = templateSearch.toLowerCase().trim();
+      list = list.filter(
+        (t) =>
+          t.name.toLowerCase().includes(q) ||
+          t.description.toLowerCase().includes(q) ||
+          getCategoryLabel(t.category).toLowerCase().includes(q),
+      );
+    }
+    return list;
+  }, [selectedCategoryTab, templateSearch]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-12">
       {/* Top Page Header */}
       <PageHeader
         title={existing ? "Edit HR Letter" : "Compose HR Letter"}
@@ -292,50 +291,18 @@ function NewLetterPageInner() {
         description={
           existing
             ? `Editing document ${existing.id} · ${cfg.name}`
-            : "Generate official, formatted corporate letters with automated data prefilling and live print preview."
+            : "Select a standardized corporate template, customize the employee terms, and review the live document sheet below."
         }
         backHref={existing ? `/letters/${existing.id}` : "/letters"}
         backLabel={existing ? "Back to Document" : "Back to Letters"}
       >
-        {/* View Mode controls on medium+ screens */}
-        <div className="hidden items-center gap-1 rounded-xl border border-border bg-card p-1 shadow-xs md:flex">
-          <Button
-            type="button"
-            variant={viewMode === "split" ? "secondary" : "ghost"}
-            size="sm"
-            className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium"
-            onClick={() => setViewMode("split")}
-          >
-            <Columns2 className="size-3.5" /> Split View
-          </Button>
-          <Button
-            type="button"
-            variant={viewMode === "form" ? "secondary" : "ghost"}
-            size="sm"
-            className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium"
-            onClick={() => setViewMode("form")}
-          >
-            <LayoutGrid className="size-3.5" /> Form Only
-          </Button>
-          <Button
-            type="button"
-            variant={viewMode === "preview" ? "secondary" : "ghost"}
-            size="sm"
-            className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium"
-            onClick={() => setViewMode("preview")}
-          >
-            <Eye className="size-3.5" /> Full Preview
-          </Button>
-        </div>
-
-        {/* Mobile toggle */}
         <Button
           type="button"
           variant="outline"
-          className="h-10 rounded-xl md:hidden"
-          onClick={() => setViewMode((m) => (m === "preview" ? "form" : "preview"))}
+          className="h-10 rounded-xl gap-1.5 font-medium"
+          onClick={scrollToPreview}
         >
-          <Eye className="size-4" /> {viewMode === "preview" ? "Edit Form" : "Preview"}
+          <ArrowDown className="size-4 text-blue-600" /> Preview Below
         </Button>
 
         <LetterPrintButton
@@ -346,75 +313,73 @@ function NewLetterPageInner() {
         />
 
         <Button
-          className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
           onClick={save}
         >
           <Save className="size-4" /> {existing ? "Save Changes" : "Issue Letter"}
         </Button>
       </PageHeader>
 
-      {/* Main Grid: Form Left, Workbench Preview Right */}
-      <div
-        className={
-          viewMode === "split"
-            ? "grid gap-6 lg:grid-cols-12"
-            : viewMode === "form"
-              ? "max-w-4xl mx-auto space-y-6"
-              : "space-y-6"
-        }
-      >
-        {/* =================================================================== */}
-        {/* LEFT / FORM COLUMN */}
-        {/* =================================================================== */}
-        <div
-          className={
-            viewMode === "split"
-              ? "space-y-6 lg:col-span-6 xl:col-span-5"
-              : viewMode === "preview"
-                ? "hidden"
-                : "space-y-6"
-          }
-        >
-          {/* Active Template Banner Card */}
-          <Card className="overflow-hidden border-border/80">
-            <CardHeader className="bg-gradient-to-r from-blue-50/70 via-indigo-50/40 to-transparent p-5 dark:from-blue-950/20 dark:via-indigo-950/10">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`flex size-11 shrink-0 items-center justify-center rounded-xl shadow-xs ${cfg.bgColor}`}
-                  >
-                    <TypeIcon className={`size-6 ${cfg.color}`} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                        {cfg.name}
-                      </h3>
-                      <Badge variant="outline" className="text-[11px] font-semibold">
-                        {getCategoryLabel(cfg.category)}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">{cfg.description}</p>
-                  </div>
+      {/* =================================================================== */}
+      {/* 1. TOP PART: THE MAKING / FORM SECTION */}
+      {/* =================================================================== */}
+      <div className="space-y-6">
+        {/* Active Template Banner Card */}
+        <Card className="overflow-hidden border-border/80">
+          <CardHeader className="bg-gradient-to-r from-blue-50/80 via-indigo-50/40 to-transparent p-5 dark:from-blue-950/30 dark:via-indigo-950/10">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div
+                  className={`flex size-12 shrink-0 items-center justify-center rounded-xl ${cfg.bgColor}`}
+                >
+                  <TypeIcon className={`size-6 ${cfg.color}`} />
                 </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                      {cfg.name}
+                    </h3>
+                    <Badge variant="outline" className="text-[11px] font-semibold">
+                      {getCategoryLabel(cfg.category)}
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">{cfg.description}</p>
+                </div>
+              </div>
 
-                {/* Dialog to visually browse all 17 templates */}
-                <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
-                  <DialogTrigger render={<Button variant="outline" size="sm" className="h-8 gap-1.5 rounded-lg text-xs font-medium" />}>
-                    <FileCheck2 className="size-3.5 text-blue-600" /> Change Template
-                  </DialogTrigger>
-                  <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>Select Letter Template</DialogTitle>
-                      <DialogDescription>
-                        Choose from 17 standardized HR letter templates across hiring, employment terms, discipline, and separation.
-                      </DialogDescription>
-                    </DialogHeader>
+              {/* Sheet to browse all 17 templates (opens right to left) */}
+              <Sheet open={templateSheetOpen} onOpenChange={setTemplateSheetOpen}>
+                <SheetTrigger render={<Button variant="outline" className="h-9 gap-1.5 rounded-xl text-xs font-semibold" />}>
+                  <FileCheck2 className="size-4 text-blue-600" /> Browse & Change Template
+                </SheetTrigger>
+                <SheetContent
+                  side="right"
+                  className="overflow-hidden data-[side=right]:w-full data-[side=right]:sm:max-w-xl data-[side=right]:md:max-w-2xl flex flex-col p-0 gap-0"
+                >
+                  <SheetHeader className="border-b border-border p-5 pb-4 space-y-2.5">
+                    <div>
+                      <SheetTitle className="text-base font-bold flex items-center gap-2">
+                        <FileCheck2 className="size-5 text-blue-600" /> Select Letter Template
+                      </SheetTitle>
+                      <SheetDescription className="text-xs text-muted-foreground mt-0.5">
+                        Choose from 17 standardized HR templates. Selection immediately configures the letter fields and preview.
+                      </SheetDescription>
+                    </div>
+
+                    <div className="relative pt-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                      <Input
+                        value={templateSearch}
+                        onChange={(e) => setTemplateSearch(e.target.value)}
+                        placeholder="Search templates by keyword or role…"
+                        className="pl-8.5 h-9 rounded-xl text-xs"
+                      />
+                    </div>
 
                     <Tabs
                       value={selectedCategoryTab}
                       onValueChange={setSelectedCategoryTab}
-                      className="w-full mt-2"
+                      className="w-full pt-1"
                     >
                       <TabsList className="w-full flex flex-wrap justify-start gap-1 p-1 h-auto bg-muted">
                         <TabsTrigger value="all" className="text-xs">
@@ -427,8 +392,18 @@ function NewLetterPageInner() {
                           </TabsTrigger>
                         ))}
                       </TabsList>
+                    </Tabs>
+                  </SheetHeader>
 
-                      <div className="grid gap-2.5 pt-4 sm:grid-cols-2">
+                  <div className="flex-1 overflow-y-auto p-5">
+                    {filteredLetterTypes.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground">
+                        <HelpCircle className="size-8 text-slate-300 dark:text-slate-600 mb-2" />
+                        <p className="text-sm font-medium">No templates match &ldquo;{templateSearch}&rdquo;</p>
+                        <p className="text-xs mt-1">Try another search keyword or clear the category filter.</p>
+                      </div>
+                    ) : (
+                      <div className="grid gap-2.5 sm:grid-cols-2">
                         {filteredLetterTypes.map((t) => {
                           const IconComp = t.icon;
                           const isSelected = t.id === type;
@@ -437,7 +412,7 @@ function NewLetterPageInner() {
                               key={t.id}
                               type="button"
                               onClick={() => changeType(t.id)}
-                              className={`flex items-start gap-3 rounded-xl border p-3.5 text-left transition-all hover:border-blue-500 hover:shadow-xs ${
+                              className={`flex items-start gap-3 rounded-xl border p-3.5 text-left transition-all hover:border-blue-500 ${
                                 isSelected
                                   ? "border-blue-600 bg-blue-50/50 dark:border-blue-500 dark:bg-blue-950/30 ring-1 ring-blue-600"
                                   : "border-border bg-card hover:bg-muted/40"
@@ -460,26 +435,29 @@ function NewLetterPageInner() {
                                 <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
                                   {t.description}
                                 </p>
-                                <div className="mt-1.5 flex items-center gap-1.5 text-[10px] text-muted-foreground/80">
-                                  <span className="font-medium text-slate-600 dark:text-slate-400">
-                                    {t.templateFields.length} fields
-                                  </span>
+                                <div className="mt-2 flex items-center gap-1.5 text-[10px] text-muted-foreground/80">
+                                  <Badge variant="secondary" className="text-[9px] px-1.5 py-0">
+                                    {getCategoryShort(t.category)}
+                                  </Badge>
                                   <span>•</span>
-                                  <span>{getCategoryShort(t.category)}</span>
+                                  <span>{t.templateFields.length} fields</span>
                                 </div>
                               </div>
                             </button>
                           );
                         })}
                       </div>
-                    </Tabs>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </CardHeader>
-          </Card>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </CardHeader>
+        </Card>
 
-          {/* Section 1: Employee Recipient & Auto-Fill Profile */}
+        {/* Row 1: Employee Recipient & Metadata Cards */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Employee Recipient Card */}
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -488,7 +466,7 @@ function NewLetterPageInner() {
                     <User className="size-4 text-blue-600" /> Employee Recipient
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    Select an employee to automatically link their record and populate details.
+                    Link the letter to an employee record.
                   </CardDescription>
                 </div>
                 {emp && (
@@ -499,7 +477,7 @@ function NewLetterPageInner() {
                     className="h-7 gap-1 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/40"
                     onClick={() => autoFillFromProfile(emp)}
                   >
-                    <Sparkles className="size-3" /> Auto-fill from profile
+                    <Sparkles className="size-3" /> Auto-fill fields
                   </Button>
                 )}
               </div>
@@ -519,7 +497,7 @@ function NewLetterPageInner() {
                 />
               </div>
 
-              {/* Enhanced Employee Context Banner if selected */}
+              {/* Employee Context Banner */}
               {emp ? (
                 <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-3.5 dark:border-blue-900/40 dark:bg-blue-950/20">
                   <div className="flex items-start gap-3">
@@ -563,24 +541,24 @@ function NewLetterPageInner() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-2.5 rounded-xl border border-dashed border-border p-3 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2.5 rounded-xl border border-dashed border-border p-3.5 text-xs text-muted-foreground">
                   <HelpCircle className="size-4 text-slate-400 shrink-0" />
                   <span>
-                    No employee selected yet. Choose an employee above to preview customized terms.
+                    No employee selected. Pick an employee above to pre-populate their designation, department, and salary terms.
                   </span>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Section 2: Document Particulars & Dates */}
+          {/* Letter Metadata & Workflow Card */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <FileText className="size-4 text-blue-600" /> Letter Metadata & Workflow
               </CardTitle>
               <CardDescription className="text-xs">
-                Configure issuance date, legal effective date, document status, and subject.
+                Configure issuance date, legal effective date, status, and subject.
               </CardDescription>
             </CardHeader>
 
@@ -609,7 +587,7 @@ function NewLetterPageInner() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-2 gap-3.5">
                 <div className="space-y-1.5">
                   <Label htmlFor="issue-date" className="text-xs font-semibold">
                     Issue Date
@@ -622,7 +600,7 @@ function NewLetterPageInner() {
                     onChange={(e) => setIssueDate(e.target.value)}
                   />
                   <span className="text-[10px] text-muted-foreground">
-                    Date stamped on the letterhead
+                    Header stamp date
                   </span>
                 </div>
                 <div className="space-y-1.5">
@@ -637,33 +615,38 @@ function NewLetterPageInner() {
                     onChange={(e) => setEffectiveDate(e.target.value)}
                   />
                   <span className="text-[10px] text-muted-foreground">
-                    Date terms become active
+                    Terms active date
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="letter-status" className="text-xs font-semibold">
-                  Workflow Status
-                </Label>
-                <SearchSelect
-                  id="letter-status"
-                  value={status}
-                  onChange={(v) => v && setStatus(v as LetterStatus)}
-                  options={statusOptions}
-                />
-              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 items-end">
+                <div className="space-y-1.5">
+                  <Label htmlFor="letter-status" className="text-xs font-semibold">
+                    Workflow Status
+                  </Label>
+                  <SearchSelect
+                    id="letter-status"
+                    value={status}
+                    onChange={(v) => v && setStatus(v as LetterStatus)}
+                    options={statusOptions}
+                  />
+                </div>
 
-              <div className="flex items-center gap-2 rounded-lg bg-muted/60 p-2.5 text-xs text-muted-foreground">
-                <Lock className="size-3.5 text-slate-500 shrink-0" />
-                <span>
-                  All letters carry formal <strong className="font-semibold text-foreground">Private & Confidential</strong> classification by default.
-                </span>
+                <div className="flex items-center gap-2 rounded-xl bg-muted/60 p-2.5 text-xs text-muted-foreground h-10">
+                  <Lock className="size-3.5 text-slate-500 shrink-0" />
+                  <span className="truncate">
+                    Marked <strong className="font-semibold text-foreground">Private & Confidential</strong>
+                  </span>
+                </div>
               </div>
             </CardContent>
           </Card>
+        </div>
 
-          {/* Section 3: Template-Specific Particulars */}
+        {/* Row 2: Template Particulars & Authorized Signatory Cards */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Template-Specific Particulars */}
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -672,11 +655,11 @@ function NewLetterPageInner() {
                     <Sparkles className="size-4 text-blue-600" /> {cfg.name} Particulars
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    Dynamic terms and clauses rendered in the official letter body.
+                    Specific terms rendered in the official letter body.
                   </CardDescription>
                 </div>
                 <Badge variant="secondary" className="text-[10px]">
-                  {cfg.templateFields.length} Parameters
+                  {cfg.templateFields.length} Fields
                 </Badge>
               </div>
             </CardHeader>
@@ -760,22 +743,18 @@ function NewLetterPageInner() {
             </CardContent>
           </Card>
 
-          {/* Section 4: Signatory & Authorization */}
+          {/* Signatory & Authorization */}
           <Card>
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <UserCheck className="size-4 text-blue-600" /> Authorized Signatory
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Signatory details printed at the bottom of the formal letter.
-                  </CardDescription>
-                </div>
-              </div>
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <UserCheck className="size-4 text-blue-600" /> Authorized Signatory
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Designated officer signing this corporate document.
+              </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-3.5">
+            <CardContent className="space-y-4">
               {/* Quick Presets */}
               <div className="space-y-1.5">
                 <span className="text-[11px] font-medium text-muted-foreground">
@@ -797,7 +776,7 @@ function NewLetterPageInner() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="signatory-name" className="text-xs font-semibold">
                     Signatory Name
@@ -823,170 +802,170 @@ function NewLetterPageInner() {
                   />
                 </div>
               </div>
-            </CardContent>
-          </Card>
 
-          {/* Section 5: Opening Paragraph & Custom Body */}
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <FileSignature className="size-4 text-blue-600" /> Opening Paragraph & Text
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Customize the salutation and opening statement. Tokens like{" "}
-                    <code className="text-blue-600 font-mono text-[11px]">{`{COMPANY}`}</code>{" "}
-                    are automatically filled.
-                  </CardDescription>
-                </div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
-                  onClick={resetBody}
-                >
-                  <RotateCcw className="size-3.5" /> Reset wording
-                </Button>
+              <div className="rounded-xl border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
+                <p>
+                  Official corporate signature stamp will be rendered on the A4 sheet alongside the employee acknowledgement section.
+                </p>
               </div>
-            </CardHeader>
-
-            <CardContent className="space-y-3">
-              {/* Token insertion helper buttons */}
-              <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="text-[11px] font-medium mr-1">Insert Token:</span>
-                <button
-                  type="button"
-                  onClick={() => insertToken("{COMPANY}")}
-                  className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
-                >
-                  {`{COMPANY}`}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertToken(emp?.name ?? "[Employee Name]")}
-                  className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
-                >
-                  [Employee Name]
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertToken(fields.designation || emp?.designation || "[Designation]")}
-                  className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
-                >
-                  [Designation]
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertToken(effectiveDate)}
-                  className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
-                >
-                  [Effective Date]
-                </button>
-              </div>
-
-              <Textarea
-                className="min-h-36 rounded-xl leading-relaxed text-sm font-normal"
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                placeholder="Type the formal opening paragraph…"
-              />
             </CardContent>
           </Card>
         </div>
 
-        {/* =================================================================== */}
-        {/* RIGHT / LIVE PREVIEW WORKBENCH */}
-        {/* =================================================================== */}
-        <div
-          className={
-            viewMode === "split"
-              ? "lg:col-span-6 xl:col-span-7 lg:sticky lg:top-6 lg:self-start space-y-3"
-              : viewMode === "form"
-                ? "hidden"
-                : "max-w-5xl mx-auto space-y-3"
-          }
-        >
-          {/* Workbench Header Toolbar */}
-          <div className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-2.5 shadow-xs">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                <FileSignature className="size-4" />
-              </span>
+        {/* Row 3: Opening Statement & Clauses (Full width) */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-foreground">
-                  Live A4 Document Sheet
-                </span>
-                <span className="hidden sm:inline-block ml-2 text-[11px] text-muted-foreground">
-                  Official Header · Standard Margins
-                </span>
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <FileSignature className="size-4 text-blue-600" /> Opening Paragraph & Letter Body
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Customize the introductory text and opening statement. Dynamic tokens like{" "}
+                  <code className="text-blue-600 font-mono text-[11px]">{`{COMPANY}`}</code> are auto-filled.
+                </CardDescription>
               </div>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              {/* Zoom Controls */}
-              <div className="flex items-center gap-1 rounded-lg border bg-muted/40 p-0.5">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="size-7 rounded-md"
-                  onClick={() => setPreviewZoom((z) => Math.max(0.6, Number((z - 0.1).toFixed(2))))}
-                  title="Zoom Out"
-                >
-                  <ZoomOut className="size-3.5" />
-                </Button>
-                <span className="w-10 text-center font-mono text-[11px] text-muted-foreground">
-                  {Math.round(previewZoom * 100)}%
-                </span>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="size-7 rounded-md"
-                  onClick={() => setPreviewZoom((z) => Math.min(1.2, Number((z + 0.1).toFixed(2))))}
-                  title="Zoom In"
-                >
-                  <ZoomIn className="size-3.5" />
-                </Button>
-              </div>
-
-              {/* Fullscreen view toggle */}
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                className="h-8 gap-1.5 rounded-lg text-xs"
-                onClick={() => setViewMode((m) => (m === "preview" ? "split" : "preview"))}
+                className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
+                onClick={resetBody}
               >
-                <Maximize2 className="size-3.5" />
-                {viewMode === "preview" ? "Exit Fullscreen" : "Expand"}
+                <RotateCcw className="size-3.5" /> Reset wording
               </Button>
+            </div>
+          </CardHeader>
 
-              <LetterPrintButton
-                letter={draft}
-                variant="default"
-                size="sm"
-                label="Print Preview"
-                className="h-8 rounded-lg bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white font-medium"
-              />
+          <CardContent className="space-y-3.5">
+            {/* Token insertion helper buttons */}
+            <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+              <span className="text-[11px] font-medium mr-1">Insert Token:</span>
+              <button
+                type="button"
+                onClick={() => insertToken("{COMPANY}")}
+                className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
+              >
+                {`{COMPANY}`}
+              </button>
+              <button
+                type="button"
+                onClick={() => insertToken(emp?.name ?? "[Employee Name]")}
+                className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
+              >
+                [Employee Name]
+              </button>
+              <button
+                type="button"
+                onClick={() => insertToken(fields.designation || emp?.designation || "[Designation]")}
+                className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
+              >
+                [Designation]
+              </button>
+              <button
+                type="button"
+                onClick={() => insertToken(effectiveDate)}
+                className="rounded-md border bg-muted/60 px-2 py-0.5 text-[11px] font-mono hover:bg-muted"
+              >
+                [Effective Date]
+              </button>
+            </div>
+
+            <Textarea
+              className="min-h-36 rounded-xl leading-relaxed text-sm font-normal"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="Type the formal opening paragraph…"
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* =================================================================== */}
+      {/* 2. BOTTOM PART: THE LIVE A4 DOCUMENT PREVIEW ("preview on last") */}
+      {/* =================================================================== */}
+      <div id="letter-preview-section" className="space-y-4 pt-4 border-t border-border">
+        {/* Preview Workbench Header Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-5 py-3">
+          <div className="flex items-center gap-3">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+              <Eye className="size-5" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground">
+                  Live Document Preview
+                </h3>
+                <Badge variant="outline" className="text-[10px]">
+                  A4 Formal Sheet
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Real-time rendered letter with official Acme Technologies Ltd. header and signatures.
+              </p>
             </div>
           </div>
 
-          {/* Workbench Canvas Surface */}
-          <div className="max-h-[84vh] overflow-auto rounded-2xl border border-slate-200/80 bg-slate-200/60 p-4 dark:border-slate-800 dark:bg-slate-950 sm:p-8 shadow-inner">
-            <div
-              className="mx-auto origin-top transition-transform duration-150"
-              style={{
-                transform: `scale(${previewZoom})`,
-                width: "fit-content",
-              }}
+          <div className="flex items-center gap-2">
+            {/* Zoom Controls */}
+            <div className="flex items-center gap-1 rounded-xl border bg-muted/40 p-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-7 rounded-lg"
+                onClick={() => setPreviewZoom((z) => Math.max(0.6, Number((z - 0.1).toFixed(2))))}
+                title="Zoom Out"
+              >
+                <ZoomOut className="size-3.5" />
+              </Button>
+              <span className="w-12 text-center font-mono text-xs text-muted-foreground">
+                {Math.round(previewZoom * 100)}%
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-7 rounded-lg"
+                onClick={() => setPreviewZoom((z) => Math.min(1.2, Number((z + 0.1).toFixed(2))))}
+                title="Zoom In"
+              >
+                <ZoomIn className="size-3.5" />
+              </Button>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-9 gap-1.5 rounded-xl text-xs font-medium"
+              onClick={scrollToTop}
             >
-              {/* Paper Elevation */}
-              <div className="rounded-sm bg-white shadow-xl ring-1 ring-slate-900/5 dark:ring-white/10">
-                {renderLetter(draft)}
-              </div>
+              <ArrowUp className="size-3.5" /> Back to Form
+            </Button>
+
+            <LetterPrintButton
+              letter={draft}
+              variant="default"
+              size="sm"
+              label="Print / Export PDF"
+              className="h-9 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white font-medium"
+            />
+          </div>
+        </div>
+
+        {/* Elevated Canvas Workbench */}
+        <div className="overflow-auto rounded-3xl border border-slate-200/50 bg-slate-200/60 p-4 dark:border-slate-800 dark:bg-slate-950 sm:p-10 min-h-[600px] flex justify-center">
+          <div
+            className="origin-top transition-transform duration-150"
+            style={{
+              transform: `scale(${previewZoom})`,
+              width: "fit-content",
+            }}
+          >
+            {/* Paper Container */}
+            <div className="rounded-sm bg-white ring-1 ring-slate-900/10 dark:ring-white/10">
+              {renderLetter(draft)}
             </div>
           </div>
         </div>

@@ -1,14 +1,26 @@
 import { DEFAULT_STAGES, PROJECT_STATUSES, TASK_PRIORITIES, TASK_STATUSES, WORKSPACE_TIMEZONES, type CommandContext, type ProjectDraft, type TaskCommand, type TaskDraft, type TaskProject, type TaskStatus, type TaskWorkspace, type WorkTask } from "./types";
 
+import type { WorkspaceState, WorkList } from "./workspace-types";
+
 export class TaskRuleError extends Error {}
 function fail(message: string): never { throw new TaskRuleError(message); }
 export const isClosed = (task: Pick<WorkTask, "status">) => task.status === "Completed" || task.status === "Cancelled";
 export const personName = (state: TaskWorkspace, id: string) => state.people.find((p) => p.id === id)?.name ?? "Unassigned";
-export const canManage = (state: TaskWorkspace, project: TaskProject) => state.people.find((p) => p.id === state.actorId)?.admin === true || project.managerId === state.actorId;
-export const canViewProject = (state: TaskWorkspace, project: TaskProject) => canManage(state, project) || project.memberIds.includes(state.actorId);
+export const canManage = (state: TaskWorkspace, project: TaskProject) => {
+  if (state.version === 2) {
+    const role = (state as WorkspaceState).workspaces.find((w) => w.id === (project as WorkList).workspaceId)?.members[state.actorId];
+    return !!role && role !== "Viewer" && (["Owner", "Admin"].includes(role) || project.managerId === state.actorId);
+  }
+  return state.people.find((p) => p.id === state.actorId)?.admin === true || project.managerId === state.actorId;
+};
+export const canViewProject = (state: TaskWorkspace, project: TaskProject) => {
+  if (state.version === 2 && !(state as WorkspaceState).workspaces.find((w) => w.id === (project as WorkList).workspaceId)?.members[state.actorId]) return false;
+  return canManage(state, project) || project.memberIds.includes(state.actorId);
+};
 export const canEditTask = (state: TaskWorkspace, task: WorkTask) => {
   const project = state.projects.find((p) => p.id === task.projectId);
-  return !!project && canViewProject(state, project) && (canManage(state, project) || task.createdBy === state.actorId || task.assigneeIds.includes(state.actorId));
+  const viewer = state.version === 2 && (state as WorkspaceState).workspaces.find((w) => w.id === (project as WorkList | undefined)?.workspaceId)?.members[state.actorId] === "Viewer";
+  return !viewer && !!project && canViewProject(state, project) && (canManage(state, project) || task.createdBy === state.actorId || task.assigneeIds.includes(state.actorId));
 };
 export const blockedBy = (state: TaskWorkspace, task: WorkTask) => state.tasks.filter((t) => task.dependencyIds.includes(t.id) && !isClosed(t));
 export const isOverdue = (task: WorkTask, now: Date) => !isClosed(task) && !task.archived && !!task.dueAt && new Date(task.dueAt).getTime() < now.getTime();
@@ -99,14 +111,17 @@ export function validateWorkspace(state: TaskWorkspace) {
     }
     if (task.parentId) {
       const parent = state.tasks.find((t) => t.id === task.parentId);
-      if (!parent || !parent.isGroup || parent.projectId !== task.projectId || parent.id === task.id) fail("Choose a group parent in the same project.");
+      if (!parent || (state.version === 1 && !parent.isGroup) || parent.projectId !== task.projectId || parent.id === task.id) fail("Choose a parent task in the same List.");
       if (task.dueAt && parent.dueAt && Date.parse(task.dueAt) > Date.parse(parent.dueAt)) fail("A subtask cannot be due after its parent.");
       if (task.startAt && parent.startAt && Date.parse(task.startAt) < Date.parse(parent.startAt)) fail("A subtask cannot start before its parent.");
       if (parent.status === "Completed" && !isClosed(task)) fail("Reopen the parent before adding or reopening an unfinished subtask.");
     }
     for (const id of task.dependencyIds) {
       const dependency = state.tasks.find((t) => t.id === id);
-      if (!dependency || dependency.id === task.id || dependency.projectId !== task.projectId) fail("Dependencies must be other tasks in the same project.");
+      const sameScope = state.version === 2
+        ? (state.projects.find((p) => p.id === dependency?.projectId) as WorkList | undefined)?.workspaceId === (project as WorkList).workspaceId
+        : dependency?.projectId === task.projectId;
+      if (!dependency || dependency.id === task.id || !sameScope) fail("Dependencies must be other tasks in the same workspace.");
     }
     if (["Working", "Pending Review", "Completed"].includes(task.status) && blockedBy(state, task).length) fail(`Resolve the dependencies of “${task.subject}” before starting or completing it.`);
   }
@@ -176,7 +191,10 @@ export function applyTaskCommand(source: TaskWorkspace, command: TaskCommand, ct
   const state = structuredClone(source);
   switch (command.kind) {
     case "actor": state.actorId = command.id; break;
-    case "timezone": state.timezone = command.timezone; break;
+    case "timezone":
+      state.timezone = command.timezone;
+      if (state.version === 2) { const work = (state as WorkspaceState).workspaces.find((w) => w.id === (state as WorkspaceState).activeWorkspaceId); if (work) work.timezone = command.timezone; }
+      break;
     case "read-notifications":
       state.notifications.forEach((n) => { if (command.ids.includes(n.id) && n.recipientId === state.actorId) n.read = true; });
       break;

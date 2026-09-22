@@ -91,7 +91,7 @@ export default function SalaryTemplatesPage() {
       >
         <Button
           render={<Link href="/payroll/new" />}
-          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Plus className="size-4" /> New Template
         </Button>
@@ -103,7 +103,7 @@ export default function SalaryTemplatesPage() {
         <StatCard label="Avg. Net / mo" value={fmtMoney(avgNet)} icon={PiggyBank} color="violet" hint="After deductions" />
       </div>
 
-      <div className="mt-6 rounded-xl border border-slate-200/70 bg-white p-4 text-sm text-slate-600 shadow-xs dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
+      <div className="mt-6 rounded-xl border border-slate-200/50 bg-white p-4 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
         <span className="font-semibold text-slate-800 dark:text-slate-100">How payroll works here:</span>{" "}
         <Link href="/payroll/new" className="font-medium text-blue-600 hover:underline dark:text-blue-400">Build a template</Link> →{" "}
         <Link href="/payroll/assignments" className="font-medium text-blue-600 hover:underline dark:text-blue-400">Assign it to an employee</Link> →{" "}

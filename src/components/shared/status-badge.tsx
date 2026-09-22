@@ -20,7 +20,7 @@ const STYLES: Record<string, string> = {
   Claimed: "bg-[#e6f9ef] text-[#16a34a] border border-[#bbf7d0]/60 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-500/30",
 
   // neutral / info (slate-blue / sky)
-  Leave: "bg-[#eef2f6] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/90 dark:text-slate-300 dark:border-slate-700/60",
+  Leave: "bg-[#eef2f6] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/90 dark:text-slate-300 dark:border-slate-700/60",
   "On Track": "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]/60 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-500/30",
   Applied: "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]/60 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-500/30",
   Screening: "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]/60 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-500/30",
@@ -44,11 +44,11 @@ const STYLES: Record<string, string> = {
   Withheld: "bg-[#fef9c3] text-[#d97706] border border-[#fef08a]/80 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-500/30",
 
   // muted / neutral
-  Draft: "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
-  "Not Started": "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
-  "Week Off": "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
-  "Not Paid": "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
-  Closed: "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
+  Draft: "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
+  "Not Started": "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
+  "Week Off": "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
+  "Not Paid": "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
+  Closed: "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
 
   // danger (rose)
   Absent: "bg-[#fef2f2] text-[#ef4444] border border-[#fecdd3]/80 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-500/30",
@@ -60,7 +60,7 @@ const STYLES: Record<string, string> = {
 };
 
 export function StatusBadge({ status, className }: { status: string; className?: string }) {
-  const style = STYLES[status] ?? "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800 dark:text-slate-400";
+  const style = STYLES[status] ?? "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800 dark:text-slate-400";
   return (
     <span
       className={cn(

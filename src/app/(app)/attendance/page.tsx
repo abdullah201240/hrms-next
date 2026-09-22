@@ -235,7 +235,7 @@ export default function AttendancePage() {
         defaultSortDir="desc"
         filters={
           <Select value={dept} onValueChange={(v) => setDept(v ?? "all")}>
-            <SelectTrigger className="h-10 w-full rounded-xl border border-slate-200/90 bg-white font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] sm:w-48">
+            <SelectTrigger className="h-10 w-full rounded-xl border border-slate-200/50 bg-white font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 sm:w-48">
               <div className="flex items-center gap-2">
                 <svg
                   viewBox="0 0 24 24"
@@ -254,7 +254,7 @@ export default function AttendancePage() {
                 <span className="text-sm">{dept === "all" ? "All Departments" : dept}</span>
               </div>
             </SelectTrigger>
-            <SelectContent className="rounded-xl dark:border-slate-800 dark:bg-[#121826] dark:shadow-[0_12px_36px_rgba(0,0,0,0.6)]">
+            <SelectContent className="rounded-xl dark:border-slate-800 dark:bg-[#121826]">
               <SelectItem value="all">All Departments</SelectItem>
               {departments.map((d) => (
                 <SelectItem key={d} value={d}>

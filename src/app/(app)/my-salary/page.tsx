@@ -36,7 +36,7 @@ export default function MySalaryPage() {
       >
         <Button
           render={<Link href="/payroll/slips" />}
-          className="h-10 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="h-10 rounded-xl border border-slate-200/50 bg-white px-3.5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
           variant="outline"
         >
           <Receipt className="size-4" />

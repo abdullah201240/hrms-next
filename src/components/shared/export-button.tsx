@@ -18,7 +18,7 @@ export function ExportButton({
     <Button
       variant={variant}
       onClick={() => toast.success(`Preparing ${what} export… your download will begin shortly.`)}
-      className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800 dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+      className="h-10 gap-2 rounded-xl border border-slate-200/50 bg-white px-3.5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
     >
       <Download className="size-3.5 text-slate-600 dark:text-slate-400" />
       <span className="text-sm font-medium">{label}</span>

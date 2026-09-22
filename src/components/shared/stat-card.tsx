@@ -202,7 +202,7 @@ export function StatCard({
 
   return (
     <Card
-      className="group relative overflow-hidden rounded-2xl border border-slate-200/70 bg-card shadow-[0_2px_8px_rgba(0,0,0,0.02)] dark:border-border dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all"
+      className="group relative overflow-hidden rounded-2xl border border-slate-200/50 bg-card dark:border-border dark:transition-all"
     >
       <CardContent className="flex flex-col gap-1.5 p-3">
         <div className="flex items-center gap-2.5">

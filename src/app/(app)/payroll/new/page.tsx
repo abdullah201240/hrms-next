@@ -54,7 +54,7 @@ function LineRow({
               onClick={() => onChange({ mode: m })}
               className={`rounded-md px-3 text-xs font-medium transition ${
                 line.mode === m
-                  ? "bg-blue-600 text-white shadow-sm"
+                  ? "bg-blue-600 text-white"
                   : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
               }`}
             >

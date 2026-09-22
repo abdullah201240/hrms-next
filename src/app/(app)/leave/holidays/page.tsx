@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,7 +38,7 @@ function fmt(iso: string): string {
 }
 
 const CARD =
-  "rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]";
+  "rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]";
 
 export default function HolidaysPage() {
   const list = holidayList();
@@ -98,7 +97,7 @@ export default function HolidaysPage() {
 
       <div className="space-y-6">
         {/* Which calendar this screen edits */}
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/60 px-4 py-3 dark:border-slate-800/80 dark:bg-slate-900/40">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/50 bg-slate-50/60 px-4 py-3 dark:border-slate-800/40 dark:bg-slate-900/40">
           <p className="text-sm text-muted-foreground">
             Editing <span className="font-semibold text-foreground">{list?.name ?? "—"}</span>
             {list && (
@@ -109,9 +108,6 @@ export default function HolidaysPage() {
               </>
             )}
           </p>
-          <Link href="/leave/holiday-list-assignment" className="text-sm font-medium text-primary hover:underline">
-            Assign calendars to employees →
-          </Link>
         </div>
 
         {/* 1. Weekly off */}
@@ -138,7 +134,7 @@ export default function HolidaysPage() {
                     className={cn(
                       "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                       on
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                     )}
                   >
@@ -236,7 +232,7 @@ export default function HolidaysPage() {
                   return (
                     <div
                       key={o.description}
-                      className="flex items-center justify-between gap-4 rounded-xl border border-slate-200/80 bg-slate-50/60 px-4 py-3 dark:border-slate-800 dark:bg-slate-900/40"
+                      className="flex items-center justify-between gap-4 rounded-xl border border-slate-200/50 bg-slate-50/60 px-4 py-3 dark:border-slate-800 dark:bg-slate-900/40"
                     >
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">

@@ -34,7 +34,7 @@ export default function ReportsPage() {
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((r) => (
-                <Card key={r.id} className="rounded-xl border border-slate-200/80 bg-white shadow-xs transition-all hover:border-slate-300 hover:shadow-sm dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)] dark:hover:border-slate-700">
+                <Card key={r.id} className="rounded-xl border border-slate-200/50 bg-white transition-all hover:border-slate-300 dark:border-slate-800/40 dark:bg-[#121826] dark:hover:border-slate-700">
                   <CardContent className="flex items-center justify-between gap-3 p-4">
                     <div className="min-w-0 space-y-0.5">
                       <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{r.name}</p>

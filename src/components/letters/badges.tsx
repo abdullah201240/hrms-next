@@ -3,10 +3,10 @@ import { getLetterType, type LetterStatus } from "@/lib/letters";
 
 /** Pastel status pill tuned for the Letters workflow. */
 const STATUS: Record<LetterStatus, string> = {
-  Draft: "bg-[#f1f5f9] text-[#64748b] border border-slate-200/80 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
+  Draft: "bg-[#f1f5f9] text-[#64748b] border border-slate-200/50 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700/50",
   Sent: "bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe]/60 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-500/30",
   Signed: "bg-[#e6f9ef] text-[#16a34a] border border-[#bbf7d0]/60 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-500/30",
-  Archived: "bg-[#f8fafc] text-[#94a3b8] border border-slate-200/80 dark:bg-slate-800/60 dark:text-slate-500 dark:border-slate-700/50",
+  Archived: "bg-[#f8fafc] text-[#94a3b8] border border-slate-200/50 dark:bg-slate-800/60 dark:text-slate-500 dark:border-slate-700/50",
 };
 
 export function LetterStatusBadge({ status, className }: { status: LetterStatus; className?: string }) {

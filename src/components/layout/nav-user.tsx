@@ -25,7 +25,7 @@ export function NavUser() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="ghost" className="h-9 gap-2 rounded-xl border border-slate-200/90 bg-white px-2.5 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800">
+          <Button variant="ghost" className="h-9 gap-2 rounded-xl border border-slate-200/50 bg-white px-2.5 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800">
             <Avatar className="size-6">
               <AvatarFallback style={{ backgroundColor: currentUser.avatarColor }} className="text-[11px] font-semibold text-white">
                 {initials}
@@ -36,7 +36,7 @@ export function NavUser() {
           </Button>
         }
       />
-      <DropdownMenuContent align="end" className="w-60 rounded-xl border border-slate-200/90 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-[#121826] dark:text-slate-100">
+      <DropdownMenuContent align="end" className="w-60 rounded-xl border border-slate-200/50 bg-white p-1.5 shadow-sm dark:border-slate-800 dark:bg-[#121826] dark:text-slate-100">
         <DropdownMenuLabel className="grid px-2.5 py-1.5">
           <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">{currentUser.name}</span>
           <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">{currentUser.email}</span>

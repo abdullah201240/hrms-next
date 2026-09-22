@@ -23,7 +23,7 @@ export default function GoalsPage() {
       >
         <Button
           render={<Link href="/performance/goals/new" />}
-          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Plus className="size-4" /> New Goal
         </Button>

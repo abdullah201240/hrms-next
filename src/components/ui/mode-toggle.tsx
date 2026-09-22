@@ -20,7 +20,7 @@ export function ModeToggle() {
           <Button
             variant="ghost"
             size="icon"
-            className="relative size-9 rounded-xl border border-slate-200/90 bg-white text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="relative size-9 rounded-xl border border-slate-200/50 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             <Sun className="size-4 rotate-0 scale-100 transition-transform dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute size-4 rotate-90 scale-0 transition-transform dark:rotate-0 dark:scale-100" />
@@ -28,7 +28,7 @@ export function ModeToggle() {
           </Button>
         }
       />
-      <DropdownMenuContent align="end" className="w-36 rounded-xl border border-slate-200/90 bg-white p-1 shadow-xl dark:border-slate-800 dark:bg-[#121826] dark:text-slate-100">
+      <DropdownMenuContent align="end" className="w-36 rounded-xl border border-slate-200/50 bg-white p-1 shadow-sm dark:border-slate-800 dark:bg-[#121826] dark:text-slate-100">
         <DropdownMenuItem className="rounded-lg text-xs font-medium cursor-pointer" onClick={() => setTheme("light")}>
           <Sun className="size-3.5 mr-2" /> Light
         </DropdownMenuItem>

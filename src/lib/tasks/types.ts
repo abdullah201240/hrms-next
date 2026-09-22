@@ -73,6 +73,9 @@ export interface WorkspaceNotification {
   when: string;
   read: boolean;
   href: string;
+  workspaceId?: string;
+  archived?: boolean;
+  category?: "assignment" | "mention" | "review" | "activity";
 }
 export interface TemplateTask {
   key: string;
@@ -98,7 +101,7 @@ export interface ProjectTemplate {
   tasks: TemplateTask[];
 }
 export interface TaskWorkspace {
-  version: 1;
+  version: 1 | 2;
   timezone: string;
   actorId: string;
   nextTaskNumber: number;

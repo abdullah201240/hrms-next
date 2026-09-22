@@ -11,7 +11,7 @@ import {
   Shield,
   UserCog,
   CalendarCheck,
-  Ban,
+  BookOpen,
   HandCoins,
   ArrowRight,
 } from "lucide-react";
@@ -21,7 +21,6 @@ import {
   leavePeriods,
   leavePolicies,
   holidayLists,
-  leaveBlockLists,
 } from "@/lib/mock/data-2";
 
 const tools = [
@@ -31,7 +30,7 @@ const tools = [
   { href: "/leave/policies", label: "Leave Policy", desc: "Bundled allocation templates", icon: Shield },
   { href: "/leave/policy-assignments", label: "Policy Assignment", desc: "Assign policies to employees", icon: UserCog },
   { href: "/leave/holidays", label: "Holidays", desc: "Weekly offs & public holidays", icon: CalendarCheck },
-  { href: "/leave/block-list", label: "Leave Block List", desc: "Restrict leave on key dates", icon: Ban },
+  { href: "/leave/ledger", label: "Leave Ledger", desc: "Balance logs & transactions", icon: BookOpen },
   { href: "/leave/encashment", label: "Leave Encashment", desc: "Cash out unused balances", icon: HandCoins },
 ];
 
@@ -85,9 +84,9 @@ export default function LeaveControlPanelPage() {
           icon={Shield}
         />
         <StatCard
-          label="Block Lists"
-          value={leaveBlockLists.length}
-          icon={Ban}
+          label="Leave Types"
+          value={leaveTypes.length}
+          icon={Layers}
         />
       </div>
     </>

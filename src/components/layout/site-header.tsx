@@ -24,8 +24,8 @@ export function SiteHeader() {
   const title = resolveTitle(pathname);
 
   return (
-    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-slate-200/80 bg-white/90 px-4 backdrop-blur-md dark:border-slate-800/80 dark:bg-[#0f1420]/90 lg:px-6">
-      <SidebarTrigger className="-ml-1 size-9 rounded-xl border border-slate-200/90 bg-white shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800" />
+    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-slate-200/50 bg-white/90 px-4 backdrop-blur-md dark:border-slate-800/40 dark:bg-[#0f1420]/90 lg:px-6">
+      <SidebarTrigger className="-ml-1 size-9 rounded-xl border border-slate-200/50 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800" />
       <Separator orientation="vertical" className="mr-1 h-5! bg-slate-200 dark:bg-slate-800" />
       <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">{title}</h1>
       <div className="ml-auto flex items-center gap-2">

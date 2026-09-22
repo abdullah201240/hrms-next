@@ -23,7 +23,7 @@ function NotificationList() {
       >
         <Button
           variant="outline"
-          className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="h-10 gap-2 rounded-xl border border-slate-200/50 bg-white px-3.5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
           onClick={() => markRead(unread.map((n) => n.id))}
           disabled={unread.length === 0}
         >
@@ -39,10 +39,10 @@ function NotificationList() {
           return (
             <Card
               key={n.id}
-              className={`rounded-2xl border transition-colors shadow-xs ${
+              className={`rounded-2xl border transition-colors ${
                 !isRead
                   ? "border-blue-200/80 bg-blue-50/20 dark:border-blue-900/40 dark:bg-blue-950/20"
-                  : "border-slate-200/80 bg-white dark:border-slate-800/80 dark:bg-[#121826]"
+                  : "border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]"
               }`}
             >
               <CardContent className="flex items-start gap-4 p-4">
@@ -50,7 +50,7 @@ function NotificationList() {
                   className={`flex size-10 shrink-0 items-center justify-center rounded-xl border ${
                     !isRead
                       ? "border-blue-200/70 bg-blue-50 text-blue-600 dark:border-blue-500/30 dark:bg-blue-950/50 dark:text-blue-400"
-                      : "border-slate-200/70 bg-slate-100 text-slate-500 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400"
+                      : "border-slate-200/50 bg-slate-100 text-slate-500 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400"
                   }`}
                 >
                   <Bell className="size-4" />

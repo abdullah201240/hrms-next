@@ -15,7 +15,6 @@ import {
   leavePolicyAssignments,
   leaveAllocations,
   leaveEncashments,
-  leaveBlockLists,
   salaryComponents,
   branches,
 } from "@/lib/mock/data-2";
@@ -23,7 +22,6 @@ import {
   leaveLedgerEntries,
   leaveAdjustments,
   earnedLeaveSchedules,
-  holidayListAssignments,
   employmentTypes,
 } from "@/lib/mock/data-4";
 import { AUTO_CONFIGS } from "@/lib/crud/registry.auto";
@@ -325,32 +323,6 @@ const CONFIGS: DoctypeConfig[] = [
     ],
   },
   {
-    route: "/leave/block-list",
-    label: "Block List",
-    plural: "Block Lists",
-    desc: "Dates blocked from being taken as leave for a company.",
-    rows: leaveBlockLists,
-    titleKey: "name",
-    searchKeys: ["name", "company"],
-    columns: [
-      { key: "name", header: "Block List", sortable: true },
-      { key: "blockDate", header: "Block Date" },
-      { key: "company", header: "Company" },
-      { key: "allEmployeeDay", header: "All Employees", align: "center" },
-    ],
-    sections: [
-      {
-        title: "Block List",
-        fields: [
-          { key: "name", label: "Block List Of Holiday Date", type: "data", req: true },
-          { key: "blockDate", label: "Holiday Date", type: "date" },
-          { key: "company", label: "Company", type: "link", options: companyNames, addLabel: "Company" },
-          { key: "allEmployeeDay", label: "Is Inconsistent With Holiday List", type: "check" },
-        ],
-      },
-    ],
-  },
-  {
     route: "/leave/ledger",
     label: "Leave Ledger Entry",
     plural: "Leave Ledger",
@@ -407,44 +379,6 @@ const CONFIGS: DoctypeConfig[] = [
           { key: "accrualFrequency", label: "Accrual Frequency", type: "select", options: ["Monthly", "Quarterly", "Half-yearly", "Yearly"] },
           { key: "nextAccrualDate", label: "Next Accrual Date", type: "date" },
           { key: "totalLeavesEarned", label: "Total Leaves Earned", type: "float" },
-        ],
-      },
-    ],
-  },
-  {
-    // Hand-cloned from hrms/hr/doctype/holiday_list_assignment (submittable).
-    route: "/leave/holiday-list-assignment",
-    label: "Holiday List Assignment",
-    plural: "Holiday List Assignments",
-    desc: "Assign a holiday list to an employee or to the whole company, from a start date.",
-    rows: holidayListAssignments,
-    titleKey: "assignedTo",
-    subtitleKey: "holidayList",
-    searchKeys: ["assignedTo", "holidayList"],
-    columns: [
-      { key: "assignedTo", header: "Assigned To", sortable: true },
-      { key: "applicableFor", header: "Applicable For" },
-      { key: "holidayList", header: "Holiday List" },
-      { key: "fromDate", header: "Assignment Starts From", sortable: true },
-      { key: "docStatus", header: "Status", align: "center" },
-    ],
-    sections: [
-      {
-        title: "Holiday List Assignment",
-        fields: [
-          { key: "applicableFor", label: "Applicable For", type: "select", options: ["Employee", "Company"], req: true },
-          { key: "assignedTo", label: "Assigned To", type: "link", options: [...employeeNames, ...companyNames], addLabel: "Employee", req: true, help: "Employee or company — the dynamic link behind Applicable For." },
-          { key: "holidayList", label: "Holiday List", type: "link", options: holidayListNames, addLabel: "Holiday List", req: true },
-          { key: "fromDate", label: "Assignment Starts From", type: "date", req: true, help: "The newest submitted assignment on or before a date wins." },
-        ],
-      },
-      {
-        title: "Holiday List Range",
-        desc: "Copied from the selected list; the assignment stops applying once the list ends.",
-        fields: [
-          { key: "holidayListStart", label: "Holiday List Start", type: "date", ro: true },
-          { key: "holidayListEnd", label: "Holiday List End", type: "date", ro: true },
-          { key: "docStatus", label: "Document Status", type: "select", options: DOC_STATUS },
         ],
       },
     ],

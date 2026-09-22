@@ -37,7 +37,7 @@ export default async function ReportViewPage({
         exportWhat={report.name.toLowerCase()}
       />
 
-      <Card className="mb-5 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <Card className="mb-5 rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
         <CardContent className="flex flex-wrap items-end gap-4 p-5">
           <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
             <CalendarRange className="size-4 text-blue-600 dark:text-blue-400" />
@@ -55,7 +55,7 @@ export default async function ReportViewPage({
         </CardContent>
       </Card>
 
-      <div className="w-full overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <div className="w-full overflow-x-auto rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">

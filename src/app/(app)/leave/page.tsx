@@ -70,7 +70,7 @@ export default function LeavePage() {
       >
         <Button
           render={<Link href="/leave/apply" />}
-          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Plus className="size-4" /> New Leave Application
         </Button>
@@ -121,7 +121,7 @@ export default function LeavePage() {
       </div>
 
       <Tabs value={filter} onValueChange={(v) => setFilter(v as "All" | LeaveStatus)}>
-        <TabsList className="h-10 rounded-xl bg-slate-100 p-1 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
+        <TabsList className="h-10 rounded-xl bg-slate-100 p-1 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800">
           {FILTERS.map((f) => (
             <TabsTrigger
               key={f}

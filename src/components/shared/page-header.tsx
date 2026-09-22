@@ -33,15 +33,15 @@ import {
 
 /** Tinted rounded icon-chip palettes (bg + foreground, light + dark). */
 export const CHIP: Record<string, string> = {
-  blue: "bg-blue-50/90 text-blue-600 border border-blue-100/90 dark:bg-blue-950/60 dark:border-blue-800/50 dark:text-blue-400 dark:shadow-[0_0_16px_rgba(37,99,235,0.25)]",
-  indigo: "bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe] dark:bg-blue-950/60 dark:border-blue-800/50 dark:text-blue-400 dark:shadow-[0_0_16px_rgba(37,99,235,0.25)]",
-  sky: "bg-[#f0f9ff] text-[#0284c7] border border-[#bae6fd] dark:bg-sky-950/60 dark:border-sky-800/50 dark:text-sky-400 dark:shadow-[0_0_16px_rgba(2,132,199,0.25)]",
-  emerald: "bg-[#f2faf6] text-[#10b981] border border-[#d7f3e4] dark:bg-emerald-950/60 dark:border-emerald-800/50 dark:text-emerald-400 dark:shadow-[0_0_16px_rgba(16,185,129,0.25)]",
-  amber: "bg-[#fffbeb] text-[#d97706] border border-[#fef3c7] dark:bg-amber-950/60 dark:border-amber-800/50 dark:text-amber-400 dark:shadow-[0_0_16px_rgba(217,119,6,0.25)]",
-  rose: "bg-[#fef2f2] text-[#f43f5e] border border-[#fee2e2] dark:bg-rose-950/60 dark:border-rose-800/50 dark:text-rose-400 dark:shadow-[0_0_16px_rgba(244,63,94,0.25)]",
-  violet: "bg-[#f5f3ff] text-[#7c3aed] border border-[#ede9fe] dark:bg-violet-950/60 dark:border-violet-800/50 dark:text-violet-400 dark:shadow-[0_0_16px_rgba(124,58,237,0.25)]",
-  teal: "bg-[#f0fdfa] text-[#0d9488] border border-[#ccfbf1] dark:bg-teal-950/60 dark:border-teal-800/50 dark:text-teal-400 dark:shadow-[0_0_16px_rgba(13,148,136,0.25)]",
-  purple: "bg-[#faf5ff] text-[#8b5cf6] border border-[#f3e8ff] dark:bg-purple-950/60 dark:border-purple-800/50 dark:text-purple-400 dark:shadow-[0_0_16px_rgba(139,92,246,0.25)]",
+  blue: "bg-blue-50/90 text-blue-600 border border-blue-100/90 dark:bg-blue-950/60 dark:border-blue-800/50 dark:text-blue-400",
+  indigo: "bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe] dark:bg-blue-950/60 dark:border-blue-800/50 dark:text-blue-400",
+  sky: "bg-[#f0f9ff] text-[#0284c7] border border-[#bae6fd] dark:bg-sky-950/60 dark:border-sky-800/50 dark:text-sky-400",
+  emerald: "bg-[#f2faf6] text-[#10b981] border border-[#d7f3e4] dark:bg-emerald-950/60 dark:border-emerald-800/50 dark:text-emerald-400",
+  amber: "bg-[#fffbeb] text-[#d97706] border border-[#fef3c7] dark:bg-amber-950/60 dark:border-amber-800/50 dark:text-amber-400",
+  rose: "bg-[#fef2f2] text-[#f43f5e] border border-[#fee2e2] dark:bg-rose-950/60 dark:border-rose-800/50 dark:text-rose-400",
+  violet: "bg-[#f5f3ff] text-[#7c3aed] border border-[#ede9fe] dark:bg-violet-950/60 dark:border-violet-800/50 dark:text-violet-400",
+  teal: "bg-[#f0fdfa] text-[#0d9488] border border-[#ccfbf1] dark:bg-teal-950/60 dark:border-teal-800/50 dark:text-teal-400",
+  purple: "bg-[#faf5ff] text-[#8b5cf6] border border-[#f3e8ff] dark:bg-purple-950/60 dark:border-purple-800/50 dark:text-purple-400",
 };
 
 /**

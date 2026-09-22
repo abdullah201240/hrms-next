@@ -149,7 +149,7 @@ export default function LetterDetailPage() {
         {/* Rendered letter */}
         <div>
           <div className="overflow-x-auto rounded-2xl bg-slate-100 p-4 dark:bg-slate-900 sm:p-6">
-            <div className="mx-auto w-fit rounded-lg shadow-sm ring-1 ring-slate-200/60 dark:ring-slate-800">
+            <div className="mx-auto w-fit rounded-lg ring-1 ring-slate-200/60 dark:ring-slate-800">
               {renderLetter(letter)}
             </div>
           </div>

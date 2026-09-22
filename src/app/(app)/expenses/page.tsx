@@ -55,7 +55,7 @@ export default function ExpensesPage() {
       >
         <Button
           render={<Link href="/expenses/new" />}
-          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Plus className="size-4" /> New Claim
         </Button>

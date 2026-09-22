@@ -85,14 +85,14 @@ export default async function EmployeeDetailPage({
         <PrintButton data={{ doctype: "Employee", name: emp.employeeId, row: emp, company: company.name }} />
         <Button
           render={<Link href={`/employees/${emp.id}/edit`} />}
-          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Pencil className="size-4" /> Edit
         </Button>
         <Button
           variant="outline"
           render={<Link href="/payroll/slips" />}
-          className="h-10 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="h-10 rounded-xl border border-slate-200/50 bg-white px-3.5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           Salary Slips
         </Button>

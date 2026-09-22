@@ -285,14 +285,14 @@ export default function MyAttendancePage() {
         <Button
           variant="outline"
           render={<Link href="/attendance/attendance-requests/new" />}
-          className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="h-10 gap-2 rounded-xl border border-slate-200/50 bg-white px-3.5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           <FileText className="size-4 text-slate-500 dark:text-slate-400" />
           <span>Regularize</span>
         </Button>
         <Button
           render={<Link href="/leave/apply" />}
-          className="h-10 gap-2 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="h-10 gap-2 rounded-xl bg-blue-600 px-4 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           <Plus className="size-4" />
           <span>Apply Leave</span>
@@ -302,7 +302,7 @@ export default function MyAttendancePage() {
       {/* Row 1: Interactive Hero Live Clock & Punch Card + Shift Info */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         {/* Left: Interactive Web Punch Clock */}
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] lg:col-span-7">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826] lg:col-span-7">
           <CardHeader className="pb-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2.5">
@@ -349,7 +349,7 @@ export default function MyAttendancePage() {
 
           <CardContent className="space-y-5">
             {/* Real-time Clock & Punch Times */}
-            <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-4 dark:border-slate-800/60 dark:bg-[#161e2e]/70">
+            <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-4 dark:border-slate-800/40 dark:bg-[#161e2e]/70">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1">
                   <p className="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
@@ -400,7 +400,7 @@ export default function MyAttendancePage() {
               <Button
                 onClick={handlePunchIn}
                 disabled={punchState === "in"}
-                className="h-10 flex-1 gap-2 rounded-xl bg-blue-600 font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50 dark:bg-blue-600 dark:hover:bg-blue-500"
+                className="h-10 flex-1 gap-2 rounded-xl bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50 dark:bg-blue-600 dark:hover:bg-blue-500"
               >
                 <LogIn className="size-4" />
                 <span>{punchState === "in" ? "Clocked In (08:58)" : "Clock In"}</span>
@@ -410,7 +410,7 @@ export default function MyAttendancePage() {
                 variant="outline"
                 onClick={handleToggleBreak}
                 disabled={punchState === "out"}
-                className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-4 font-semibold text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="h-10 gap-2 rounded-xl border border-slate-200/50 bg-white px-4 font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 <Coffee className="size-4 text-amber-500" />
                 <span>{breakActive ? "Resume Work" : "Take Break"}</span>
@@ -420,7 +420,7 @@ export default function MyAttendancePage() {
                 variant="outline"
                 onClick={handlePunchOut}
                 disabled={punchState === "out"}
-                className="h-10 gap-2 rounded-xl border border-rose-200 bg-rose-50/40 px-4 font-semibold text-rose-600 shadow-xs hover:bg-rose-50 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-400 dark:hover:bg-rose-900/40"
+                className="h-10 gap-2 rounded-xl border border-rose-200 bg-rose-50/40 px-4 font-semibold text-rose-600 hover:bg-rose-50 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-400 dark:hover:bg-rose-900/40"
               >
                 <LogOut className="size-4" />
                 <span>{punchState === "out" ? "Checked Out" : "Check Out"}</span>
@@ -438,7 +438,7 @@ export default function MyAttendancePage() {
         </Card>
 
         {/* Right: Shift Information & Today's Milestones */}
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] lg:col-span-5">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826] lg:col-span-5">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-50">
@@ -456,19 +456,19 @@ export default function MyAttendancePage() {
           <CardContent className="space-y-4">
             {/* Shift specs list */}
             <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/60 dark:bg-slate-900/40">
+              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/40 dark:bg-slate-900/40">
                 <p className="text-slate-500 dark:text-slate-400">Grace Period</p>
                 <p className="font-semibold text-slate-800 dark:text-slate-200">15 mins (up to 09:15)</p>
               </div>
-              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/60 dark:bg-slate-900/40">
+              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/40 dark:bg-slate-900/40">
                 <p className="text-slate-500 dark:text-slate-400">Lunch Break</p>
                 <p className="font-semibold text-slate-800 dark:text-slate-200">01:00 PM – 02:00 PM</p>
               </div>
-              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/60 dark:bg-slate-900/40">
+              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/40 dark:bg-slate-900/40">
                 <p className="text-slate-500 dark:text-slate-400">Half-Day Threshold</p>
                 <p className="font-semibold text-slate-800 dark:text-slate-200">Minimum 4h required</p>
               </div>
-              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/60 dark:bg-slate-900/40">
+              <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-800/40 dark:bg-slate-900/40">
                 <p className="text-slate-500 dark:text-slate-400">Weekly Offs</p>
                 <p className="font-semibold text-slate-800 dark:text-slate-200">Friday & Saturday</p>
               </div>
@@ -554,7 +554,7 @@ export default function MyAttendancePage() {
       </div>
 
       {/* Row 3: Monthly Visual Heatmap / Calendar Tracker */}
-      <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
         <CardHeader className="pb-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
@@ -601,7 +601,7 @@ export default function MyAttendancePage() {
               return (
                 <div
                   key={r.date}
-                  className={`group relative flex flex-col justify-between rounded-xl border p-2.5 transition-all hover:scale-[1.02] hover:shadow-xs ${
+                  className={`group relative flex flex-col justify-between rounded-xl border p-2.5 transition-all hover:scale-[1.02] ${
                     isToday
                       ? "ring-2 ring-blue-500 border-blue-400 bg-blue-50/30 dark:bg-blue-950/30"
                       : isPresent
@@ -613,7 +613,7 @@ export default function MyAttendancePage() {
                       : isHalfDay
                       ? "border-amber-200/80 bg-amber-50/30 dark:border-amber-900/40 dark:bg-amber-950/20"
                       : isWeekOff
-                      ? "border-slate-100 bg-slate-50/60 dark:border-slate-800/60 dark:bg-slate-900/40"
+                      ? "border-slate-100 bg-slate-50/60 dark:border-slate-800/40 dark:bg-slate-900/40"
                       : "border-dashed border-slate-200 bg-transparent opacity-60 dark:border-slate-800"
                   }`}
                 >
@@ -721,7 +721,7 @@ export default function MyAttendancePage() {
           defaultSortDir="desc"
           filters={
             <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v ?? "all")}>
-              <SelectTrigger className="h-10 w-full rounded-xl border border-slate-200/90 bg-white font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] sm:w-44">
+              <SelectTrigger className="h-10 w-full rounded-xl border border-slate-200/50 bg-white font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 sm:w-44">
                 <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent className="rounded-xl dark:border-slate-800 dark:bg-[#121826]">
@@ -739,7 +739,7 @@ export default function MyAttendancePage() {
 
       {/* Row 5: Helpful Policy & Regularization Info Cards */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
           <CardContent className="flex items-start gap-4 p-5">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/80 dark:text-blue-400">
               <FileText className="size-5" />
@@ -766,7 +766,7 @@ export default function MyAttendancePage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
           <CardContent className="flex items-start gap-4 p-5">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/80 dark:text-purple-400">
               <CalendarCheck className="size-5" />

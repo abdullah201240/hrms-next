@@ -3,11 +3,11 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 import { executeTaskCommand, getTaskServerSnapshot, getTaskStoreSnapshot, subscribeTasks } from "@/lib/tasks/store";
-import type { TaskCommand } from "@/lib/tasks/types";
+import type { WorkspaceCommand } from "@/lib/tasks/workspace-types";
 import { formatTaskDate } from "@/lib/tasks/domain";
 
 export function useTaskWorkspace() { return useSyncExternalStore(subscribeTasks, getTaskStoreSnapshot, getTaskServerSnapshot); }
-export function runTaskCommand(command: TaskCommand, message?: string): boolean {
+export function runTaskCommand(command: WorkspaceCommand, message?: string): boolean {
   try {
     executeTaskCommand(command);
     if (message) toast.success(message);
@@ -19,7 +19,7 @@ export function runTaskCommand(command: TaskCommand, message?: string): boolean 
 }
 export function useTaskNotifications() {
   const { workspace, ready, error } = useTaskWorkspace();
-  const notifications = workspace?.notifications.filter((item) => item.recipientId === workspace.actorId) ?? [];
+  const notifications = workspace?.notifications.filter((item) => item.recipientId === workspace.actorId && !item.archived) ?? [];
   return {
     notifications,
     unread: notifications.filter((item) => !item.read),

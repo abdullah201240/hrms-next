@@ -9,7 +9,6 @@ import {
   holidayLists,
   workingHoursSettings,
 } from "@/lib/mock/data-2";
-import { holidayListAssignments } from "@/lib/mock/data-4";
 import {
   addDays,
   addWeeklyOffHolidays,
@@ -33,7 +32,7 @@ import {
 } from "@/lib/holidays";
 
 /** Assignment rows typed against the pure resolver's structural contract. */
-const assignments: HolidayAssignmentLike[] = holidayListAssignments;
+const assignments: HolidayAssignmentLike[] = [];
 
 /** Company used when an employee record doesn't override it. */
 const companyName = company.name;

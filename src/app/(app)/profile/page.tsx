@@ -40,7 +40,7 @@ export default function ProfilePage() {
     <>
       <PageHeader title="My Profile" description="Manage your personal information and preferences." />
 
-      <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
         <CardContent className="flex flex-col gap-4 py-5 sm:flex-row sm:items-center">
           <Avatar className="size-16 ring-2 ring-blue-500/20">
             <AvatarFallback className="text-xl font-semibold text-white" style={{ backgroundColor: emp.avatarColor }}>
@@ -60,14 +60,14 @@ export default function ProfilePage() {
       </Card>
 
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList className="h-10 rounded-xl bg-slate-100 p-1 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
+        <TabsList className="h-10 rounded-xl bg-slate-100 p-1 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800">
           <TabsTrigger value="personal" className="rounded-lg text-xs font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 dark:data-[state=active]:text-white">Personal</TabsTrigger>
           <TabsTrigger value="employment" className="rounded-lg text-xs font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 dark:data-[state=active]:text-white">Employment</TabsTrigger>
           <TabsTrigger value="password" className="rounded-lg text-xs font-semibold data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 dark:data-[state=active]:text-white">Password</TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal">
-          <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+          <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
             <CardHeader>
               <CardTitle className="text-base">Personal Information</CardTitle>
               <CardDescription>This is how your details appear across the portal.</CardDescription>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
                   <Textarea id="bio" rows={3} value={form.bio} onChange={set("bio")} className="rounded-lg" />
                 </div>
                 <div className="flex justify-end">
-                  <Button type="submit" className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
+                  <Button type="submit" className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
                     <Save className="size-4" /> Save Changes
                   </Button>
                 </div>
@@ -107,7 +107,7 @@ export default function ProfilePage() {
         </TabsContent>
 
         <TabsContent value="employment">
-          <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+          <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
             <CardHeader><CardTitle className="text-base">Employment Details</CardTitle></CardHeader>
             <CardContent>
               <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">
@@ -132,7 +132,7 @@ export default function ProfilePage() {
         </TabsContent>
 
         <TabsContent value="password">
-          <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+          <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
             <CardHeader>
               <CardTitle className="text-base">Change Password</CardTitle>
               <CardDescription>Use a strong, unique password.</CardDescription>
@@ -152,7 +152,7 @@ export default function ProfilePage() {
                   <Input id="confirm" type="password" className="rounded-lg" />
                 </div>
                 <div className="flex justify-end">
-                  <Button type="submit" className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
+                  <Button type="submit" className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
                     Update Password
                   </Button>
                 </div>

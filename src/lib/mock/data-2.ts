@@ -229,12 +229,6 @@ export const leaveAllocations: LeaveAllocation[] = [
   { id: "alc2", employee: "Nina Patel", leaveType: "Casual Leave", newLeaves: 12, carryForward: 0, total: 12, from: "2026-07-01", to: "2026-12-31", docStatus: "Submitted" },
 ];
 
-export interface LeaveBlockList { id: ID; name: string; blockDate: string; allEmployeeDay: boolean; company: string; }
-export const leaveBlockLists: LeaveBlockList[] = [
-  { id: "bl1", name: "Year-end blackout", blockDate: "2026-12-24", allEmployeeDay: true, company: "Acme" },
-  { id: "bl2", name: "Product launch", blockDate: "2026-11-10", allEmployeeDay: false, company: "Acme" },
-];
-
 export interface LeaveEncashment { id: ID; employee: string; leaveType: string; days: number; amount: number; status: "Draft" | "Approved" | "Paid"; }
 export const leaveEncashments: LeaveEncashment[] = [
   { id: "enc1", employee: "Tom Becker", leaveType: "Earned Leave", days: 5, amount: 1200, status: "Approved" },

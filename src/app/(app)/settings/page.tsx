@@ -57,7 +57,7 @@ export default function SettingsPage() {
       <PageHeader title="Settings" description="Configure your organisation and portal preferences." />
 
       <div className="space-y-6">
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
           <CardHeader>
             <CardTitle className="text-base">Organisation</CardTitle>
             <CardDescription>Company profile shown across the HR portal.</CardDescription>
@@ -98,7 +98,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
           <CardHeader>
             <CardTitle className="text-base">General Office Timing &amp; Working Hours</CardTitle>
             <CardDescription>
@@ -164,9 +164,7 @@ export default function SettingsPage() {
                   addLabel="Holiday List"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Used when no{" "}
-                  <Link href="/leave/holiday-list-assignment" className="text-primary hover:underline">Holiday List Assignment</Link>{" "}
-                  covers the employee.
+                  Organization-wide default calendar for company holidays.
                 </p>
               </div>
               <div className="space-y-2">
@@ -202,7 +200,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
           <CardHeader>
             <CardTitle className="text-base">Preferences</CardTitle>
             <CardDescription>Automation and notification behaviour.</CardDescription>
@@ -214,7 +212,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <Card className="rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/40 dark:bg-[#121826]">
           <CardHeader>
             <CardTitle className="text-base">Security</CardTitle>
             <CardDescription>Access and authentication controls.</CardDescription>
@@ -238,7 +236,7 @@ export default function SettingsPage() {
         </Card>
 
         <div className="flex justify-end pb-8">
-          <Button onClick={save} className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
+          <Button onClick={save} className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
             <Save className="size-4" /> Save Settings
           </Button>
         </div>

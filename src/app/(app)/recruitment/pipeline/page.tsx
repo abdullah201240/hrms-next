@@ -20,7 +20,7 @@ const stages: { key: HiringStage; accent: string }[] = [
 
 function ApplicantCard({ a }: { a: PipelineApplicant }) {
   return (
-    <Card className="rounded-xl border border-slate-200/90 bg-white shadow-xs transition-all hover:shadow-md dark:border-slate-800 dark:bg-[#161e2e] dark:shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+    <Card className="rounded-xl border border-slate-200/50 bg-white transition-all dark:border-slate-800 dark:bg-[#161e2e]">
       <CardContent className="space-y-2 p-3.5">
         <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{a.applicantName}</p>
         <p className="text-xs text-slate-500 dark:text-slate-400">{a.jobTitle}</p>
@@ -67,7 +67,7 @@ export default function HiringPipelinePage() {
                   {items.length}
                 </Badge>
               </div>
-              <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-slate-100/50 p-3 min-h-[300px] dark:border-slate-800/80 dark:bg-[#121826]/60">
+              <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/50 bg-slate-100/50 p-3 min-h-[300px] dark:border-slate-800/40 dark:bg-[#121826]/60">
                 {items.length ? (
                   items.map((a) => <ApplicantCard key={a.id} a={a} />)
                 ) : (
