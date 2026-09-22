@@ -278,3 +278,24 @@ export const navSections: NavSection[] = [
     items: [{ title: "Settings", href: "/settings", icon: Settings }],
   },
 ];
+
+/**
+ * Resolves the single active nav href for a pathname using longest-match
+ * (most-specific) wins. A route matches an item when it is exactly the href or
+ * a descendant of it (href + "/"), but only the LONGEST matching href is
+ * returned so that nested sibling routes never light up their parent too —
+ * e.g. /attendance/mark-attendance activates "Mark Attendance" only, not also
+ * "Attendance" (/attendance). Returns null when nothing matches.
+ */
+export function resolveActiveHref(pathname: string): string | null {
+  let best: string | null = null;
+  for (const section of navSections) {
+    for (const item of section.items) {
+      const h = item.href;
+      const matches =
+        pathname === h || (h !== "/dashboard" && pathname.startsWith(h + "/"));
+      if (matches && (best === null || h.length > best.length)) best = h;
+    }
+  }
+  return best;
+}

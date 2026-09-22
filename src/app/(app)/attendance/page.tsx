@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
 import { StatCard } from "@/components/shared/stat-card";
 import { Button } from "@/components/ui/button";
@@ -169,59 +170,14 @@ export default function AttendancePage() {
   ];
 
   return (
-    <div className="relative space-y-6">
-      {/* Exact atmospheric organic background wave matching reference mockup in top-right */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-6 -top-6 h-64 w-96 overflow-hidden opacity-90 select-none"
-      >
-        <svg
-          viewBox="0 0 400 280"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="absolute -right-4 -top-8 h-full w-full"
-        >
-          <path
-            d="M120 0C180 40 220 110 270 140C320 170 380 160 410 150V0H120Z"
-            className="fill-[#eaf0fa] dark:fill-blue-950/30"
-            fillOpacity="0.7"
-          />
-          <path
-            d="M200 0C250 50 280 90 330 110C370 125 410 115 430 100V0H200Z"
-            className="fill-[#dbe6f8] dark:fill-indigo-950/20"
-            fillOpacity="0.5"
-          />
-        </svg>
-      </div>
-
-      {/* Top Header */}
-      <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3.5">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-blue-50/90 border border-blue-100 text-blue-600 dark:bg-blue-950/60 dark:border-blue-800/50 dark:text-blue-400 dark:shadow-[0_0_16px_rgba(37,99,235,0.25)]">
-            <CalendarCheck className="size-5 stroke-[2.2]" />
-          </div>
-          <div className="space-y-0.5">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-              Attendance
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Daily attendance register across the organization.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800 dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
-            onClick={() => toast.success("Attendance report exported successfully.")}
-          >
-            <Download className="size-3.5 text-slate-600 dark:text-slate-400" />
-            <span className="text-sm">Export</span>
-            <ChevronDown className="size-3.5 text-slate-400" />
-          </Button>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Attendance"
+        description="Daily attendance register across the organization."
+        icon={CalendarCheck}
+        showExport
+        exportWhat="attendance"
+      />
 
       {/* 4 KPI Stat Cards with exact sparkline waves matching reference mockup */}
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">

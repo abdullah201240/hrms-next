@@ -19,7 +19,6 @@ import { ChildTable } from "@/components/shared/child-table";
 import { PageHeader } from "@/components/shared/page-header";
 import { company, employees, departments } from "@/lib/mock/data";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 
 const CURRENCIES = ["BDT"];
 const PROJECTS = ["Website Redesign", "Mobile App", "Internal Tools", "Client Portal", "HR Automation"];
@@ -49,10 +48,12 @@ export default function NewTimesheetPage() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href="/attendance/my-timesheets" />}>
-        <ArrowLeft /> Back to My Timesheets
-      </Button>
-      <PageHeader title="Log Time" description="Create a timesheet — fields mirror the Frappe Timesheet form." />
+      <PageHeader
+        title="Log Time"
+        description="Create a timesheet — fields mirror the Frappe Timesheet form."
+        backHref="/attendance/my-timesheets"
+        backLabel="Back to My Timesheets"
+      />
 
       <form className="space-y-6" onSubmit={submit}>
         <Card>

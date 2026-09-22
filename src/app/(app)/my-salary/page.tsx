@@ -28,8 +28,17 @@ export default function MySalaryPage() {
 
   return (
     <>
-      <PageHeader title="My Salary" description="Your payslips and earnings at a glance.">
-        <Button render={<Link href="/payroll/slips" />}>
+      <PageHeader
+        title="My Salary"
+        description="Your payslips and earnings at a glance."
+        showExport
+        exportWhat="salary slips"
+      >
+        <Button
+          render={<Link href="/payroll/slips" />}
+          className="h-10 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          variant="outline"
+        >
           <Receipt className="size-4" />
           All Payslips
         </Button>

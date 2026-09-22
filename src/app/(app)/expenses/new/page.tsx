@@ -17,7 +17,7 @@ import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { expenseCategories } from "@/lib/mock/data";
 import { toast } from "sonner";
-import { ArrowLeft, Upload, Paperclip, X } from "lucide-react";
+import { Upload, Paperclip, X } from "lucide-react";
 
 // Receipt files are held locally and only "uploaded" on save (never on selection),
 // so cancelling or closing the tab leaves no orphaned files behind.
@@ -60,10 +60,12 @@ export default function NewExpensePage() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href="/expenses" />}>
-        <ArrowLeft /> Back to Expenses
-      </Button>
-      <PageHeader title="New Expense Claim" description="Submit an expense for reimbursement." />
+      <PageHeader
+        title="New Expense Claim"
+        description="Submit an expense for reimbursement."
+        backHref="/expenses"
+        backLabel="Back to Expenses"
+      />
 
       <Card className="max-w-2xl">
         <CardHeader>

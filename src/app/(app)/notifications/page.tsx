@@ -22,6 +22,7 @@ export default function NotificationsPage() {
       >
         <Button
           variant="outline"
+          className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
           onClick={() => setReadIds(seed.map((n) => n.id))}
           disabled={unread.length === 0}
         >
@@ -34,22 +35,35 @@ export default function NotificationsPage() {
         {seed.map((n) => {
           const isRead = readIds.includes(n.id);
           return (
-            <Card key={n.id} className={!isRead ? "bg-muted/40" : undefined}>
+            <Card
+              key={n.id}
+              className={`rounded-2xl border transition-colors shadow-xs ${
+                !isRead
+                  ? "border-blue-200/80 bg-blue-50/20 dark:border-blue-900/40 dark:bg-blue-950/20"
+                  : "border-slate-200/80 bg-white dark:border-slate-800/80 dark:bg-[#121826]"
+              }`}
+            >
               <CardContent className="flex items-start gap-4 p-4">
                 <div
-                  className={`flex size-9 shrink-0 items-center justify-center ${
-                    isRead ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"
+                  className={`flex size-10 shrink-0 items-center justify-center rounded-xl border ${
+                    !isRead
+                      ? "border-blue-200/70 bg-blue-50 text-blue-600 dark:border-blue-500/30 dark:bg-blue-950/50 dark:text-blue-400"
+                      : "border-slate-200/70 bg-slate-100 text-slate-500 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-400"
                   }`}
                 >
                   <Bell className="size-4" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-sm font-semibold">{n.title}</p>
-                    {!isRead && <Badge variant="secondary" className="text-xs">New</Badge>}
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{n.title}</p>
+                    {!isRead && (
+                      <Badge variant="secondary" className="rounded-full bg-blue-50 px-2 py-0 text-[10px] font-semibold text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+                        New
+                      </Badge>
+                    )}
                   </div>
-                  <p className="text-sm text-muted-foreground">{n.body}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">{n.body}</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500">
                     {n.docType} · {n.from} · {n.when}
                   </p>
                 </div>
@@ -57,7 +71,7 @@ export default function NotificationsPage() {
                   <button
                     type="button"
                     onClick={() => setReadIds((r) => [...r, n.id])}
-                    className="shrink-0 text-xs font-medium text-primary hover:underline"
+                    className="shrink-0 text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
                   >
                     Mark read
                   </button>

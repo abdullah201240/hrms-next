@@ -210,6 +210,19 @@
     border-radius: var(--radius-lg);
   }
 
+  .dark [data-slot="select-content"],
+  .dark [data-slot="dropdown-menu-content"],
+  .dark [data-slot="context-menu-content"],
+  .dark [data-slot="popover-content"],
+  .dark [data-slot="dialog-content"],
+  .dark [data-slot="alert-dialog-content"],
+  .dark [data-slot="sheet-content"],
+  .dark [data-slot="command"] {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 16px 40px -4px rgba(0, 0, 0, 0.7);
+  }
+
   /* Selectable rows inside floating surfaces. */
   [data-slot="dropdown-menu-item"],
   [data-slot="dropdown-menu-checkbox-item"],
@@ -227,6 +240,11 @@
   /* Tables: round the container, tint the header row. */
   [data-slot="table-container"] { border-radius: var(--radius-lg); }
   [data-slot="table-head"] { background-color: var(--muted); }
+
+  .dark [data-slot="table-head"] {
+    background-color: #161e2e;
+    color: #94a3b8;
+  }
 
   /* Sidebar interactive items. */
   [data-slot="sidebar-menu-button"],

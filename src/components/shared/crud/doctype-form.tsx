@@ -20,7 +20,6 @@ import { ChildTable, childTotal, fromHolidayRows, toHolidayRows, type ChildRow }
 import { validateHolidayList } from "@/lib/holidays";
 import { PageHeader } from "@/components/shared/page-header";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 import type { DoctypeConfig, Field } from "@/lib/crud/types";
 import { getDoctype } from "@/lib/crud/registry";
 
@@ -201,9 +200,6 @@ export function DocTypeForm({
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href={backHref} />}>
-        <ArrowLeft /> Back
-      </Button>
       <PageHeader
         title={`${mode === "create" ? "New" : "Edit"} ${config.label}`}
         description={
@@ -211,11 +207,13 @@ export function DocTypeForm({
             ? `Create a ${config.label} record — fields mirror the Frappe ${config.label} form.`
             : `Update this ${config.label} record.`
         }
+        backHref={backHref}
+        backLabel="Back"
       />
 
       <form className="space-y-6" onSubmit={submit}>
         {config.sections.map((s) => (
-          <Card key={s.title}>
+          <Card key={s.title} className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
             <CardHeader>
               <CardTitle className="text-base">{s.title}</CardTitle>
               {s.desc && <CardDescription>{s.desc}</CardDescription>}
@@ -240,9 +238,21 @@ export function DocTypeForm({
           />
         ))}
 
-        <div className="flex justify-end gap-2 pb-8">
-          <Button type="button" variant="outline" render={<Link href={backHref} />}>Cancel</Button>
-          <Button type="submit">{mode === "create" ? `Create ${config.label}` : "Save Changes"}</Button>
+        <div className="flex justify-end gap-2.5 pb-8">
+          <Button
+            type="button"
+            variant="outline"
+            className="h-10 rounded-xl border border-slate-200/90 bg-white px-4 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+            render={<Link href={backHref} />}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+          >
+            {mode === "create" ? `Create ${config.label}` : "Save Changes"}
+          </Button>
         </div>
       </form>
     </>

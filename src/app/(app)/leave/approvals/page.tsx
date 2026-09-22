@@ -36,6 +36,10 @@ export default function LeaveApprovalsPage() {
       <PageHeader
         title="Leave Approvals"
         description={`Requests awaiting your action as ${currentUser.designation}.`}
+        backHref="/leave"
+        backLabel="Back to Leave"
+        showExport
+        exportWhat="leave approvals"
       >
         <Badge variant="secondary" className="h-6 text-sm">
           {pending.length} pending

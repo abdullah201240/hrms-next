@@ -315,9 +315,14 @@ export default function DashboardPage() {
       <PageHeader
         title="Dashboard"
         description="People-operations overview for your organization."
+        showExport
+        exportWhat="metrics"
       >
-        <Button render={<Link href="/leave/apply" />}>
-          <Plus /> Request Leave
+        <Button
+          render={<Link href="/leave/apply" />}
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+        >
+          <Plus className="size-4" /> Request Leave
         </Button>
       </PageHeader>
 
@@ -327,52 +332,62 @@ export default function DashboardPage() {
           label="Total Employees"
           value="247"
           icon={Users}
-          hint="+4 this month"
+          hint="+4%"
           trend="up"
+          trendColor="emerald"
           color="blue"
+          sparkPath="M 2 20 C 18 20, 28 14, 42 16 C 56 18, 66 8, 82 12"
         />
         <StatCard
           label="Present Today"
           value="218"
           subtext="88.3% of total"
           icon={CalendarCheck}
-          hint="+6 vs. yesterday"
+          hint="+6%"
           trend="up"
+          trendColor="emerald"
           color="emerald"
+          sparkPath="M 2 21 C 16 21, 26 14, 38 12 C 50 10, 62 4, 82 2"
         />
         <StatCard
           label="Absent Today"
           value="14"
           subtext="5.7% of total"
           icon={UserX}
-          hint="-3 vs. yesterday"
+          hint="-3%"
           trend="down"
+          trendColor="rose"
           color="rose"
+          sparkPath="M 2 20 C 18 20, 32 21, 46 16 C 58 12, 68 12, 82 5"
         />
         <StatCard
           label="On Leave Today"
           value="9"
           subtext="3.6% of total"
           icon={CalendarDays}
-          hint="+2 vs. yesterday"
+          hint="+2%"
           trend="up"
+          trendColor="amber"
           color="amber"
+          sparkPath="M 2 20 C 12 20, 20 12, 30 11 C 40 10, 48 20, 58 14 C 66 9, 72 7, 82 10"
         />
         <StatCard
           label="Late Today"
           value="6"
           subtext="2.4% of total"
           icon={Clock}
-          hint="-1 vs. yesterday"
+          hint="-1%"
           trend="down"
+          trendColor="neutral"
           color="purple"
+          sparkPath="M 2 19 C 14 19, 22 13, 32 14 C 42 15, 48 20, 58 12 C 66 6, 74 8, 82 13"
         />
       </div>
 
       {/* Row 2: Attendance Trend, Action Center, Upcoming Leave */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Attendance Trend */}
-        <Card className="lg:col-span-5">
+        <Card className="lg:col-span-5 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardContent className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between gap-2 pb-3">
               <div className="flex items-center gap-2">
@@ -404,11 +419,12 @@ export default function DashboardPage() {
                       <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#64748b" }} domain={[0, 250]} />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: "#ffffff",
-                          borderRadius: 0,
-                          border: "none",
+                          backgroundColor: "#121826",
+                          borderColor: "#1e293b",
+                          borderRadius: "12px",
+                          color: "#f8fafc",
                           fontSize: 12,
-                          boxShadow: "none",
+                          boxShadow: "0 10px 25px -5px rgba(0,0,0,0.5)",
                         }}
                       />
                       <Line type="monotone" dataKey="present" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3, fill: "#10b981" }} />
@@ -416,13 +432,13 @@ export default function DashboardPage() {
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="size-full bg-muted/20" />
+                  <div className="size-full rounded-xl bg-muted/20" />
                 )}
               </div>
 
               {/* Callout Box on Right */}
-              <div className="flex flex-col justify-center bg-sky-50/50 p-3 dark:bg-sky-950/30 sm:col-span-1">
-                <div className="mb-2 flex size-7 items-center justify-center chip bg-white text-sky-600 dark:bg-card">
+              <div className="flex flex-col justify-center rounded-xl border border-sky-100/80 bg-sky-50/60 p-3.5 dark:border-sky-900/30 dark:bg-sky-950/25 sm:col-span-1">
+                <div className="mb-2 flex size-7 items-center justify-center rounded-lg border border-sky-200/70 bg-white text-sky-600 shadow-xs dark:border-sky-800 dark:bg-slate-900 dark:text-sky-400">
                   <TrendingUp className="size-3.5" />
                 </div>
                 <p className="text-xl font-bold tracking-tight text-foreground">88.3%</p>
@@ -437,11 +453,11 @@ export default function DashboardPage() {
         </Card>
 
         {/* Action Center */}
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardContent className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between gap-2 pb-3">
-              <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center chip bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-xl border border-amber-200/60 bg-amber-50 text-amber-600 shadow-xs dark:border-amber-500/30 dark:bg-amber-950/50 dark:text-amber-400">
                   <Zap className="size-4" />
                 </div>
                 <div>
@@ -449,20 +465,20 @@ export default function DashboardPage() {
                   <p className="text-xs text-muted-foreground">Things need your attention</p>
                 </div>
               </div>
-              <Link href="/leave/approvals" className="text-xs font-medium text-primary hover:underline">
+              <Link href="/leave/approvals" className="text-xs font-semibold text-primary hover:underline">
                 View all →
               </Link>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {actionItems.map((item) => (
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="flex items-center justify-between p-2 transition-colors hover:bg-muted/50"
+                  className="flex items-center justify-between rounded-xl p-2.5 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`flex size-7 items-center justify-center chip text-xs font-bold ${item.color}`}>
+                    <span className={`flex size-7 items-center justify-center rounded-lg border border-transparent text-xs font-bold ${item.color}`}>
                       {item.count}
                     </span>
                     <div>
@@ -478,26 +494,26 @@ export default function DashboardPage() {
         </Card>
 
         {/* Upcoming Leave Schedule */}
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-3 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardContent className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between gap-2 pb-3">
-              <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-xl border border-sky-200/60 bg-sky-50 text-sky-600 shadow-xs dark:border-sky-500/30 dark:bg-sky-950/50 dark:text-sky-400">
                   <Calendar className="size-4" />
                 </div>
-                <h3 className="text-sm font-semibold text-foreground">Upcoming Leave Schedule</h3>
+                <h3 className="text-sm font-semibold text-foreground">Upcoming Leaves</h3>
               </div>
-              <Link href="/leave/approvals" className="text-xs font-medium text-primary hover:underline">
+              <Link href="/leave/approvals" className="text-xs font-semibold text-primary hover:underline">
                 View all →
               </Link>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {upcomingLeaves.map((l) => (
-                <div key={l.name} className="flex items-center justify-between gap-2">
+                <div key={l.name} className="flex items-center justify-between gap-2 rounded-xl p-1.5 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Avatar className="size-8">
-                      <AvatarFallback className="text-xs font-semibold bg-muted text-muted-foreground">
+                      <AvatarFallback className="text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                         {l.initials}
                       </AvatarFallback>
                     </Avatar>
@@ -508,10 +524,10 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <span
-                    className={`pill shrink-0 px-2 py-0.5 text-[10px] font-semibold ${
+                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold shrink-0 ${
                       l.status === "Approved"
-                        ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
-                        : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-500/30"
+                        : "bg-amber-50 text-amber-700 border border-amber-200/60 dark:bg-amber-950/60 dark:text-amber-400 dark:border-amber-500/30"
                     }`}
                   >
                     {l.status}
@@ -526,11 +542,11 @@ export default function DashboardPage() {
       {/* Row 3: Department Overview, Recent Activity, Leave Balance Overview */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Department Overview */}
-        <Card className="lg:col-span-5">
+        <Card className="lg:col-span-5 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardContent className="p-5">
             <div className="flex items-center justify-between gap-2 pb-4">
-              <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-xl border border-sky-200/60 bg-sky-50 text-sky-600 shadow-xs dark:border-sky-500/30 dark:bg-sky-950/50 dark:text-sky-400">
                   <Building2 className="size-4" />
                 </div>
                 <div>
@@ -538,15 +554,15 @@ export default function DashboardPage() {
                   <p className="text-xs text-muted-foreground">Current headcount and vacancy status</p>
                 </div>
               </div>
-              <Link href="/departments" className="text-xs font-medium text-primary hover:underline">
-                View all departments →
+              <Link href="/departments" className="text-xs font-semibold text-primary hover:underline">
+                View all →
               </Link>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="text-muted-foreground">
+                  <tr className="border-b border-slate-100 text-slate-500 dark:border-slate-800/60 dark:text-slate-400">
                     <th className="pb-2.5 font-medium">Department</th>
                     <th className="pb-2.5 text-center font-medium">Total Employees</th>
                     <th className="pb-2.5 text-center font-medium">Present</th>
@@ -558,27 +574,27 @@ export default function DashboardPage() {
                 </thead>
                 <tbody className="divide-y-0">
                   {departmentStats.map((d) => (
-                    <tr key={d.name} className="hover:bg-muted/40 transition-colors">
-                      <td className="py-2 font-medium flex items-center gap-2">
-                        <div className={`flex size-6 items-center justify-center chip ${d.iconColor}`}>
+                    <tr key={d.name} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="py-2.5 font-medium flex items-center gap-2">
+                        <div className={`flex size-6 items-center justify-center rounded-md ${d.iconColor}`}>
                           <d.icon className="size-3.5" />
                         </div>
-                        <span className="text-foreground">{d.name}</span>
+                        <span className="text-foreground font-semibold">{d.name}</span>
                       </td>
-                      <td className="py-2 text-center text-muted-foreground font-medium tabular-nums">{d.total}</td>
-                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.present}</td>
-                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.absent}</td>
-                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.leave}</td>
-                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.late}</td>
-                      <td className="py-2 text-right">
+                      <td className="py-2.5 text-center text-muted-foreground font-medium tabular-nums">{d.total}</td>
+                      <td className="py-2.5 text-center text-muted-foreground tabular-nums">{d.present}</td>
+                      <td className="py-2.5 text-center text-muted-foreground tabular-nums">{d.absent}</td>
+                      <td className="py-2.5 text-center text-muted-foreground tabular-nums">{d.leave}</td>
+                      <td className="py-2.5 text-center text-muted-foreground tabular-nums">{d.late}</td>
+                      <td className="py-2.5 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <span className="bar-track h-1.5 w-14 overflow-hidden bg-muted">
+                          <span className="h-1.5 w-14 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                             <span
-                              className={`block h-full ${d.bar}`}
+                              className={`block h-full rounded-full ${d.bar}`}
                               style={{ width: `${Math.min(100, parseFloat(d.vacancy) * 8)}%` }}
                             />
                           </span>
-                          <span className={`pill px-1.5 py-0.5 font-semibold text-[10px] ${d.vacancyColor}`}>
+                          <span className={`rounded-full px-2 py-0.5 font-semibold text-[10px] ${d.vacancyColor}`}>
                             {d.vacancy}
                           </span>
                         </div>
@@ -592,11 +608,11 @@ export default function DashboardPage() {
         </Card>
 
         {/* Recent Activity */}
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardContent className="p-5">
             <div className="flex items-center justify-between gap-2 pb-4">
-              <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-xl border border-sky-200/60 bg-sky-50 text-sky-600 shadow-xs dark:border-sky-500/30 dark:bg-sky-950/50 dark:text-sky-400">
                   <Clock className="size-4" />
                 </div>
                 <div>
@@ -604,17 +620,17 @@ export default function DashboardPage() {
                   <p className="text-xs text-muted-foreground">Latest updates from your team</p>
                 </div>
               </div>
-              <Link href="/attendance" className="text-xs font-medium text-primary hover:underline">
+              <Link href="/attendance" className="text-xs font-semibold text-primary hover:underline">
                 View all →
               </Link>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {recentActivities.map((act, i) => (
-                <div key={i} className="flex items-center justify-between gap-2">
+                <div key={i} className="flex items-center justify-between gap-2 rounded-xl p-1.5 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Avatar className="size-8">
-                      <AvatarFallback className="text-xs font-semibold bg-muted text-muted-foreground">
+                      <AvatarFallback className="text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                         {act.initials}
                       </AvatarFallback>
                     </Avatar>
@@ -625,7 +641,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
                   </div>
-                  <span className={`pill shrink-0 px-2 py-0.5 text-[10px] font-semibold ${act.badgeColor}`}>
+                  <span className={`rounded-full shrink-0 px-2.5 py-0.5 text-[10px] font-semibold border border-transparent ${act.badgeColor}`}>
                     {act.badge}
                   </span>
                 </div>
@@ -637,17 +653,17 @@ export default function DashboardPage() {
         {/* Leave Balance Overview & HR Performance Banner */}
         <div className="flex flex-col justify-between gap-4 lg:col-span-3">
           {/* Leave Balance Overview Card */}
-          <Card className="flex-1">
+          <Card className="flex-1 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
             <CardContent className="p-5">
               <div className="flex items-center justify-between gap-2 pb-4">
-                <div className="flex items-center gap-2">
-                  <div className="flex size-8 items-center justify-center chip bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex size-9 items-center justify-center rounded-xl border border-sky-200/60 bg-sky-50 text-sky-600 shadow-xs dark:border-sky-500/30 dark:bg-sky-950/50 dark:text-sky-400">
                     <PieChart className="size-4" />
                   </div>
-                  <h3 className="text-sm font-semibold text-foreground">Leave Balance Overview</h3>
+                  <h3 className="text-sm font-semibold text-foreground">Leave Balances</h3>
                 </div>
-                <Link href="/leave/balances" className="text-xs font-medium text-primary hover:underline">
-                  View details →
+                <Link href="/leave/balances" className="text-xs font-semibold text-primary hover:underline">
+                  View →
                 </Link>
               </div>
 
@@ -667,13 +683,13 @@ export default function DashboardPage() {
           </Card>
 
           {/* HR Performance Dark Banner */}
-          <Card className="relative overflow-hidden bg-slate-900 text-white dark:bg-slate-950">
+          <Card className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900 text-white shadow-md dark:bg-[#0f172a] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
             {/* Background image on the right with smooth dark gradient fade */}
             <div
               className="absolute right-0 top-0 h-full w-3/5 bg-cover bg-right"
               style={{ backgroundImage: "url('/images/hr-performance.jpg')" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/85 to-transparent dark:from-slate-950 dark:via-slate-950/85" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900/40 dark:from-[#0f172a] dark:via-[#0f172a]/90 dark:to-transparent" />
 
             <CardContent className="relative z-10 flex items-center justify-between gap-3 p-5">
               <div className="space-y-1">
@@ -685,7 +701,7 @@ export default function DashboardPage() {
                 <div className="pt-2">
                   <Button
                     size="sm"
-                    className="bg-white text-slate-900 hover:bg-slate-100 text-xs font-semibold px-3 h-8"
+                    className="h-8 rounded-xl bg-white px-3 text-xs font-semibold text-slate-900 shadow-sm hover:bg-slate-100"
                     render={<Link href="/reports" />}
                   >
                     View Reports <ArrowRight className="size-3.5" />

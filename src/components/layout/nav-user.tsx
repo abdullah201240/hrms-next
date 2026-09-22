@@ -25,32 +25,32 @@ export function NavUser() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="ghost" className="h-10 gap-2 border px-2">
-            <Avatar className="size-7">
-              <AvatarFallback style={{ backgroundColor: currentUser.avatarColor }} className="text-xs font-semibold text-white">
+          <Button variant="ghost" className="h-9 gap-2 rounded-xl border border-slate-200/90 bg-white px-2.5 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800">
+            <Avatar className="size-6">
+              <AvatarFallback style={{ backgroundColor: currentUser.avatarColor }} className="text-[11px] font-semibold text-white">
                 {initials}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden text-sm font-medium sm:inline">{currentUser.name}</span>
-            <ChevronDown className="size-4 text-muted-foreground" />
+            <span className="hidden text-xs font-semibold sm:inline">{currentUser.name}</span>
+            <ChevronDown className="size-3.5 text-slate-400 dark:text-slate-500" />
           </Button>
         }
       />
-      <DropdownMenuContent align="end" className="w-60">
-        <DropdownMenuLabel className="grid">
-          <span className="text-sm font-medium">{currentUser.name}</span>
-          <span className="text-xs font-normal text-muted-foreground">{currentUser.email}</span>
+      <DropdownMenuContent align="end" className="w-60 rounded-xl border border-slate-200/90 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-[#121826] dark:text-slate-100">
+        <DropdownMenuLabel className="grid px-2.5 py-1.5">
+          <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">{currentUser.name}</span>
+          <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">{currentUser.email}</span>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/profile" />}>
-          <User /> Profile
+        <DropdownMenuSeparator className="my-1 border-slate-100 dark:border-slate-800" />
+        <DropdownMenuItem className="rounded-lg text-xs font-medium cursor-pointer" render={<Link href="/profile" />}>
+          <User className="size-3.5 mr-2" /> Profile
         </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/settings" />}>
-          <Settings /> Settings
+        <DropdownMenuItem className="rounded-lg text-xs font-medium cursor-pointer" render={<Link href="/settings" />}>
+          <Settings className="size-3.5 mr-2" /> Settings
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/login" />}>
-          <LogOut /> Log out
+        <DropdownMenuSeparator className="my-1 border-slate-100 dark:border-slate-800" />
+        <DropdownMenuItem className="rounded-lg text-xs font-medium text-rose-600 dark:text-rose-400 cursor-pointer" render={<Link href="/login" />}>
+          <LogOut className="size-3.5 mr-2" /> Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -57,7 +57,7 @@ export default function SettingsPage() {
       <PageHeader title="Settings" description="Configure your organisation and portal preferences." />
 
       <div className="space-y-6">
-        <Card>
+        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardHeader>
             <CardTitle className="text-base">Organisation</CardTitle>
             <CardDescription>Company profile shown across the HR portal.</CardDescription>
@@ -65,19 +65,19 @@ export default function SettingsPage() {
           <CardContent className="max-w-2xl space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="org-name">Company Name</Label>
-                <Input id="org-name" value={org.name} onChange={set("name")} />
+                <Label htmlFor="org-name" className="text-xs font-semibold">Company Name</Label>
+                <Input id="org-name" value={org.name} onChange={set("name")} className="rounded-lg" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="org-email">HR Email</Label>
-                <Input id="org-email" type="email" value={org.email} onChange={set("email")} />
+                <Label htmlFor="org-email" className="text-xs font-semibold">HR Email</Label>
+                <Input id="org-email" type="email" value={org.email} onChange={set("email")} className="rounded-lg" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="org-phone">Phone</Label>
-                <Input id="org-phone" value={org.phone} onChange={set("phone")} />
+                <Label htmlFor="org-phone" className="text-xs font-semibold">Phone</Label>
+                <Input id="org-phone" value={org.phone} onChange={set("phone")} className="rounded-lg" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="org-currency">Currency</Label>
+                <Label htmlFor="org-currency" className="text-xs font-semibold">Currency</Label>
                 <SearchSelect
                   id="org-currency"
                   value={org.currency}
@@ -88,17 +88,17 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="org-address">Address</Label>
-              <Input id="org-address" value={org.address} onChange={set("address")} />
+              <Label htmlFor="org-address" className="text-xs font-semibold">Address</Label>
+              <Input id="org-address" value={org.address} onChange={set("address")} className="rounded-lg" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="org-timezone">Timezone</Label>
-              <Input id="org-timezone" value={org.timezone} onChange={set("timezone")} />
+              <Label htmlFor="org-timezone" className="text-xs font-semibold">Timezone</Label>
+              <Input id="org-timezone" value={org.timezone} onChange={set("timezone")} className="rounded-lg" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardHeader>
             <CardTitle className="text-base">Working Hours &amp; Holidays</CardTitle>
             <CardDescription>
@@ -108,7 +108,7 @@ export default function SettingsPage() {
           <CardContent className="max-w-2xl space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="wh-shift">Default Shift</Label>
+                <Label htmlFor="wh-shift" className="text-xs font-semibold">Default Shift</Label>
                 <SearchSelect
                   id="wh-shift"
                   value={wh.defaultShift}
@@ -118,11 +118,11 @@ export default function SettingsPage() {
                 />
                 <p className="text-xs text-muted-foreground">
                   Start &amp; end time come from this{" "}
-                  <Link href="/attendance/shift-types" className="underline">Shift Type</Link>.
+                  <Link href="/attendance/shift-types" className="text-primary hover:underline">Shift Type</Link>.
                 </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="wh-hours">Standard Working Hours (per day)</Label>
+                <Label htmlFor="wh-hours" className="text-xs font-semibold">Standard Working Hours (per day)</Label>
                 <Input
                   id="wh-hours"
                   type="number"
@@ -130,10 +130,11 @@ export default function SettingsPage() {
                   step="0.5"
                   value={wh.standardWorkingHours}
                   onChange={(e) => setWh((p) => ({ ...p, standardWorkingHours: Number(e.target.value) }))}
+                  className="rounded-lg"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="wh-hl">Default Holiday List</Label>
+                <Label htmlFor="wh-hl" className="text-xs font-semibold">Default Holiday List</Label>
                 <SearchSelect
                   id="wh-hl"
                   value={wh.defaultHolidayList}
@@ -143,21 +144,22 @@ export default function SettingsPage() {
                 />
                 <p className="text-xs text-muted-foreground">
                   Used when no{" "}
-                  <Link href="/leave/holiday-list-assignment" className="underline">Holiday List Assignment</Link>{" "}
+                  <Link href="/leave/holiday-list-assignment" className="text-primary hover:underline">Holiday List Assignment</Link>{" "}
                   covers the employee.
                 </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="wh-remind">Remind Before Holiday (hh:mm)</Label>
+                <Label htmlFor="wh-remind" className="text-xs font-semibold">Remind Before Holiday (hh:mm)</Label>
                 <Input
                   id="wh-remind"
                   type="time"
                   value={wh.remindBefore}
                   onChange={(e) => setWh((p) => ({ ...p, remindBefore: e.target.value }))}
+                  className="rounded-lg"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="wh-freq">Holiday Reminder Frequency</Label>
+                <Label htmlFor="wh-freq" className="text-xs font-semibold">Holiday Reminder Frequency</Label>
                 <SearchSelect
                   id="wh-freq"
                   value={wh.holidayReminderFrequency}
@@ -185,7 +187,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardHeader>
             <CardTitle className="text-base">Preferences</CardTitle>
             <CardDescription>Automation and notification behaviour.</CardDescription>
@@ -197,7 +199,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardHeader>
             <CardTitle className="text-base">Security</CardTitle>
             <CardDescription>Access and authentication controls.</CardDescription>
@@ -220,10 +222,10 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Separator />
-
-        <div className="flex justify-end">
-          <Button onClick={save}><Save /> Save Settings</Button>
+        <div className="flex justify-end pb-8">
+          <Button onClick={save} className="h-10 rounded-xl bg-blue-600 px-5 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500">
+            <Save className="size-4" /> Save Settings
+          </Button>
         </div>
       </div>
     </>

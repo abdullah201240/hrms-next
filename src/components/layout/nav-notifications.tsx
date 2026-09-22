@@ -28,24 +28,24 @@ export function NavNotifications() {
             variant="ghost"
             size="icon"
             aria-label="Notifications"
-            className="relative size-9"
+            className="relative size-9 rounded-xl border border-slate-200/90 bg-white shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
           >
-            <Bell className="size-5" />
+            <Bell className="size-4 text-slate-600 dark:text-slate-400" />
             {unread.length > 0 && (
-              <span className="pill absolute -right-0.5 -top-0.5 flex min-w-4.5 items-center justify-center bg-primary px-1 text-[10px] font-semibold leading-4 text-primary-foreground">
+              <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-blue-600 text-[9px] font-bold leading-none text-white shadow-xs">
                 {unread.length}
               </span>
             )}
           </Button>
         }
       />
-      <PopoverContent align="end" className="w-80 gap-0 p-0">
+      <PopoverContent align="end" className="w-84 overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-0 shadow-2xl dark:border-slate-800 dark:bg-[#121826] dark:text-slate-100">
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-4 py-3">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-4 py-3">
           <div className="flex items-center gap-2">
-            <p className="text-sm font-semibold text-foreground">Notifications</p>
+            <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Notifications</p>
             {unread.length > 0 && (
-              <span className="pill bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+              <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                 {unread.length} new
               </span>
             )}

@@ -29,7 +29,6 @@ import {
 import { netLeaveDays } from "@/lib/working-hours";
 import { addLeaveApplication } from "@/lib/mock/leave-store";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 
 const TODAY = "2026-09-21";
 const employeeNames = employees.map((e) => e.name);
@@ -94,10 +93,12 @@ export default function LeaveApplyPage() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href="/leave" />}>
-        <ArrowLeft /> Back to Leave
-      </Button>
-      <PageHeader title="New Leave Application" description="Create a leave request for approval." />
+      <PageHeader
+        title="New Leave Application"
+        description="Create a leave request for approval."
+        backHref="/leave"
+        backLabel="Back to Leave"
+      />
 
       <Card className="max-w-2xl">
         <CardHeader>

@@ -28,6 +28,8 @@ export default function ShiftAssignmentToolPage() {
       <PageHeader
         title="Shift Assignment Tool"
         description="Assign a shift to multiple employees at once."
+        backHref="/attendance"
+        backLabel="Back to Attendance"
       />
       <Card className="mb-5">
         <CardContent className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-3">

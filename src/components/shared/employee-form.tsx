@@ -27,7 +27,6 @@ import {
 } from "@/lib/mock/data";
 import { branches, holidayLists, employeeGrades } from "@/lib/mock/data-2";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 
 /* ------------------------------------------------------------------ *
  * Options cloned directly from the ERPNext/HRMS `Employee` doctype.
@@ -332,9 +331,6 @@ export function EmployeeForm({
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href={backHref} />}>
-        <ArrowLeft /> Back
-      </Button>
       <PageHeader
         title={mode === "create" ? "New Employee" : "Edit Employee"}
         description={
@@ -342,6 +338,8 @@ export function EmployeeForm({
             ? "Create an employee record — fields mirror the Frappe HR Employee form."
             : "Update this employee record — fields mirror the Frappe HR Employee form."
         }
+        backHref={backHref}
+        backLabel="Back"
       />
 
       <form className="space-y-6" onSubmit={submit}>

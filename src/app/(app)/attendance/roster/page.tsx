@@ -32,6 +32,10 @@ export default function RosterPage() {
       <PageHeader
         title="Shift Roster"
         description={`Weekly shift view · office window ${window.start}–${window.end} (${window.hours}h)`}
+        backHref="/attendance"
+        backLabel="Back to Attendance"
+        showExport
+        exportWhat="shift roster"
       />
       <Card>
         <CardContent className="p-0">

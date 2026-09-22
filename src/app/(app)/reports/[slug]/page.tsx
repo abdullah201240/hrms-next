@@ -1,8 +1,5 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
-import { ExportButton } from "@/components/shared/export-button";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowLeft, CalendarRange } from "lucide-react";
+import { CalendarRange } from "lucide-react";
 import { reportBySlug, reportRows } from "@/lib/mock/data-3";
 
 export default async function ReportViewPage({
@@ -31,33 +28,34 @@ export default async function ReportViewPage({
 
   return (
     <>
-      <PageHeader title={report.name} description={`Report · ${report.module}`}>
-        <Button render={<Link href="/reports" />} variant="outline">
-          <ArrowLeft className="size-4" />
-          All Reports
-        </Button>
-        <ExportButton what={report.name.toLowerCase()} />
-      </PageHeader>
+      <PageHeader
+        title={report.name}
+        description={`Report · ${report.module}`}
+        backHref="/reports"
+        backLabel="All Reports"
+        showExport
+        exportWhat={report.name.toLowerCase()}
+      />
 
-      <Card className="mb-5">
+      <Card className="mb-5 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
         <CardContent className="flex flex-wrap items-end gap-4 p-5">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <CalendarRange className="size-4" />
+          <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <CalendarRange className="size-4 text-blue-600 dark:text-blue-400" />
             Filters
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="from">From Date</Label>
-            <Input id="from" type="date" defaultValue="2026-01-01" className="w-44" />
+            <Label htmlFor="from" className="text-xs font-semibold text-slate-600 dark:text-slate-300">From Date</Label>
+            <Input id="from" type="date" defaultValue="2026-01-01" className="h-9 w-44 rounded-lg border-slate-200 dark:border-slate-700" />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="to">To Date</Label>
-            <Input id="to" type="date" defaultValue="2026-12-31" className="w-44" />
+            <Label htmlFor="to" className="text-xs font-semibold text-slate-600 dark:text-slate-300">To Date</Label>
+            <Input id="to" type="date" defaultValue="2026-12-31" className="h-9 w-44 rounded-lg border-slate-200 dark:border-slate-700" />
           </div>
-          <Badge variant="secondary">Source: {report.doctype}</Badge>
+          <Badge variant="secondary" className="rounded-full px-2.5 py-1 text-xs font-medium">Source: {report.doctype}</Badge>
         </CardContent>
       </Card>
 
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">

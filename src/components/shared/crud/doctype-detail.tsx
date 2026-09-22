@@ -18,9 +18,9 @@ import {
 } from "@/components/ui/table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { CrudPrintButton } from "@/components/shared/crud/crud-print-button";
-import { detectIcon, CHIP } from "@/components/shared/page-header";
+import { PageHeader } from "@/components/shared/page-header";
 import { fmtDate } from "@/lib/mock/data";
-import { ArrowLeft, Pencil, Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import type { ChildTableDef, DoctypeConfig, Field } from "@/lib/crud/types";
 import { getDoctype, getRow } from "@/lib/crud/registry";
 
@@ -64,7 +64,7 @@ function ReadOnlyChildTable({ def, data }: { def: ChildTableDef; data: unknown }
     return k;
   };
   return (
-    <Card className="lg:col-span-2">
+    <Card className="lg:col-span-2 rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
       <CardHeader>
         <CardTitle className="text-base">{def.title}</CardTitle>
         {def.desc && <CardDescription>{def.desc}</CardDescription>}
@@ -117,43 +117,32 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
   const row = getRow(doctype, id) as Record<string, unknown>;
   const title = String(row[config.titleKey] ?? config.label);
   const subtitle = config.subtitleKey ? (row[config.subtitleKey] as string | undefined) : undefined;
-  const { Icon: HeadIcon, color: headColor } = detectIcon(config.label);
+  const statusBadge = STATUS_KEYS.has(config.titleKey) ? <StatusBadge status={title} /> : undefined;
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href={config.route} />}>
-        <ArrowLeft /> Back to {config.plural}
-      </Button>
-
-      <div className="relative overflow-hidden pb-6">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-10 -top-20 size-60 rounded-full bg-gradient-to-br from-indigo-300/35 via-sky-200/30 to-transparent blur-3xl"
-        />
-        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`chip flex size-12 shrink-0 items-center justify-center ${CHIP[headColor] ?? CHIP.indigo}`}>
-              <HeadIcon className="size-6" />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
-                {STATUS_KEYS.has(config.titleKey) && <StatusBadge status={title} />}
-              </div>
-              {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <CrudPrintButton doctype={doctype} id={id} />
-            <Button render={<Link href={`${config.route}/${id}/edit`} />}>
-              <Pencil /> Edit
-            </Button>
-            <Button variant="outline" render={<Link href={`${config.route}/new`} />}>
-              <Plus /> New {config.label}
-            </Button>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        title={title}
+        description={subtitle}
+        backHref={config.route}
+        backLabel={`Back to ${config.plural}`}
+        badge={statusBadge}
+      >
+        <CrudPrintButton doctype={doctype} id={id} />
+        <Button
+          render={<Link href={`${config.route}/${id}/edit`} />}
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+        >
+          <Pencil className="size-4" /> Edit
+        </Button>
+        <Button
+          variant="outline"
+          render={<Link href={`${config.route}/new`} />}
+          className="h-10 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+        >
+          <Plus className="size-4" /> New {config.label}
+        </Button>
+      </PageHeader>
 
       <div className="grid gap-4 lg:grid-cols-2">
         {config.sections.map((s) => {
@@ -162,7 +151,7 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
             .filter((e) => e.value !== undefined);
           if (!entries.length) return null;
           return (
-            <Card key={s.title}>
+            <Card key={s.title} className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
               <CardHeader>
                 <CardTitle className="text-base">{s.title}</CardTitle>
                 {s.desc && <CardDescription>{s.desc}</CardDescription>}

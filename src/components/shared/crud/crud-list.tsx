@@ -40,7 +40,7 @@ export function CrudList({ doctype }: { doctype: string }) {
       const inner = c.render ? c.render(row) : defaultCell(row, c);
       if (c.key === linkKey) {
         return (
-          <Link href={`${config.route}/${String(row[idKey])}`} className="font-medium hover:underline">
+          <Link href={`${config.route}/${String(row[idKey])}`} className="font-semibold text-slate-800 hover:text-blue-600 dark:text-slate-100 dark:hover:text-blue-400">
             {inner as React.ReactNode}
           </Link>
         );
@@ -62,9 +62,17 @@ export function CrudList({ doctype }: { doctype: string }) {
 
   return (
     <>
-      <PageHeader title={config.plural} description={config.desc}>
-        <Button render={<Link href={`${config.route}/new`} />}>
-          <Plus /> New {config.label}
+      <PageHeader
+        title={config.plural}
+        description={config.desc}
+        showExport
+        exportWhat={config.plural.toLowerCase()}
+      >
+        <Button
+          render={<Link href={`${config.route}/new`} />}
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+        >
+          <Plus className="size-4" /> New {config.label}
         </Button>
       </PageHeader>
       <DataTable columns={columns} rows={config.rows} searchKeys={config.searchKeys} pageSize={10} />

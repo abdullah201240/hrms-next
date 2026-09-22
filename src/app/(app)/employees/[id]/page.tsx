@@ -27,8 +27,9 @@ import {
   attendanceRecords,
   company,
 } from "@/lib/mock/data";
+import { PageHeader } from "@/components/shared/page-header";
 import { PrintButton } from "@/components/shared/print/print-dialog";
-import { ArrowLeft, Mail, Phone, MapPin, Pencil } from "lucide-react";
+import { Mail, Phone, MapPin, Pencil } from "lucide-react";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -67,35 +68,35 @@ export default async function EmployeeDetailPage({
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href="/employees" />}>
-        <ArrowLeft /> Back to Employees
-      </Button>
-
-      <div className="flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <Avatar className="size-14">
-            <AvatarFallback style={{ backgroundColor: emp.avatarColor }} className="text-lg font-semibold text-white">
+      <PageHeader
+        title={emp.name}
+        description={`${emp.designation} · ${emp.department} · ${emp.employeeId}`}
+        backHref="/employees"
+        backLabel="Back to Employees"
+        avatar={
+          <Avatar className="size-12 ring-2 ring-blue-500/20">
+            <AvatarFallback style={{ backgroundColor: emp.avatarColor }} className="text-base font-semibold text-white">
               {initials}
             </AvatarFallback>
           </Avatar>
-          <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-semibold tracking-tight">{emp.name}</h1>
-              <StatusBadge status={emp.status} />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {emp.designation} · {emp.department} · {emp.employeeId}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <PrintButton data={{ doctype: "Employee", name: emp.employeeId, row: emp, company: company.name }} />
-          <Button render={<Link href={`/employees/${emp.id}/edit`} />}>
-            <Pencil /> Edit
-          </Button>
-          <Button variant="outline" render={<Link href="/payroll/slips" />}>Salary Slips</Button>
-        </div>
-      </div>
+        }
+        badge={<StatusBadge status={emp.status} />}
+      >
+        <PrintButton data={{ doctype: "Employee", name: emp.employeeId, row: emp, company: company.name }} />
+        <Button
+          render={<Link href={`/employees/${emp.id}/edit`} />}
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+        >
+          <Pencil className="size-4" /> Edit
+        </Button>
+        <Button
+          variant="outline"
+          render={<Link href="/payroll/slips" />}
+          className="h-10 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
+        >
+          Salary Slips
+        </Button>
+      </PageHeader>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>

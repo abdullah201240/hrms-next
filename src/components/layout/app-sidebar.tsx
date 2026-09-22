@@ -23,7 +23,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
-import { navSections } from "@/lib/nav";
+import { navSections, resolveActiveHref } from "@/lib/nav";
 import { company } from "@/lib/mock/data";
 import { Building2, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -32,13 +32,11 @@ export function AppSidebar() {
   const pathname = usePathname();
   const { state, setOpen } = useSidebar();
 
-  // Find the section that owns the current route (if any)
+  // Resolve the single most-specific active route so only ONE item highlights
+  // (a parent like /attendance no longer also lights up on /attendance/...). 
+  const activeHref = resolveActiveHref(pathname);
   const activeSection = navSections.find((sec) =>
-    sec.items.some(
-      (item) =>
-        pathname === item.href ||
-        (item.href !== "/dashboard" && pathname.startsWith(item.href + "/"))
-    )
+    sec.items.some((item) => item.href === activeHref)
   );
 
   // Single open section state — accordion behavior (opening one closes all others)
@@ -68,12 +66,12 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/dashboard" />}>
-              <div className="flex aspect-square size-8 items-center justify-center bg-primary text-primary-foreground">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
                 <Building2 className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{company.name}</span>
-                <span className="truncate text-xs text-muted-foreground">HR Portal</span>
+                <span className="truncate font-bold text-slate-900 dark:text-slate-100">{company.name}</span>
+                <span className="truncate text-xs text-slate-500 dark:text-slate-400">HR Portal</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -89,10 +87,7 @@ export function AppSidebar() {
 
               if (isSingleItem) {
                 const singleItem = section.items[0];
-                const active =
-                  pathname === singleItem.href ||
-                  (singleItem.href !== "/dashboard" &&
-                    pathname.startsWith(singleItem.href + "/"));
+                const active = singleItem.href === activeHref;
 
                 return (
                   <SidebarMenuItem key={section.label}>
@@ -101,13 +96,14 @@ export function AppSidebar() {
                       tooltip={singleItem.title}
                       render={<Link href={singleItem.href} />}
                       onClick={() => setOpenSection(null)}
+                      className="rounded-lg font-medium"
                     >
                       <SectionIcon className="size-4 shrink-0" />
                       <span>{singleItem.title}</span>
                       {singleItem.badge ? (
                         <Badge
                           variant="secondary"
-                          className="ml-auto px-1.5 py-0 text-[10px]"
+                          className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold"
                         >
                           {singleItem.badge}
                         </Badge>
@@ -120,10 +116,7 @@ export function AppSidebar() {
               // Multi-item section -> Collapsible Accordion Dropdown
               const isOpen = openSection === section.label;
               const isSectionActive = section.items.some(
-                (item) =>
-                  pathname === item.href ||
-                  (item.href !== "/dashboard" &&
-                    pathname.startsWith(item.href + "/"))
+                (item) => item.href === activeHref
               );
 
               // Calculate total badges in this section
@@ -158,7 +151,7 @@ export function AppSidebar() {
                         {badgeTotal > 0 && (
                           <Badge
                             variant="secondary"
-                            className="px-1.5 py-0 text-[10px]"
+                            className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
                           >
                             {badgeTotal}
                           </Badge>
@@ -174,10 +167,7 @@ export function AppSidebar() {
                     <CollapsibleContent>
                       <SidebarMenuSub className="ml-4 border-l-0 pl-2">
                         {section.items.map((item) => {
-                          const active =
-                            pathname === item.href ||
-                            (item.href !== "/dashboard" &&
-                              pathname.startsWith(item.href + "/"));
+                          const active = item.href === activeHref;
                           const ItemIcon = item.icon;
 
                           return (
@@ -186,13 +176,14 @@ export function AppSidebar() {
                                 isActive={active}
                                 size="md"
                                 render={<Link href={item.href} />}
+                                className="rounded-lg"
                               >
                                 <ItemIcon className="size-3.5 shrink-0 text-muted-foreground" />
                                 <span className="truncate">{item.title}</span>
                                 {item.badge ? (
                                   <Badge
                                     variant="secondary"
-                                    className="ml-auto px-1.5 py-0 text-[10px]"
+                                    className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold"
                                   >
                                     {item.badge}
                                   </Badge>

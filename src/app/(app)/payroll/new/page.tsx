@@ -20,7 +20,6 @@ import { PageHeader } from "@/components/shared/page-header";
 import { company } from "@/lib/mock/data";
 import { salaryComponents } from "@/lib/mock/data-2";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 
 const CURRENCIES = ["BDT"];
 const MODES = ["Bank", "Cash", "Cheque"];
@@ -53,10 +52,12 @@ export default function NewSalaryStructurePage() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" className="-ml-2 w-fit" render={<Link href="/payroll" />}>
-        <ArrowLeft /> Back to Salary Structures
-      </Button>
-      <PageHeader title="New Salary Structure" description="Create a compensation template — fields mirror the Frappe HR Salary Structure form." />
+      <PageHeader
+        title="New Salary Structure"
+        description="Create a compensation template — fields mirror the Frappe HR Salary Structure form."
+        backHref="/payroll"
+        backLabel="Back to Salary Structures"
+      />
 
       <form className="space-y-6" onSubmit={submit}>
         <Card>

@@ -15,8 +15,18 @@ const fmtVal = (n: number, unit: string) => (unit === "BDT" ? fmtMoney(n) : `${n
 export default function GoalsPage() {
   return (
     <>
-      <PageHeader title="Goals" description={`${goals.length} active performance goals.`}>
-        <Button render={<Link href="/performance/goals/new" />}><Plus /> New Goal</Button>
+      <PageHeader
+        title="Goals"
+        description={`${goals.length} active performance goals.`}
+        showExport
+        exportWhat="goals"
+      >
+        <Button
+          render={<Link href="/performance/goals/new" />}
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+        >
+          <Plus className="size-4" /> New Goal
+        </Button>
       </PageHeader>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

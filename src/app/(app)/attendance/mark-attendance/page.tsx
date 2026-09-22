@@ -27,6 +27,8 @@ export default function AttendanceToolPage() {
       <PageHeader
         title="Mark Attendance"
         description="Bulk-create attendance records for a single date."
+        backHref="/attendance"
+        backLabel="Back to Attendance"
       />
       <Card className="mb-5">
         <CardContent className="flex flex-wrap items-end gap-4 p-5">

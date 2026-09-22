@@ -18,8 +18,17 @@ export default function LeaveBalancesPage() {
       <PageHeader
         title="Leave Balances"
         description={`FY 2026 entitlements for ${currentUser.name}.`}
+        backHref="/leave"
+        backLabel="Back to Leave"
+        showExport
+        exportWhat="leave balances"
       >
-        <Button render={<Link href="/leave/apply" />}><Plus /> Apply Leave</Button>
+        <Button
+          render={<Link href="/leave/apply" />}
+          className="h-10 rounded-xl bg-blue-600 px-4 font-semibold text-white shadow-sm hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
+        >
+          <Plus className="size-4" /> Apply Leave
+        </Button>
       </PageHeader>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
