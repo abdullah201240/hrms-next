@@ -107,6 +107,7 @@ export const navSections: NavSection[] = [
     label: "Projects & Tasks",
     icon: Kanban,
     items: [
+      { title: "Workspaces", href: "/workspaces", icon: LayoutDashboard },
       { title: "All Tasks", href: "/tasks", icon: ClipboardList },
       { title: "Projects", href: "/projects", icon: Kanban },
       { title: "Project Templates", href: "/projects/templates", icon: Layers },
