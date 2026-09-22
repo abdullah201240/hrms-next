@@ -132,11 +132,34 @@ export const feedbackCriteria: FeedbackCriteria[] = [
   { id: "fc4", name: "Documentation Quality", category: "Administrative" },
 ];
 
-export interface HolidayListAssignment { id: ID; employee: string; holidayList: string; company: string; status: "Active" | "Inactive"; }
+/**
+ * `Holiday List Assignment` (hrms/hr/doctype/holiday_list_assignment) — submittable.
+ * Only `Submitted` rows take part in resolution, and the newest `fromDate` that has
+ * already passed wins: employee assignment first, then company assignment (this is
+ * how v16 stores what used to be `Company.default_holiday_list`).
+ */
+export interface HolidayListAssignment {
+  id: ID;
+  applicableFor: "Employee" | "Company";
+  /** `assigned_to` — dynamic link, so an Employee name or the Company name. */
+  assignedTo: string;
+  holidayList: string;
+  /** `from_date` — "Assignment Starts From". */
+  fromDate: string;
+  /** Read-only mirror of the linked list's own window. */
+  holidayListStart: string;
+  holidayListEnd: string;
+  docStatus: "Draft" | "Submitted";
+}
 export const holidayListAssignments: HolidayListAssignment[] = [
-  { id: "hla1", employee: "Aisha Khan", holidayList: "India Holidays 2026", company: "Acme", status: "Active" },
-  { id: "hla2", employee: "Tom Becker", holidayList: "US Holidays 2026", company: "Acme", status: "Active" },
-  { id: "hla3", employee: "Nina Patel", holidayList: "India Holidays 2026", company: "Acme", status: "Inactive" },
+  { id: "hla1", applicableFor: "Employee", assignedTo: "Aisha Khan", holidayList: "2026 Holidays", fromDate: "2026-01-01", holidayListStart: "2026-01-01", holidayListEnd: "2026-12-31", docStatus: "Submitted" },
+  { id: "hla2", applicableFor: "Employee", assignedTo: "Tom Becker", holidayList: "US Holidays 2026", fromDate: "2026-01-01", holidayListStart: "2026-01-01", holidayListEnd: "2026-12-31", docStatus: "Submitted" },
+  { id: "hla3", applicableFor: "Employee", assignedTo: "Marcus Reed", holidayList: "UK Holidays 2026", fromDate: "2026-01-01", holidayListStart: "2026-01-01", holidayListEnd: "2026-12-31", docStatus: "Submitted" },
+  // Draft → deliberately ignored by the resolver, like docstatus 0 in Frappe.
+  { id: "hla4", applicableFor: "Employee", assignedTo: "Nina Patel", holidayList: "US Holidays 2026", fromDate: "2026-09-01", holidayListStart: "2026-01-01", holidayListEnd: "2026-12-31", docStatus: "Draft" },
+  // Future start → today falls back to the company assignment.
+  { id: "hla5", applicableFor: "Employee", assignedTo: "Yuki Tanaka", holidayList: "2027 Holidays", fromDate: "2027-01-01", holidayListStart: "2027-01-01", holidayListEnd: "2027-12-31", docStatus: "Submitted" },
+  { id: "hla6", applicableFor: "Company", assignedTo: "Acme Technologies Ltd.", holidayList: "2026 Holidays", fromDate: "2026-01-01", holidayListStart: "2026-01-01", holidayListEnd: "2026-12-31", docStatus: "Submitted" },
 ];
 
 export interface JobOpeningTemplate { id: ID; name: string; description: string; }

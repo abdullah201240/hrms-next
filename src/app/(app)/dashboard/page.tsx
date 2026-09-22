@@ -1,202 +1,687 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatCard } from "@/components/shared/stat-card";
-import { StatusBadge } from "@/components/shared/status-badge";
-import { Progress } from "@/components/ui/progress";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Users,
   CalendarCheck,
-  CalendarX,
+  UserX,
+  CalendarDays,
   Clock,
-  Plus,
+  Activity,
+  Zap,
+  Calendar,
+  Building2,
+  ChevronRight,
   ArrowRight,
+  Plus,
+  Code,
+  TrendingUp,
+  Sparkles,
+  Palette,
+  Coins,
+  Megaphone,
+  UserCheck,
+  PieChart,
 } from "lucide-react";
-import {
-  employees,
-  attendanceRecords,
-  leaveApplications,
-  expenseClaims,
-  leaveBalances,
-  departments,
-  fmtDate,
-} from "@/lib/mock/data";
 
-const TODAY = "2026-09-21";
+const attendanceTrendData = [
+  { day: "Sep 15", present: 198, absent: 18 },
+  { day: "Sep 16", present: 204, absent: 15 },
+  { day: "Sep 17", present: 195, absent: 24 },
+  { day: "Sep 18", present: 208, absent: 20 },
+  { day: "Sep 19", present: 212, absent: 16 },
+  { day: "Sep 20", present: 215, absent: 12 },
+  { day: "Sep 21", present: 218, absent: 14 },
+];
 
-export default function DashboardPage() {
-  const present = attendanceRecords.filter((a) => a.date === TODAY && a.status === "Present").length;
-  const onLeave = attendanceRecords.filter((a) => a.date === TODAY && a.status === "Leave").length;
-  const pendingLeaves = leaveApplications.filter((l) => l.status === "Pending");
-  const pendingExpenses = expenseClaims.filter((e) => e.status === "Pending");
+const actionItems = [
+  {
+    count: 12,
+    color: "bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400",
+    title: "Leave requests pending",
+    desc: "Review and approve",
+    href: "/leave/approvals",
+  },
+  {
+    count: 6,
+    color: "bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400",
+    title: "Expense claims pending",
+    desc: "Finance team needs approval",
+    href: "/expenses/approvals",
+  },
+  {
+    count: 4,
+    color: "bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400",
+    title: "Attendance corrections",
+    desc: "Verify and update",
+    href: "/attendance/attendance-requests",
+  },
+  {
+    count: 3,
+    color: "bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400",
+    title: "Resignation notices",
+    desc: "HR review required",
+    href: "/tenure/resignations",
+  },
+  {
+    count: 2,
+    color: "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400",
+    title: "New joiner onboarding",
+    desc: "Documents pending",
+    href: "/tenure/onboarding",
+  },
+];
 
-  const headcount = departments
-    .map((d) => ({ name: d.name, count: d.employeeCount }))
-    .sort((a, b) => b.count - a.count);
-  const maxHead = Math.max(...headcount.map((h) => h.count));
+const upcomingLeaves = [
+  {
+    initials: "AK",
+    name: "Aisha Khan",
+    type: "Casual Leave",
+    dates: "Sep 24, 2026 – Sep 29, 2026",
+    status: "Pending",
+  },
+  {
+    initials: "DT",
+    name: "Diego Torres",
+    type: "Sick Leave",
+    dates: "Sep 21, 2026 – Sep 22, 2026",
+    status: "Pending",
+  },
+  {
+    initials: "NP",
+    name: "Nina Patel",
+    type: "Earned Leave",
+    dates: "Oct 05, 2026 – Oct 12, 2026",
+    status: "Pending",
+  },
+  {
+    initials: "RH",
+    name: "Rafid Hasan",
+    type: "Casual Leave",
+    dates: "Sep 22, 2026 – Sep 23, 2026",
+    status: "Approved",
+  },
+];
+
+const departmentStats = [
+  {
+    name: "Engineering",
+    icon: Code,
+    iconColor: "text-sky-600 bg-sky-50 dark:bg-sky-950/60 dark:text-sky-400",
+    total: 62,
+    present: 56,
+    absent: 4,
+    leave: 2,
+    late: 2,
+    vacancy: "4.6%",
+    vacancyColor: "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400",
+  },
+  {
+    name: "Sales",
+    icon: TrendingUp,
+    iconColor: "text-amber-600 bg-amber-50 dark:bg-amber-950/60 dark:text-amber-400",
+    total: 48,
+    present: 42,
+    absent: 3,
+    leave: 2,
+    late: 1,
+    vacancy: "10.4%",
+    vacancyColor: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400",
+  },
+  {
+    name: "Product",
+    icon: Sparkles,
+    iconColor: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400",
+    total: 35,
+    present: 31,
+    absent: 2,
+    leave: 1,
+    late: 1,
+    vacancy: "8.6%",
+    vacancyColor: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400",
+  },
+  {
+    name: "Design",
+    icon: Palette,
+    iconColor: "text-purple-600 bg-purple-50 dark:bg-purple-950/60 dark:text-purple-400",
+    total: 28,
+    present: 25,
+    absent: 1,
+    leave: 1,
+    late: 1,
+    vacancy: "7.1%",
+    vacancyColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
+  },
+  {
+    name: "Finance",
+    icon: Coins,
+    iconColor: "text-amber-600 bg-amber-50 dark:bg-amber-950/60 dark:text-amber-400",
+    total: 22,
+    present: 19,
+    absent: 2,
+    leave: 1,
+    late: 0,
+    vacancy: "4.5%",
+    vacancyColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
+  },
+  {
+    name: "Marketing",
+    icon: Megaphone,
+    iconColor: "text-rose-600 bg-rose-50 dark:bg-rose-950/60 dark:text-rose-400",
+    total: 18,
+    present: 16,
+    absent: 1,
+    leave: 1,
+    late: 0,
+    vacancy: "10.0%",
+    vacancyColor: "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-400",
+  },
+];
+
+const recentActivities = [
+  {
+    name: "Aisha Khan",
+    initials: "AK",
+    time: "2 hours ago",
+    detail: "Casual Leave",
+    badge: "Leave",
+    badgeColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
+  },
+  {
+    name: "Diego Torres",
+    initials: "DT",
+    time: "5 hours ago",
+    detail: "submitted an expense claim",
+    badge: "Expense",
+    badgeColor: "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400",
+  },
+  {
+    name: "Nina Patel",
+    initials: "NP",
+    time: "4 hours ago",
+    detail: "Checked in (On time)",
+    badge: "Attendance",
+    badgeColor: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400",
+  },
+  {
+    name: "Rafid Hasan",
+    initials: "RH",
+    time: "1 day ago",
+    detail: "Resigned from the company",
+    badge: "Resignation",
+    badgeColor: "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-400",
+  },
+  {
+    name: "New Joiner",
+    initials: "NJ",
+    time: "6 hours ago",
+    detail: "Joined as Software Engineer",
+    badge: "Onboarding",
+    badgeColor: "bg-sky-50 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400",
+  },
+];
+
+const leaveBalancesList = [
+  { label: "Casual Leave", used: 4, entitled: 12, pct: 33, color: "text-sky-500" },
+  { label: "Sick Leave", used: 2, entitled: 8, pct: 25, color: "text-emerald-500" },
+  { label: "Earned Leave", used: 6, entitled: 15, pct: 40, color: "text-amber-500" },
+  { label: "Privilege Leave", used: 1, entitled: 10, pct: 10, color: "text-purple-500" },
+  { label: "Unpaid Leave", used: 0, entitled: 30, pct: 0, color: "text-slate-400" },
+];
+
+function CircularMeter({
+  pct,
+  used,
+  entitled,
+  label,
+  color,
+}: {
+  pct: number;
+  used: number;
+  entitled: number;
+  label: string;
+  color: string;
+}) {
+  const radius = 24;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (pct / 100) * circumference;
 
   return (
-    <>
-      <PageHeader title="Dashboard" description="People-operations overview for your organization.">
+    <div className="flex flex-col items-center text-center">
+      <div className="relative flex size-16 items-center justify-center">
+        <svg className="size-full -rotate-90" viewBox="0 0 60 60">
+          <circle
+            cx="30"
+            cy="30"
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4.5"
+            className="text-muted/30"
+          />
+          <circle
+            cx="30"
+            cy="30"
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4.5"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className={color}
+          />
+        </svg>
+        <span className="absolute text-xs font-bold text-foreground">
+          {pct}%
+        </span>
+      </div>
+      <p className="mt-1 text-xs font-semibold text-foreground">{label}</p>
+      <p className="text-[11px] text-muted-foreground">{used}/{entitled} used</p>
+    </div>
+  );
+}
+
+export default function DashboardPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Dashboard"
+        description="People-operations overview for your organization."
+      >
         <Button render={<Link href="/leave/apply" />}>
           <Plus /> Request Leave
         </Button>
       </PageHeader>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Total Employees" value={employees.length} icon={Users} hint="+2 this month" trend="up" />
-        <StatCard label="Present Today" value={present} icon={CalendarCheck} hint={`${Math.round((present / employees.length) * 100)}% attendance`} trend="up" />
-        <StatCard label="On Leave Today" value={onLeave} icon={CalendarX} hint="2 planned" trend="flat" />
-        <StatCard label="Pending Approvals" value={pendingLeaves.length + pendingExpenses.length} icon={Clock} hint="3 leave · 2 expense" trend="down" />
+      {/* Row 1: 5 KPI Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <StatCard
+          label="Total Employees"
+          value="247"
+          icon={Users}
+          hint="+4 this month"
+          trend="up"
+          color="blue"
+        />
+        <StatCard
+          label="Present Today"
+          value="218"
+          subtext="88.3% of total"
+          icon={CalendarCheck}
+          hint="+6 vs. yesterday"
+          trend="up"
+          color="emerald"
+        />
+        <StatCard
+          label="Absent Today"
+          value="14"
+          subtext="5.7% of total"
+          icon={UserX}
+          hint="-3 vs. yesterday"
+          trend="down"
+          color="rose"
+        />
+        <StatCard
+          label="On Leave Today"
+          value="9"
+          subtext="3.6% of total"
+          icon={CalendarDays}
+          hint="+2 vs. yesterday"
+          trend="up"
+          color="amber"
+        />
+        <StatCard
+          label="Late Today"
+          value="6"
+          subtext="2.4% of total"
+          icon={Clock}
+          hint="-1 vs. yesterday"
+          trend="down"
+          color="purple"
+        />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Leave approvals */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <div>
-              <CardTitle>Leave requests awaiting approval</CardTitle>
-              <CardDescription>Requests you need to action.</CardDescription>
+      {/* Row 2: Attendance Trend, Action Center, Upcoming Leave */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        {/* Attendance Trend */}
+        <Card className="lg:col-span-5">
+          <CardContent className="flex h-full flex-col justify-between p-5">
+            <div className="flex items-center justify-between gap-2 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                  <Activity className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Attendance Trend</h3>
+                  <p className="text-xs text-muted-foreground">Present vs Absent (Last 7 Days)</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 text-xs">
+                <span className="flex items-center gap-1.5 font-medium text-foreground">
+                  <span className="size-2 bg-emerald-500" /> Present
+                </span>
+                <span className="flex items-center gap-1.5 font-medium text-foreground">
+                  <span className="size-2 bg-rose-500" /> Absent
+                </span>
+              </div>
             </div>
-            <Button variant="ghost" size="sm" render={<Link href="/leave/approvals" />}>
-              View all <ArrowRight />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead>Employee</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Period</TableHead>
-                  <TableHead className="text-right">Days</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {pendingLeaves.map((l) => (
-                  <TableRow key={l.id}>
-                    <TableCell className="font-medium">{l.employeeName}</TableCell>
-                    <TableCell>{l.leaveType}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {fmtDate(l.from)} → {fmtDate(l.to)}
-                    </TableCell>
-                    <TableCell className="text-right">{l.days}</TableCell>
-                    <TableCell className="text-right">
-                      <StatusBadge status={l.status} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+
+            <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-4">
+              <div className="h-[190px] sm:col-span-3">
+                {mounted ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={attendanceTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.6} vertical={false} />
+                      <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#64748b" }} />
+                      <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#64748b" }} domain={[0, 250]} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#ffffff",
+                          borderRadius: 0,
+                          border: "none",
+                          fontSize: 12,
+                          boxShadow: "none",
+                        }}
+                      />
+                      <Line type="monotone" dataKey="present" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3, fill: "#10b981" }} />
+                      <Line type="monotone" dataKey="absent" stroke="#ef4444" strokeWidth={2.5} dot={{ r: 3, fill: "#ef4444" }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="size-full bg-muted/20" />
+                )}
+              </div>
+
+              {/* Callout Box on Right */}
+              <div className="flex flex-col justify-center bg-sky-50/50 p-3 dark:bg-sky-950/30 sm:col-span-1">
+                <div className="mb-2 flex size-7 items-center justify-center bg-white text-sky-600 dark:bg-card">
+                  <TrendingUp className="size-3.5" />
+                </div>
+                <p className="text-xl font-bold tracking-tight text-foreground">88.3%</p>
+                <p className="text-[11px] text-muted-foreground">Avg. attendance rate</p>
+                <div className="pt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span>+2.5%</span>
+                  <p className="text-[10px] font-normal text-muted-foreground">vs. last week</p>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
-        {/* Leave balance */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Leave Balance</CardTitle>
-            <CardDescription>FY 2026 · {employees[4].name}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {leaveBalances.map((b) => (
-              <div key={b.leaveType} className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="truncate">{b.leaveType}</span>
-                  <span className="text-muted-foreground">
-                    {b.used}/{b.entitled} used
+        {/* Action Center */}
+        <Card className="lg:col-span-4">
+          <CardContent className="flex h-full flex-col justify-between p-5">
+            <div className="flex items-center justify-between gap-2 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+                  <Zap className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Action Center</h3>
+                  <p className="text-xs text-muted-foreground">Things need your attention</p>
+                </div>
+              </div>
+              <Link href="/leave/approvals" className="text-xs font-medium text-primary hover:underline">
+                View all →
+              </Link>
+            </div>
+
+            <div className="space-y-2">
+              {actionItems.map((item) => (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className="flex items-center justify-between p-2 transition-colors hover:bg-muted/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`flex size-7 items-center justify-center text-xs font-bold ${item.color}`}>
+                      {item.count}
+                    </span>
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">{item.title}</p>
+                      <p className="text-[11px] text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="size-4 text-muted-foreground" />
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Upcoming Leave Schedule */}
+        <Card className="lg:col-span-3">
+          <CardContent className="flex h-full flex-col justify-between p-5">
+            <div className="flex items-center justify-between gap-2 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                  <Calendar className="size-4" />
+                </div>
+                <h3 className="text-sm font-semibold text-foreground">Upcoming Leave Schedule</h3>
+              </div>
+              <Link href="/leave/approvals" className="text-xs font-medium text-primary hover:underline">
+                View all →
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {upcomingLeaves.map((l) => (
+                <div key={l.name} className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Avatar className="size-8">
+                      <AvatarFallback className="text-xs font-semibold bg-muted text-muted-foreground">
+                        {l.initials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-semibold text-foreground">{l.name}</p>
+                      <p className="truncate text-[11px] text-muted-foreground">{l.type}</p>
+                      <p className="truncate text-[10px] text-muted-foreground">{l.dates}</p>
+                    </div>
+                  </div>
+                  <span
+                    className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold ${
+                      l.status === "Approved"
+                        ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
+                        : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
+                    }`}
+                  >
+                    {l.status}
                   </span>
                 </div>
-                <Progress value={(b.used / b.entitled) * 100} className="h-2" />
-              </div>
-            ))}
-            <Separator />
-            <Button variant="outline" className="w-full" render={<Link href="/leave/balances" />}>
-              Full breakdown
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Headcount */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Headcount by Department</CardTitle>
-            <CardDescription>Distribution across teams.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {headcount.map((h) => (
-              <div key={h.name} className="space-y-1">
-                <div className="flex items-center justify-between text-sm">
-                  <span>{h.name}</span>
-                  <span className="font-medium tabular-nums">{h.count}</span>
-                </div>
-                <div className="h-2 w-full bg-muted">
-                  <div className="h-2 bg-primary" style={{ width: `${(h.count / maxHead) * 100}%` }} />
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Recent expenses */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <div>
-              <CardTitle>Recent Expense Claims</CardTitle>
-              <CardDescription>Latest submissions across the team.</CardDescription>
+              ))}
             </div>
-            <Button variant="ghost" size="sm" render={<Link href="/expenses" />}>
-              View all <ArrowRight />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead>Claim</TableHead>
-                  <TableHead>Employee</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {expenseClaims.slice(0, 5).map((x) => (
-                  <TableRow key={x.id}>
-                    <TableCell className="font-medium">{x.claimId}</TableCell>
-                    <TableCell>{x.employeeName}</TableCell>
-                    <TableCell>{x.category}</TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      ৳{x.amount.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <StatusBadge status={x.status} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
           </CardContent>
         </Card>
       </div>
-    </>
+
+      {/* Row 3: Department Overview, Recent Activity, Leave Balance Overview */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        {/* Department Overview */}
+        <Card className="lg:col-span-5">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between gap-2 pb-4">
+              <div className="flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                  <Building2 className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Department Overview</h3>
+                  <p className="text-xs text-muted-foreground">Current headcount and vacancy status</p>
+                </div>
+              </div>
+              <Link href="/departments" className="text-xs font-medium text-primary hover:underline">
+                View all departments →
+              </Link>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="text-muted-foreground">
+                    <th className="pb-2.5 font-medium">Department</th>
+                    <th className="pb-2.5 text-center font-medium">Total</th>
+                    <th className="pb-2.5 text-center font-medium">Present</th>
+                    <th className="pb-2.5 text-center font-medium">Absent</th>
+                    <th className="pb-2.5 text-center font-medium">On Leave</th>
+                    <th className="pb-2.5 text-center font-medium">Late</th>
+                    <th className="pb-2.5 text-right font-medium">Vacancy</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y-0">
+                  {departmentStats.map((d) => (
+                    <tr key={d.name} className="hover:bg-muted/40 transition-colors">
+                      <td className="py-2 font-medium flex items-center gap-2">
+                        <div className={`flex size-6 items-center justify-center ${d.iconColor}`}>
+                          <d.icon className="size-3.5" />
+                        </div>
+                        <span className="text-foreground">{d.name}</span>
+                      </td>
+                      <td className="py-2 text-center text-muted-foreground font-medium tabular-nums">{d.total}</td>
+                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.present}</td>
+                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.absent}</td>
+                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.leave}</td>
+                      <td className="py-2 text-center text-muted-foreground tabular-nums">{d.late}</td>
+                      <td className="py-2 text-right">
+                        <span className={`px-1.5 py-0.5 font-semibold text-[10px] ${d.vacancyColor}`}>
+                          {d.vacancy}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Activity */}
+        <Card className="lg:col-span-4">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between gap-2 pb-4">
+              <div className="flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                  <Clock className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Recent Activity</h3>
+                  <p className="text-xs text-muted-foreground">Latest updates from your team</p>
+                </div>
+              </div>
+              <Link href="/attendance" className="text-xs font-medium text-primary hover:underline">
+                View all →
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {recentActivities.map((act, i) => (
+                <div key={i} className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Avatar className="size-8">
+                      <AvatarFallback className="text-xs font-semibold bg-muted text-muted-foreground">
+                        {act.initials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-semibold text-foreground">{act.name}</p>
+                      <p className="truncate text-[11px] text-muted-foreground">
+                        {act.time} · {act.detail}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`shrink-0 px-2 py-0.5 text-[10px] font-semibold ${act.badgeColor}`}>
+                    {act.badge}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Leave Balance Overview & HR Performance Banner */}
+        <div className="flex flex-col justify-between gap-4 lg:col-span-3">
+          {/* Leave Balance Overview Card */}
+          <Card className="flex-1">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between gap-2 pb-4">
+                <div className="flex items-center gap-2">
+                  <div className="flex size-8 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                    <PieChart className="size-4" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-foreground">Leave Balance Overview</h3>
+                </div>
+                <Link href="/leave/balances" className="text-xs font-medium text-primary hover:underline">
+                  View details →
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-5 gap-1 pt-1">
+                {leaveBalancesList.map((lb) => (
+                  <CircularMeter
+                    key={lb.label}
+                    pct={lb.pct}
+                    used={lb.used}
+                    entitled={lb.entitled}
+                    label={lb.label.split(" ")[0]}
+                    color={lb.color}
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* HR Performance Dark Banner */}
+          <Card className="relative overflow-hidden bg-slate-900 text-white dark:bg-slate-950">
+            {/* Background image on the right with smooth dark gradient fade */}
+            <div
+              className="absolute right-0 top-0 h-full w-3/5 bg-cover bg-right"
+              style={{ backgroundImage: "url('/images/hr-performance.jpg')" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/85 to-transparent dark:from-slate-950 dark:via-slate-950/85" />
+
+            <CardContent className="relative z-10 flex items-center justify-between gap-3 p-5">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sky-400">
+                  <UserCheck className="size-4" />
+                  <span className="text-xs font-bold uppercase tracking-wider">HR Performance</span>
+                </div>
+                <p className="text-xs text-slate-300">Build a better workplace, together.</p>
+                <div className="pt-2">
+                  <Button
+                    size="sm"
+                    className="bg-white text-slate-900 hover:bg-slate-100 text-xs font-semibold px-3 h-8"
+                    render={<Link href="/reports" />}
+                  >
+                    View Reports <ArrowRight className="size-3.5" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }

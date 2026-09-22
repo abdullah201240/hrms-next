@@ -5,13 +5,17 @@ import { toast } from "sonner";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SearchSelect } from "@/components/shared/search-select";
 import { CalendarCheck } from "lucide-react";
 import { employees } from "@/lib/mock/data";
+import { dayState } from "@/lib/working-hours";
 
-const STATUSES = ["Present", "Absent", "Leave", "Week Off", "Half Day"];
+// Attendance.doctype status options — there is no "Week Off" status; a holiday
+// is recorded by leaving the employee unmarked (or Present when they worked).
+const STATUSES = ["Present", "Absent", "On Leave", "Half Day", "Work From Home"];
 const list = employees.slice(0, 8);
 
 export default function AttendanceToolPage() {
@@ -44,25 +48,35 @@ export default function AttendanceToolPage() {
 
       <Card>
         <CardContent className="p-0">
-          {list.map((e) => (
-            <div
-              key={e.id}
-              className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div className="min-w-0">
-                <p className="truncate text-sm font-medium">{e.name}</p>
-                <p className="truncate text-xs text-muted-foreground">
-                  {e.designation} · {e.department}
-                </p>
+          {list.map((e) => {
+            const state = dayState(e.name, date);
+            const off = state.kind === "holiday" || state.kind === "weeklyOff";
+            return (
+              <div
+                key={e.id}
+                className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{e.name}</p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {e.designation} · {e.department}
+                  </p>
+                  {off && (
+                    <Badge variant="secondary" className="mt-1">
+                      {state.kind === "weeklyOff" ? "Weekly off" : "Holiday"}
+                      {state.label ? ` · ${state.label}` : ""}
+                    </Badge>
+                  )}
+                </div>
+                <SearchSelect
+                  value={marks[e.id] ?? (off ? "Absent" : "Present")}
+                  onChange={(val) => setMarks((m) => ({ ...m, [e.id]: val }))}
+                  options={STATUSES}
+                  className="w-40"
+                />
               </div>
-              <SearchSelect
-                value={marks[e.id] ?? "Present"}
-                onChange={(val) => setMarks((m) => ({ ...m, [e.id]: val }))}
-                options={STATUSES}
-                className="w-40"
-              />
-            </div>
-          ))}
+            );
+          })}
         </CardContent>
       </Card>
 

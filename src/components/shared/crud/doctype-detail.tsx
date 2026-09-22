@@ -8,11 +8,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { CrudPrintButton } from "@/components/shared/crud/crud-print-button";
 import { fmtDate } from "@/lib/mock/data";
 import { ArrowLeft, Pencil, Plus } from "lucide-react";
-import type { DoctypeConfig, Field } from "@/lib/crud/types";
+import type { ChildTableDef, DoctypeConfig, Field } from "@/lib/crud/types";
 import { getDoctype, getRow } from "@/lib/crud/registry";
 
 /** Keys whose values are rendered with the shared status pill. */
@@ -37,6 +45,69 @@ function Detail({ label, value }: { label: string; value: React.ReactNode }) {
       <dt className="text-xs uppercase tracking-wide text-muted-foreground">{label}</dt>
       <dd className="text-sm font-medium">{value ?? <span className="font-normal text-muted-foreground">—</span>}</dd>
     </div>
+  );
+}
+
+/** Read-only view of a saved child table (e.g. the Holiday rows of a Holiday List). */
+function ReadOnlyChildTable({ def, data }: { def: ChildTableDef; data: unknown }) {
+  const rows = Array.isArray(data) ? (data as Record<string, unknown>[]) : [];
+  const colKey = (c: ChildTableDef["columns"][number]) => c.key ?? c.label;
+  const valueKey = (c: ChildTableDef["columns"][number]) => {
+    const k = colKey(c);
+    if (def.keys) {
+      if (k === def.keys.date) return "date";
+      if (k === def.keys.description) return "description";
+      if (k === def.keys.weeklyOff) return "weeklyOff";
+      if (k === def.keys.halfDay) return "halfDay";
+    }
+    return k;
+  };
+  return (
+    <Card className="lg:col-span-2">
+      <CardHeader>
+        <CardTitle className="text-base">{def.title}</CardTitle>
+        {def.desc && <CardDescription>{def.desc}</CardDescription>}
+      </CardHeader>
+      <CardContent>
+        {rows.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No entries yet.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-8">#</TableHead>
+                  {def.columns.map((c) => (
+                    <TableHead key={colKey(c)}>{c.label}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="text-muted-foreground">{i + 1}</TableCell>
+                    {def.columns.map((c) => {
+                      const v = r[valueKey(c)];
+                      return (
+                        <TableCell key={colKey(c)}>
+                          {c.type === "check" ? (
+                            <Badge variant={v ? "secondary" : "outline"}>{v ? "Yes" : "No"}</Badge>
+                          ) : c.type === "date" ? (
+                            v ? fmtDate(String(v)) : "—"
+                          ) : (
+                            v !== undefined && v !== null && v !== "" ? String(v) : "—"
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -93,6 +164,9 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
             </Card>
           );
         })}
+        {(config.childTables ?? []).map((t) => (
+          <ReadOnlyChildTable key={t.title} def={t} data={t.rowsKey ? row[t.rowsKey] : undefined} />
+        ))}
       </div>
     </>
   );

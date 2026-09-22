@@ -9,6 +9,7 @@ export type FieldType =
   | "link"
   | "check"
   | "date"
+  | "time"
   | "datetime"
   | "number"
   | "float"
@@ -29,14 +30,36 @@ export type Field = {
   placeholder?: string;
   /** For `link` fields: enables the "+ Add {addLabel}" quick-create. */
   addLabel?: string;
+  /** Read-only (Frappe's `read_only`) — value comes from `computed`, not the record. */
+  ro?: boolean;
+  /** Field-level help text (Frappe's `description`). */
+  help?: string;
 };
 
 export type Section = { title: string; desc?: string; fields: Field[] };
 
+/** One column of a child table; `key` doubles as the row property (defaults to `label`). */
+export type ChildColumn = {
+  label: string;
+  key?: string;
+  type?: "text" | "number" | "date" | "time" | "check";
+  req?: boolean;
+};
+
 export type ChildTableDef = {
   title: string;
   desc?: string;
-  columns: { label: string; type?: "text" | "number" | "date" }[];
+  columns: ChildColumn[];
+  /** Record property holding this table's rows — enables prefill on Edit and rendering on Detail. */
+  rowsKey?: string;
+  /** Row properties that carry the values the domain logic needs (`Holiday` child doctype shape). */
+  keys?: { date?: string; description?: string; weeklyOff?: string; halfDay?: string };
+  /** Declarative row generator — Frappe's Holiday List "Add to Holidays" / "Clear Table" buttons. */
+  fill?: { label: string; fromKey: string; toKey: string; dayKey: string; halfDayKey?: string; clearLabel?: string };
+  /** Validator run before submit; `holidayList` = erpnext `validate_days` + `validate_duplicate_date`. */
+  validate?: "holidayList";
+  /** Parent field key that shows the live row total (`update_total_holidays`). */
+  computeTotal?: string;
 };
 
 export type ListCol = {

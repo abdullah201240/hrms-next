@@ -16,7 +16,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchSelect } from "@/components/shared/search-select";
-import { ChildTable, type ChildColumn } from "@/components/shared/child-table";
+import { ChildTable } from "@/components/shared/child-table";
+import type { ChildColumn } from "@/lib/crud/types";
 import { PageHeader } from "@/components/shared/page-header";
 import {
   company,

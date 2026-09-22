@@ -10,7 +10,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/shared/page-header";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { leaveApplications, fmtDate, currentUser } from "@/lib/mock/data";
+import { fmtDate, currentUser } from "@/lib/mock/data";
+import { useLeaveApplications } from "@/hooks/use-leave-applications";
 import { leavePrint } from "@/lib/print/print";
 import { PrintButton } from "@/components/shared/print/print-dialog";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ type Decision = { id: string; status: "Approved" | "Rejected" };
 
 export default function LeaveApprovalsPage() {
   const [decisions, setDecisions] = useState<Decision[]>([]);
+  const leaveApplications = useLeaveApplications();
   const pending = leaveApplications.filter(
     (l) => l.status === "Pending" && !decisions.some((d) => d.id === l.id),
   );

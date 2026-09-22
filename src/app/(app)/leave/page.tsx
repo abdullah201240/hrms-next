@@ -7,7 +7,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable, type Column } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
-import { leaveApplications, fmtDate, type LeaveApplication, type LeaveStatus } from "@/lib/mock/data";
+import { fmtDate, type LeaveApplication, type LeaveStatus } from "@/lib/mock/data";
+import { useLeaveApplications } from "@/hooks/use-leave-applications";
 import { leavePrint } from "@/lib/print/print";
 import { PrintButton } from "@/components/shared/print/print-dialog";
 import { Plus } from "lucide-react";
@@ -34,12 +35,13 @@ const FILTERS: ("All" | LeaveStatus)[] = ["All", "Pending", "Approved", "Rejecte
 
 export default function LeavePage() {
   const [filter, setFilter] = useState<"All" | LeaveStatus>("All");
+  const leaveApplications = useLeaveApplications();
   const rows = filter === "All" ? leaveApplications : leaveApplications.filter((l) => l.status === filter);
 
   return (
     <>
       <PageHeader title="Leave Applications" description="Track and manage leave requests across the team.">
-        <Button render={<Link href="/leave/apply" />}><Plus /> Apply Leave</Button>
+        <Button render={<Link href="/leave/apply" />}><Plus /> New Leave Application</Button>
       </PageHeader>
 
       <Tabs value={filter} onValueChange={(v) => setFilter(v as "All" | LeaveStatus)}>

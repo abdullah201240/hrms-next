@@ -3,6 +3,7 @@
 // expenses). Pairs with data.ts. UI-only; shapes mirror Frappe HR doctypes.
 // ============================================================================
 import type { ID } from "./data";
+import { addWeeklyOffHolidays, totalHolidays as sumHolidayDays, type HolidayRow } from "../holidays";
 
 // --- HR / Setup -------------------------------------------------------------
 
@@ -39,11 +40,160 @@ export const orgChart: OrgNode[] = [
 
 // --- Leaves -----------------------------------------------------------------
 
-export interface HolidayList { id: ID; name: string; from: string; to: string; totalHolidays: number; weeklyOff: string; }
+/**
+ * `Holiday List` (erpnext/setup/doctype/holiday_list). `holidays` holds the
+ * `Holiday` child rows and `totalHolidays` is computed — exactly like Frappe,
+ * where weekly offs are generated into the table and the total is
+ * sum(0.5 if is_half_day else 1). Only public/national holidays are hand-typed
+ * below; the weekly-off rows are materialised by `buildHolidayList`.
+ */
+export interface HolidayList {
+  id: ID;
+  name: string;
+  from: string;
+  to: string;
+  totalHolidays: number;
+  weeklyOff: string;
+  color: string;
+  country: string;
+  holidays: HolidayRow[];
+}
+
+/** Hand-typed public holiday (`Holiday` row without the weekly-off flag). */
+type PublicHoliday = { date: string; description: string; halfDay?: boolean };
+
+function buildHolidayList(opts: {
+  id: ID;
+  name: string;
+  from: string;
+  to: string;
+  weeklyOff: string;
+  color: string;
+  country: string;
+  publicHolidays: PublicHoliday[];
+}): HolidayList {
+  const rows = addWeeklyOffHolidays(
+    opts.publicHolidays.map((h) => ({ date: h.date, description: h.description, weeklyOff: false, halfDay: !!h.halfDay })),
+    { from: opts.from, to: opts.to, weeklyOff: opts.weeklyOff },
+  );
+  return {
+    id: opts.id,
+    name: opts.name,
+    from: opts.from,
+    to: opts.to,
+    weeklyOff: opts.weeklyOff,
+    color: opts.color,
+    country: opts.country,
+    holidays: rows,
+    totalHolidays: sumHolidayDays(rows),
+  };
+}
+
 export const holidayLists: HolidayList[] = [
-  { id: "hl1", name: "Holidays 2026", from: "2026-01-01", to: "2026-12-31", totalHolidays: 12, weeklyOff: "Sunday" },
-  { id: "hl2", name: "Holidays 2027", from: "2027-01-01", to: "2027-12-31", totalHolidays: 11, weeklyOff: "Sunday" },
+  // Head office (Dhaka) calendar — also Company.default_holiday_list. Lunar dates
+  // are indicative until HR confirms them against the government circular.
+  buildHolidayList({
+    id: "hl1", name: "2026 Holidays", from: "2026-01-01", to: "2026-12-31", weeklyOff: "Sunday", color: "#10b981", country: "Bangladesh",
+    publicHolidays: [
+      { date: "2026-02-21", description: "Shaheed Day — International Mother Language Day" },
+      { date: "2026-03-20", description: "Eid-ul-Fitr (Holiday 1)" },
+      { date: "2026-03-21", description: "Eid-ul-Fitr (Holiday 2)" },
+      { date: "2026-03-22", description: "Eid-ul-Fitr (Holiday 3)" },
+      { date: "2026-03-26", description: "Independence Day" },
+      { date: "2026-04-14", description: "Pohela Boishakh — Bengali New Year" },
+      { date: "2026-05-01", description: "May Day" },
+      { date: "2026-05-27", description: "Eid-ul-Adha (Holiday 1)" },
+      { date: "2026-05-28", description: "Eid-ul-Adha (Holiday 2)" },
+      { date: "2026-05-29", description: "Eid-ul-Adha (Holiday 3)" },
+      { date: "2026-05-31", description: "Buddha Purnima" },
+      { date: "2026-06-26", description: "Ashura" },
+      { date: "2026-08-25", description: "Eid-e-Miladunnabi" },
+      { date: "2026-09-04", description: "Janmashtami" },
+      { date: "2026-10-20", description: "Durga Puja — Bijoya Dashami" },
+      { date: "2026-12-24", description: "Christmas Eve", halfDay: true },
+      { date: "2026-12-25", description: "Christmas Day" },
+    ],
+  }),
+  buildHolidayList({
+    id: "hl2", name: "2027 Holidays", from: "2027-01-01", to: "2027-12-31", weeklyOff: "Sunday", color: "#10b981", country: "Bangladesh",
+    publicHolidays: [
+      { date: "2027-02-21", description: "Shaheed Day — International Mother Language Day" },
+      { date: "2027-03-09", description: "Eid-ul-Fitr (Holiday 1)" },
+      { date: "2027-03-10", description: "Eid-ul-Fitr (Holiday 2)" },
+      { date: "2027-03-11", description: "Eid-ul-Fitr (Holiday 3)" },
+      { date: "2027-03-26", description: "Independence Day" },
+      { date: "2027-04-14", description: "Pohela Boishakh — Bengali New Year" },
+      { date: "2027-05-01", description: "May Day" },
+      { date: "2027-05-17", description: "Eid-ul-Adha (Holiday 1)" },
+      { date: "2027-05-18", description: "Eid-ul-Adha (Holiday 2)" },
+      { date: "2027-05-19", description: "Eid-ul-Adha (Holiday 3)" },
+      { date: "2027-12-25", description: "Christmas Day" },
+    ],
+  }),
+  // US office (San Francisco) — the branch-specific list the assignment doctype exists for.
+  buildHolidayList({
+    id: "hl3", name: "US Holidays 2026", from: "2026-01-01", to: "2026-12-31", weeklyOff: "Sunday", color: "#3b82f6", country: "United States",
+    publicHolidays: [
+      { date: "2026-01-01", description: "New Year's Day" },
+      { date: "2026-01-19", description: "Martin Luther King Jr. Day" },
+      { date: "2026-02-16", description: "Presidents' Day" },
+      { date: "2026-05-25", description: "Memorial Day" },
+      { date: "2026-06-19", description: "Juneteenth" },
+      { date: "2026-07-03", description: "Independence Day (observed)" },
+      { date: "2026-09-07", description: "Labor Day" },
+      { date: "2026-11-26", description: "Thanksgiving Day" },
+      { date: "2026-11-27", description: "Day after Thanksgiving", halfDay: true },
+      { date: "2026-12-25", description: "Christmas Day" },
+    ],
+  }),
+  // London office — weekly off stays Sunday, plus the UK statutory bank holidays.
+  buildHolidayList({
+    id: "hl4", name: "UK Holidays 2026", from: "2026-01-01", to: "2026-12-31", weeklyOff: "Sunday", color: "#8b5cf6", country: "United Kingdom",
+    publicHolidays: [
+      { date: "2026-01-01", description: "New Year's Day" },
+      { date: "2026-04-03", description: "Good Friday" },
+      { date: "2026-04-06", description: "Easter Monday" },
+      { date: "2026-05-04", description: "Early May Bank Holiday" },
+      { date: "2026-05-25", description: "Spring Bank Holiday" },
+      { date: "2026-08-31", description: "Summer Bank Holiday" },
+      { date: "2026-12-25", description: "Christmas Day" },
+      { date: "2026-12-28", description: "Boxing Day (substitute)" },
+    ],
+  }),
 ];
+
+/**
+ * Working-hours & holiday defaults — the hrms-next mirror of the Single Doctypes
+ * that hold this in Frappe HR: `HR Settings` (standard_working_hours,
+ * remind_before, holiday reminder frequency, allow_multiple_shift_assignments)
+ * and `Company.default_holiday_list`. Office start/end time itself is NOT stored
+ * here — it comes from the default `Shift Type` (like Frappe, where times live on
+ * the shift and `Employee`/`Shift Assignment` point at one).
+ */
+export interface WorkingHoursSettings {
+  /** Shift Type whose start/end time is the office's working window. */
+  defaultShift: string;
+  /** HR Settings.standard_working_hours — used by overtime & payroll pro-rata. */
+  standardWorkingHours: number;
+  /** Company.default_holiday_list — fallback when no assignment covers the date. */
+  defaultHolidayList: string;
+  allowMultipleShiftAssignments: boolean;
+  sendHolidayReminders: boolean;
+  /** HR Settings.remind_before (Time, hours:minutes before the holiday). */
+  remindBefore: string;
+  /** HR Settings.frequency for the holiday reminder digest. */
+  holidayReminderFrequency: "Weekly" | "Monthly";
+}
+
+export const workingHoursSettings: WorkingHoursSettings = {
+  defaultShift: "General",
+  standardWorkingHours: 8,
+  defaultHolidayList: "2026 Holidays",
+  allowMultipleShiftAssignments: false,
+  sendHolidayReminders: true,
+  remindBefore: "00:15",
+  holidayReminderFrequency: "Weekly",
+};
 
 export interface LeavePeriod { id: ID; name: string; from: string; to: string; startDate: string; isAccual: boolean; }
 export const leavePeriods: LeavePeriod[] = [
@@ -83,11 +233,77 @@ export const leaveEncashments: LeaveEncashment[] = [
 
 // --- Shift & Attendance -----------------------------------------------------
 
-export interface ShiftType { id: ID; name: string; start: string; end: string; hours: number; holidayList: string; }
+/**
+ * `Shift Type` (hrms/hr/doctype/shift_type) — this is where the office start and
+ * end time live (start_time / end_time, both Time & mandatory), together with the
+ * check-in window, grace periods, half-day/absent thresholds and the linked
+ * Holiday List. `hours` is a convenience span (see `shiftHours`) for tooltips.
+ */
+export type RosterColor = "Blue" | "Cyan" | "Fuchsia" | "Green" | "Lime" | "Orange" | "Pink" | "Red" | "Violet" | "Yellow";
+export interface ShiftType {
+  id: ID;
+  name: string;
+  /** start_time — "09:00". */
+  start: string;
+  /** end_time — "18:00"; earlier than start means the shift crosses midnight. */
+  end: string;
+  hours: number;
+  holidayList: string;
+  determineCheckInAndCheckout: "Alternating entries as IN and OUT during the same shift" | "Strictly based on Log Type in Employee Checkin";
+  workingHoursCalculationBasedOn: "First Check-in and Last Check-out" | "Every Valid Check-in and Check-out";
+  halfDayThreshold: number;
+  absentThreshold: number;
+  beginCheckInBefore: number;
+  allowCheckOutAfter: number;
+  lateEntryGracePeriod: number;
+  earlyExitGracePeriod: number;
+  enableAutoAttendance: boolean;
+  processAttendanceAfter: string;
+  markAutoAttendanceOnHolidays: boolean;
+  enableLateEntryMarking: boolean;
+  enableEarlyExitMarking: boolean;
+  color: RosterColor;
+  allowOvertime: boolean;
+  overtimeType: string;
+}
 export const shiftTypes: ShiftType[] = [
-  { id: "st1", name: "General", start: "09:00", end: "18:00", hours: 9, holidayList: "Holidays 2026" },
-  { id: "st2", name: "Early", start: "06:00", end: "14:00", hours: 8, holidayList: "Holidays 2026" },
-  { id: "st3", name: "Late", start: "13:00", end: "21:00", hours: 8, holidayList: "Holidays 2026" },
+  {
+    id: "st1", name: "General", start: "09:00", end: "18:00", hours: 9, holidayList: "2026 Holidays",
+    determineCheckInAndCheckout: "Alternating entries as IN and OUT during the same shift",
+    workingHoursCalculationBasedOn: "First Check-in and Last Check-out",
+    halfDayThreshold: 4, absentThreshold: 2, beginCheckInBefore: 60, allowCheckOutAfter: 60,
+    lateEntryGracePeriod: 15, earlyExitGracePeriod: 15,
+    enableAutoAttendance: true, processAttendanceAfter: "2026-01-01", markAutoAttendanceOnHolidays: false,
+    enableLateEntryMarking: true, enableEarlyExitMarking: false, color: "Blue", allowOvertime: false, overtimeType: "",
+  },
+  {
+    id: "st2", name: "Early", start: "06:00", end: "14:00", hours: 8, holidayList: "US Holidays 2026",
+    determineCheckInAndCheckout: "Strictly based on Log Type in Employee Checkin",
+    workingHoursCalculationBasedOn: "Every Valid Check-in and Check-out",
+    halfDayThreshold: 3, absentThreshold: 1, beginCheckInBefore: 30, allowCheckOutAfter: 30,
+    lateEntryGracePeriod: 10, earlyExitGracePeriod: 10,
+    enableAutoAttendance: false, processAttendanceAfter: "2026-01-01", markAutoAttendanceOnHolidays: false,
+    enableLateEntryMarking: false, enableEarlyExitMarking: false, color: "Green", allowOvertime: true, overtimeType: "Standard Overtime",
+  },
+  {
+    id: "st3", name: "Late", start: "13:00", end: "21:00", hours: 8, holidayList: "2026 Holidays",
+    determineCheckInAndCheckout: "Alternating entries as IN and OUT during the same shift",
+    workingHoursCalculationBasedOn: "First Check-in and Last Check-out",
+    halfDayThreshold: 3, absentThreshold: 1, beginCheckInBefore: 60, allowCheckOutAfter: 120,
+    lateEntryGracePeriod: 30, earlyExitGracePeriod: 15,
+    enableAutoAttendance: true, processAttendanceAfter: "2026-03-01", markAutoAttendanceOnHolidays: true,
+    enableLateEntryMarking: true, enableEarlyExitMarking: true, color: "Orange", allowOvertime: true, overtimeType: "Weekend Overtime",
+  },
+  // Crosses midnight — exercises the night-shift span maths.
+  {
+    id: "st4", name: "Night", start: "22:00", end: "06:00", hours: 8, holidayList: "UK Holidays 2026",
+    determineCheckInAndCheckout: "Strictly based on Log Type in Employee Checkin",
+    workingHoursCalculationBasedOn: "Every Valid Check-in and Check-out",
+    halfDayThreshold: 3, absentThreshold: 1, beginCheckInBefore: 45, allowCheckOutAfter: 60,
+    lateEntryGracePeriod: 20, earlyExitGracePeriod: 20,
+    enableAutoAttendance: false, processAttendanceAfter: "2026-01-01", markAutoAttendanceOnHolidays: false,
+    enableLateEntryMarking: false, enableEarlyExitMarking: false, color: "Violet", allowOvertime: false, overtimeType: "",
+  },
 ];
 
 export interface ShiftLocation { id: ID; name: string; checkinRadius: number; latitude: number; longitude: number; }
@@ -106,6 +322,7 @@ export interface ShiftAssignment { id: ID; employee: string; shiftType: string; 
 export const shiftAssignments: ShiftAssignment[] = [
   { id: "sa1", employee: "Aisha Khan", shiftType: "General", status: "Active", fromDate: "2026-07-01", toDate: "2026-12-31" },
   { id: "sa2", employee: "Leo Martins", shiftType: "Late", status: "Active", fromDate: "2026-07-01", toDate: "2026-12-31" },
+  { id: "sa3", employee: "Dana Cole", shiftType: "Night", status: "Active", fromDate: "2026-07-01", toDate: "2026-12-31" },
 ];
 
 export interface EmployeeCheckin { id: ID; employee: string; device: string; logType: "IN" | "OUT"; time: string; shift: string; lateEntry: boolean; }

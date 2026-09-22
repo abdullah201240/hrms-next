@@ -18,6 +18,8 @@ import {
   leaveBlockLists,
   salaryComponents,
   branches,
+  shiftTypes,
+  overtimeTypes,
 } from "@/lib/mock/data-2";
 import {
   leaveLedgerEntries,
@@ -27,6 +29,7 @@ import {
   employmentTypes,
 } from "@/lib/mock/data-4";
 import { AUTO_CONFIGS } from "@/lib/crud/registry.auto";
+import { WEEK_DAYS, publicHolidays } from "@/lib/holidays";
 
 /* Option helpers pulled from the mock masters (link-field dropdown sources). */
 const employeeNames = employees.map((e) => e.name);
@@ -40,7 +43,12 @@ const departmentNames = departments.map((d) => d.name);
 const designationNames = designations.map((d) => d.name);
 const branchNames = branches.map((b) => b.name);
 const employmentTypeNames = employmentTypes.map((t) => t.name);
+const overtimeTypeNames = overtimeTypes.map((t) => t.name);
+const shiftNames = shiftTypes.map((s) => s.name);
 const DOC_STATUS = ["Draft", "Submitted"] as const;
+
+/** Shift Type `color` (Roster Color) select options. */
+const ROSTER_COLORS = ["Blue", "Cyan", "Fuchsia", "Green", "Lime", "Orange", "Pink", "Red", "Violet", "Yellow"] as const;
 
 const CONFIGS: DoctypeConfig[] = [
   {
@@ -106,6 +114,8 @@ const CONFIGS: DoctypeConfig[] = [
     ],
   },
   {
+    // Hand-cloned from erpnext/setup/doctype/holiday_list — header fields, the
+    // "Add Weekly Holidays" generator and the `Holiday` child table.
     route: "/leave/holidays",
     label: "Holiday List",
     plural: "Holiday Lists",
@@ -117,7 +127,8 @@ const CONFIGS: DoctypeConfig[] = [
       { key: "name", header: "Holiday List", sortable: true },
       { key: "from", header: "From Date" },
       { key: "to", header: "To Date" },
-      { key: "totalHolidays", header: "Total Holidays", align: "right" },
+      { key: "totalHolidays", header: "Total Holidays", align: "right", sortable: true },
+      { key: "holidays", header: "Public", align: "right", render: (r) => publicHolidays(r.holidays ?? []).length },
       { key: "weeklyOff", header: "Weekly Off" },
     ],
     sections: [
@@ -125,12 +136,43 @@ const CONFIGS: DoctypeConfig[] = [
         title: "Holiday List",
         fields: [
           { key: "name", label: "Holiday List Name", type: "data", req: true },
-          { key: "from", label: "From Date", type: "date", req: true },
+          { key: "from", label: "From Date", type: "date", req: true, help: "Leave To Date empty to extend one year from here." },
           { key: "to", label: "To Date", type: "date", req: true },
-          { key: "totalHolidays", label: "Total Holidays", type: "float" },
-          { key: "weeklyOff", label: "Weekly Off", type: "select", options: ["Sunday", "Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "None"] },
-          { key: "description", label: "Description", type: "long", full: true },
+          { key: "totalHolidays", label: "Total Holidays", type: "float", ro: true, help: "Computed from the Holidays table — a half day counts 0.5." },
         ],
+      },
+      {
+        title: "Add Weekly Holidays",
+        desc: "Pick the weekly off, then generate every matching date into the table.",
+        fields: [
+          { key: "weeklyOff", label: "Weekly Off", type: "select", options: WEEK_DAYS },
+          { key: "isHalfDay", label: "Is Half Day", type: "check", help: "Generated weekly offs are counted as half days." },
+        ],
+      },
+      {
+        title: "Add Local Holidays",
+        desc: "Public holidays are typed per row in this build — Frappe fetches them from the `holidays` package by country.",
+        fields: [
+          { key: "country", label: "Country", type: "data", placeholder: "e.g. Bangladesh" },
+          { key: "color", label: "Calendar Colour", type: "data", help: "Shown on the Leave Calendar and Roster." },
+        ],
+      },
+    ],
+    childTables: [
+      {
+        title: "Holidays",
+        desc: "Weekly offs plus public/national holidays — one row per off day.",
+        rowsKey: "holidays",
+        keys: { date: "date", description: "description", weeklyOff: "weeklyOff", halfDay: "halfDay" },
+        columns: [
+          { key: "date", label: "Date", type: "date", req: true },
+          { key: "description", label: "Description", type: "text", req: true },
+          { key: "weeklyOff", label: "Weekly Off", type: "check" },
+          { key: "halfDay", label: "Is Half Day", type: "check" },
+        ],
+        fill: { label: "Add to Holidays", fromKey: "from", toKey: "to", dayKey: "weeklyOff", halfDayKey: "isHalfDay", clearLabel: "Clear Table" },
+        validate: "holidayList",
+        computeTotal: "totalHolidays",
       },
     ],
   },
@@ -377,28 +419,39 @@ const CONFIGS: DoctypeConfig[] = [
     ],
   },
   {
+    // Hand-cloned from hrms/hr/doctype/holiday_list_assignment (submittable).
     route: "/leave/holiday-list-assignment",
     label: "Holiday List Assignment",
     plural: "Holiday List Assignments",
-    desc: "Assign a holiday list to an employee.",
+    desc: "Assign a holiday list to an employee or to the whole company, from a start date.",
     rows: holidayListAssignments,
-    titleKey: "employee",
+    titleKey: "assignedTo",
     subtitleKey: "holidayList",
-    searchKeys: ["employee", "holidayList"],
+    searchKeys: ["assignedTo", "holidayList"],
     columns: [
-      { key: "employee", header: "Employee", sortable: true },
+      { key: "assignedTo", header: "Assigned To", sortable: true },
+      { key: "applicableFor", header: "Applicable For" },
       { key: "holidayList", header: "Holiday List" },
-      { key: "company", header: "Company" },
-      { key: "status", header: "Status", align: "center" },
+      { key: "fromDate", header: "Assignment Starts From", sortable: true },
+      { key: "docStatus", header: "Status", align: "center" },
     ],
     sections: [
       {
         title: "Holiday List Assignment",
         fields: [
-          { key: "employee", label: "Employee", type: "link", options: employeeNames, addLabel: "Employee", req: true },
-          { key: "holidayList", label: "Holiday List", type: "link", options: holidayListNames, addLabel: "Holiday List" },
-          { key: "company", label: "Company", type: "link", options: companyNames, addLabel: "Company" },
-          { key: "status", label: "Status", type: "select", options: ["Active", "Inactive"] },
+          { key: "applicableFor", label: "Applicable For", type: "select", options: ["Employee", "Company"], req: true },
+          { key: "assignedTo", label: "Assigned To", type: "link", options: [...employeeNames, ...companyNames], addLabel: "Employee", req: true, help: "Employee or company — the dynamic link behind Applicable For." },
+          { key: "holidayList", label: "Holiday List", type: "link", options: holidayListNames, addLabel: "Holiday List", req: true },
+          { key: "fromDate", label: "Assignment Starts From", type: "date", req: true, help: "The newest submitted assignment on or before a date wins." },
+        ],
+      },
+      {
+        title: "Holiday List Range",
+        desc: "Copied from the selected list; the assignment stops applying once the list ends.",
+        fields: [
+          { key: "holidayListStart", label: "Holiday List Start", type: "date", ro: true },
+          { key: "holidayListEnd", label: "Holiday List End", type: "date", ro: true },
+          { key: "docStatus", label: "Document Status", type: "select", options: DOC_STATUS },
         ],
       },
     ],
@@ -517,6 +570,72 @@ const CONFIGS: DoctypeConfig[] = [
           { key: "isGroup", label: "Is Group", type: "check" },
           { key: "parentGoal", label: "Parent Goal", type: "link", options: goals.map((g) => g.title), addLabel: "Goal" },
           { key: "description", label: "Description", type: "long", full: true },
+        ],
+      },
+    ],
+  },
+  {
+    // Hand-cloned from hrms/hr/doctype/shift_type — the office start/end time lives here.
+    route: "/attendance/shift-types",
+    label: "Shift Type",
+    plural: "Shift Types",
+    desc: "Working window, grace periods and auto-attendance rules per shift.",
+    rows: shiftTypes,
+    titleKey: "name",
+    searchKeys: ["name", "start", "end"],
+    columns: [
+      { key: "name", header: "Shift Type", sortable: true },
+      { key: "start", header: "Start Time" },
+      { key: "end", header: "End Time" },
+      { key: "holidayList", header: "Holiday List" },
+      { key: "enableAutoAttendance", header: "Auto Attendance", align: "center", render: (r) => (r.enableAutoAttendance ? "Yes" : "No") },
+      { key: "color", header: "Roster", align: "center", render: (r) => (r.color ? String(r.color) : "—") },
+    ],
+    sections: [
+      {
+        title: "Shift",
+        desc: "Start and end time of the working window — employees inherit them through their Shift Assignment.",
+        fields: [
+          { key: "name", label: "Shift Type", type: "data", req: true },
+          { key: "holidayList", label: "Holiday List", type: "link", options: holidayListNames, addLabel: "Holiday List", help: "Weekly offs and public holidays for this shift." },
+          { key: "start", label: "Start Time", type: "time", req: true },
+          { key: "end", label: "End Time", type: "time", req: true, help: "Earlier than Start Time means the shift runs past midnight." },
+          { key: "color", label: "Roster Color", type: "select", options: ROSTER_COLORS },
+        ],
+      },
+      {
+        title: "Check-in & Check-out",
+        fields: [
+          { key: "determineCheckInAndCheckout", label: "Determine Check-in and Check-out", type: "select", full: true, options: ["Alternating entries as IN and OUT during the same shift", "Strictly based on Log Type in Employee Checkin"] },
+          { key: "workingHoursCalculationBasedOn", label: "Working Hours Calculation Based On", type: "select", full: true, options: ["First Check-in and Last Check-out", "Every Valid Check-in and Check-out"] },
+          { key: "beginCheckInBefore", label: "Begin check-in before shift start time (in minutes)", type: "int" },
+          { key: "allowCheckOutAfter", label: "Allow check-out after shift end time (in minutes)", type: "int" },
+          { key: "halfDayThreshold", label: "Working Hours Threshold for Half Day", type: "float", help: "Working hours below which Half Day is marked. (Zero to disable)" },
+          { key: "absentThreshold", label: "Working Hours Threshold for Absent", type: "float", help: "Working hours below which Absent is marked. (Zero to disable)" },
+        ],
+      },
+      {
+        title: "Auto Attendance Settings",
+        fields: [
+          { key: "enableAutoAttendance", label: "Enable Auto Attendance", type: "check", help: "Mark attendance from Employee Checkin logs for employees on this shift." },
+          { key: "processAttendanceAfter", label: "Process Attendance After", type: "date" },
+          { key: "markAutoAttendanceOnHolidays", label: "Mark Auto Attendance on Holidays", type: "check", help: "Only when checkins exist for the holiday." },
+        ],
+      },
+      {
+        title: "Late Entry & Early Exit Settings for Auto Attendance",
+        fields: [
+          { key: "enableLateEntryMarking", label: "Enable Late Entry Marking", type: "check" },
+          { key: "enableEarlyExitMarking", label: "Enable Early Exit Marking", type: "check" },
+          { key: "lateEntryGracePeriod", label: "Late Entry Grace Period", type: "int", help: "Minutes after Start Time still treated as on time." },
+          { key: "earlyExitGracePeriod", label: "Early Exit Grace Period", type: "int", help: "Minutes before End Time still treated as on time." },
+        ],
+      },
+      {
+        title: "Overtime",
+        fields: [
+          { key: "allowOvertime", label: "Allow Overtime", type: "check" },
+          { key: "overtimeType", label: "Overtime Type", type: "link", options: overtimeTypeNames, addLabel: "Overtime Type" },
         ],
       },
     ],

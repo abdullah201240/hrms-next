@@ -16,8 +16,10 @@ import {
 import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { company } from "@/lib/mock/data";
+import { shiftTypes, holidayLists, workingHoursSettings } from "@/lib/mock/data-2";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
+import Link from "next/link";
 
 function Setting({ label, description, checked, onChange }: { label: string; description: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
@@ -43,6 +45,7 @@ export default function SettingsPage() {
   const [prefs, setPrefs] = useState<{ email?: boolean; wfh?: boolean; autoLeave?: boolean }>({});
   const [holidays, setHolidays] = useState(true);
   const [twoFa, setTwoFa] = useState(false);
+  const [wh, setWh] = useState(workingHoursSettings);
 
   const set = (k: keyof typeof org) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setOrg((p) => ({ ...p, [k]: e.target.value }));
@@ -91,6 +94,93 @@ export default function SettingsPage() {
             <div className="space-y-2">
               <Label htmlFor="org-timezone">Timezone</Label>
               <Input id="org-timezone" value={org.timezone} onChange={set("timezone")} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Working Hours &amp; Holidays</CardTitle>
+            <CardDescription>
+              HR Settings — the office window, the fallback holiday list and reminder behaviour.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="max-w-2xl space-y-5">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="wh-shift">Default Shift</Label>
+                <SearchSelect
+                  id="wh-shift"
+                  value={wh.defaultShift}
+                  onChange={(val) => setWh((p) => ({ ...p, defaultShift: val }))}
+                  options={shiftTypes.map((s) => s.name)}
+                  addLabel="Shift Type"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Start &amp; end time come from this{" "}
+                  <Link href="/attendance/shift-types" className="underline">Shift Type</Link>.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="wh-hours">Standard Working Hours (per day)</Label>
+                <Input
+                  id="wh-hours"
+                  type="number"
+                  min={0}
+                  step="0.5"
+                  value={wh.standardWorkingHours}
+                  onChange={(e) => setWh((p) => ({ ...p, standardWorkingHours: Number(e.target.value) }))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="wh-hl">Default Holiday List</Label>
+                <SearchSelect
+                  id="wh-hl"
+                  value={wh.defaultHolidayList}
+                  onChange={(val) => setWh((p) => ({ ...p, defaultHolidayList: val }))}
+                  options={holidayLists.map((h) => h.name)}
+                  addLabel="Holiday List"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Used when no{" "}
+                  <Link href="/leave/holiday-list-assignment" className="underline">Holiday List Assignment</Link>{" "}
+                  covers the employee.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="wh-remind">Remind Before Holiday (hh:mm)</Label>
+                <Input
+                  id="wh-remind"
+                  type="time"
+                  value={wh.remindBefore}
+                  onChange={(e) => setWh((p) => ({ ...p, remindBefore: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="wh-freq">Holiday Reminder Frequency</Label>
+                <SearchSelect
+                  id="wh-freq"
+                  value={wh.holidayReminderFrequency}
+                  onChange={(val) =>
+                    setWh((p) => ({ ...p, holidayReminderFrequency: val as "Weekly" | "Monthly" }))
+                  }
+                  options={["Weekly", "Monthly"]}
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Setting
+                label="Allow multiple shift assignments"
+                description="Let an employee hold more than one active shift at a time."
+                checked={wh.allowMultipleShiftAssignments}
+                onChange={(v) => setWh((p) => ({ ...p, allowMultipleShiftAssignments: v }))}
+              />
+              <Setting
+                label="Send holiday reminders"
+                description="Email the upcoming-holiday digest on the chosen frequency."
+                checked={wh.sendHolidayReminders}
+                onChange={(v) => setWh((p) => ({ ...p, sendHolidayReminders: v }))}
+              />
             </div>
           </CardContent>
         </Card>
