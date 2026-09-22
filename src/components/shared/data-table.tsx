@@ -53,6 +53,8 @@ export function DataTable<T>({
   emptyText = "No records found.",
   defaultSortKey,
   defaultSortDir,
+  selectedIds,
+  onSelectionChange,
 }: {
   columns: Column<T>[];
   rows: T[];
@@ -64,13 +66,21 @@ export function DataTable<T>({
   emptyText?: string;
   defaultSortKey?: string;
   defaultSortDir?: "asc" | "desc";
+  selectedIds?: ReadonlySet<string>;
+  onSelectionChange?: (ids: Set<string>) => void;
 }) {
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<string | null>(defaultSortKey ?? null);
   const [sortDir, setSortDir] = useState<SortDir>(defaultSortDir ?? null);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(pageSize);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [localSelected, setLocalSelected] = useState<Set<string>>(new Set());
+  const selected = selectedIds ?? localSelected;
+  const setSelected = (update: (previous: ReadonlySet<string>) => Set<string>) => {
+    const next = update(selected);
+    if (selectedIds === undefined) setLocalSelected(next);
+    onSelectionChange?.(next);
+  };
 
   const rowId = (row: T, i: number) =>
     String((row as { id?: string | number }).id ?? i);

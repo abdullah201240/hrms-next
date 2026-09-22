@@ -1,5 +1,5 @@
 // ============================================================================
-// Mock HR data — extension 2 (recruitment, performance, tenure, tax & benefits,
+// Mock HR data — extension 2 (recruitment, performance, tenure,
 // reports). Pairs with data.ts + data-2.ts. UI-only; mirrors Frappe HR doctypes.
 // ============================================================================
 import type { ID } from "./data";
@@ -126,7 +126,7 @@ export const grievanceTypes: GrievanceType[] = [
 
 export interface EmployeeGrievance { id: ID; subject: string; raisedBy: string; grievanceAgainst: string; type: string; status: "Open" | "Under Review" | "Resolved"; }
 export const grievances: EmployeeGrievance[] = [
-  { id: "eg1", subject: "Unclear overtime policy", raisedBy: "Nina Patel", grievanceAgainst: "Department", type: "Policy Violation", status: "Open" },
+  { id: "eg1", subject: "Unclear leave policy", raisedBy: "Nina Patel", grievanceAgainst: "Department", type: "Policy Violation", status: "Open" },
   { id: "eg2", subject: "Team conflict mediation", raisedBy: "Owen Wright", grievanceAgainst: "Yuki Tanaka", type: "Workplace Conduct", status: "Resolved" },
 ];
 
@@ -146,37 +146,6 @@ export interface TrainingEvent { id: ID; name: string; trainingProgram: string; 
 export const trainingEvents: TrainingEvent[] = [
   { id: "tev1", name: "Secure Coding — Cohort 1", trainingProgram: "Secure Coding", startTime: "2026-10-12 09:00", endTime: "2026-10-12 16:00", level: "Intermediate", attendees: 14, status: "Scheduled" },
   { id: "tev2", name: "Design Systems — Session 1", trainingProgram: "Design Systems 101", startTime: "2026-09-08 10:00", endTime: "2026-09-08 12:00", level: "Beginner", attendees: 9, status: "Completed" },
-];
-
-// --- Tax & Benefits ---------------------------------------------------------
-
-export interface ExemptionCategory { id: ID; name: string; maxAmount: number; }
-export const exemptionCategories: ExemptionCategory[] = [
-  { id: "ec1", name: "House Rent Allowance", maxAmount: 60000 },
-  { id: "ec2", name: "Health Insurance", maxAmount: 25000 },
-  { id: "ec3", name: "Investments (80C)", maxAmount: 150000 },
-];
-
-export interface ExemptionDeclaration { id: ID; employee: string; company: string; payrollPeriod: string; status: "Draft" | "Submitted"; declarations: { category: string; amount: number }[]; }
-export const exemptionDeclarations: ExemptionDeclaration[] = [
-  { id: "ed1", employee: "Aisha Khan", company: "Acme", payrollPeriod: "2026", status: "Submitted", declarations: [{ category: "House Rent Allowance", amount: 48000 }, { category: "Investments (80C)", amount: 120000 }] },
-  { id: "ed2", employee: "Nina Patel", company: "Acme", payrollPeriod: "2026", status: "Draft", declarations: [{ category: "Health Insurance", amount: 24000 }] },
-];
-
-export interface ExemptionProof { id: ID; employee: string; category: string; declared: number; submitted: number; approved: number; status: "Submitted" | "Approved"; }
-export const exemptionProofs: ExemptionProof[] = [
-  { id: "ep1", employee: "Aisha Khan", category: "Investments (80C)", declared: 120000, submitted: 118000, approved: 118000, status: "Approved" },
-  { id: "ep2", employee: "Aisha Khan", category: "House Rent Allowance", declared: 48000, submitted: 48000, approved: 0, status: "Submitted" },
-];
-
-export interface BenefitApplication { id: ID; employee: string; company: string; payrollPeriod: string; maxBeneficiaryAmount: number; status: "Draft" | "Approved"; }
-export const benefitApplications: BenefitApplication[] = [
-  { id: "ba1", employee: "Tom Becker", company: "Acme", payrollPeriod: "2026", maxBeneficiaryAmount: 10000, status: "Approved" },
-];
-
-export interface BenefitClaim { id: ID; benefitApplication: string; employee: string; expenseDate: string; amount: number; status: "Pending" | "Approved" | "Paid"; }
-export const benefitClaims: BenefitClaim[] = [
-  { id: "bc1", benefitApplication: "BA/2026/0001", employee: "Tom Becker", expenseDate: "2026-09-12", amount: 2400, status: "Approved" },
 ];
 
 // --- Reports catalog (mirrors the 28 real Frappe HR report doctypes) --------
@@ -201,14 +170,11 @@ export const reports: ReportDef[] = [
   { id: "r8", slug: "daily-work-summary-replies", name: "Daily Work Summary Replies", module: "Shift & Attendance", doctype: "Daily Work Summary", columns: ["Employee", "Date", "Reply Status"] },
   { id: "r9", slug: "salary-register", name: "Salary Register", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Designation", "Basic", "Total Earnings", "Total Deductions", "Net Pay"] },
   { id: "r10", slug: "employee-ctc-break-up", name: "Employee CTC Break-up", module: "Payroll", doctype: "Employee", columns: ["Employee", "Component", "Amount"] },
-  { id: "r11", slug: "income-tax-deductions", name: "Income Tax Deductions", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Gross Pay", "Exemption", "Taxable", "TDS"] },
-  { id: "r12", slug: "income-tax-computation", name: "Income Tax Computation", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Head", "Amount"] },
-  { id: "r13", slug: "professional-tax-deductions", name: "Professional Tax Deductions", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Month", "Professional Tax"] },
   { id: "r14", slug: "provident-fund-deductions", name: "Provident Fund Deductions", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Employee Share", "Employer Share"] },
   { id: "r15", slug: "salary-payments-based-on-payment-mode", name: "Salary Payments Based On Payment Mode", module: "Payroll", doctype: "Salary Slip", columns: ["Payment Mode", "No of Employees", "Amount"] },
   { id: "r16", slug: "salary-payments-via-ecs", name: "Salary Payments via ECS", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Bank", "Account No", "Net Pay"] },
   { id: "r17", slug: "bank-remittance", name: "Bank Remittance", module: "Payroll", doctype: "Salary Slip", columns: ["Employee", "Bank", "Account Type", "Amount"] },
-  { id: "r18", slug: "accrued-earnings-report", name: "Accrued Earnings Report", module: "Payroll", doctype: "Employee Benefit Ledger", columns: ["Employee", "Leave Type", "Accrued Days", "Amount"] },
+  { id: "r18", slug: "accrued-earnings-report", name: "Accrued Earnings Report", module: "Payroll", doctype: "Employee Benefit Application", columns: ["Employee", "Leave Type", "Accrued Days", "Amount"] },
   { id: "r19", slug: "employee-advance-summary", name: "Employee Advance Summary", module: "Payroll", doctype: "Employee Advance", columns: ["Employee", "Paid Amount", "Refund Amount", "Advance Balance"] },
   { id: "r20", slug: "unpaid-expense-claim", name: "Unpaid Expense Claim", module: "Expenses", doctype: "Expense Claim", columns: ["Employee", "Claim", "Category", "Amount", "Status"] },
   { id: "r21", slug: "vehicle-expenses", name: "Vehicle Expenses", module: "Expenses", doctype: "Vehicle Log", columns: ["Vehicle", "Type", "Date", "Amount"] },
@@ -242,7 +208,7 @@ function cellFor(col: string, idx: number, row: number): string {
     if (/payment mode/.test(c)) return ["Bank", "Cash", "UPI"][r % 3];
     return NAMES[r % NAMES.length];
   }
-  if (/amount|pay|balance|earnings|deduction|basic|tds|tax|share|refund|net|cost|profit|professional tax/.test(c)) return money(800 + ((r * 137 + idx * 53) % 9200));
+  if (/amount|pay|balance|earnings|deduction|basic|share|refund|net|cost|profit/.test(c)) return money(800 + ((r * 137 + idx * 53) % 9200));
   if (/%/.test(c)) return 60 + ((r * 7 + idx) % 40) + "%";
   if (/date|dob|birth/.test(c)) return ["2026-09-21", "2026-09-20", "2026-09-18", "2026-09-15", "2026-09-11", "2026-09-08"][r % 6];
   if (/time/.test(c)) return ["09:02", "18:15", "08:55", "17:40", "13:05", "21:00"][r % 6];

@@ -81,9 +81,9 @@ const actionItems = [
   {
     count: 3,
     color: "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400",
-    title: "Shift assignments pending",
-    desc: "Roster scheduling check",
-    href: "/attendance/shift-assignment-tool",
+    title: "Attendance requests pending",
+    desc: "Work-from-home & regularization",
+    href: "/attendance/attendance-requests",
   },
 ];
 

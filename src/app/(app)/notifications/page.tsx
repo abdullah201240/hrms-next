@@ -1,29 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useTaskNotifications } from "@/hooks/use-task-workspace";
+import { TaskBoundary } from "@/components/tasks/task-shared";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Bell, CheckCheck } from "lucide-react";
-import { notifications as seed } from "@/lib/mock/data-4";
 
 export default function NotificationsPage() {
-  const [readIds, setReadIds] = useState<string[]>(
-    seed.filter((n) => n.read).map((n) => n.id),
-  );
-  const unread = seed.filter((n) => !readIds.includes(n.id));
+  return <TaskBoundary>{() => <NotificationList />}</TaskBoundary>;
+}
+function NotificationList() {
+  const { notifications, unread, markRead, formatWhen } = useTaskNotifications();
 
   return (
     <>
       <PageHeader
         title="Notifications"
-        description="Updates about your leave, salary, claims and requests."
+        description={`${unread.length} unread · Demo updates about tasks, leave, salary, and requests.`}
       >
         <Button
           variant="outline"
           className="h-10 gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 font-medium text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800"
-          onClick={() => setReadIds(seed.map((n) => n.id))}
+          onClick={() => markRead(unread.map((n) => n.id))}
           disabled={unread.length === 0}
         >
           <CheckCheck className="size-4" />
@@ -32,8 +33,9 @@ export default function NotificationsPage() {
       </PageHeader>
 
       <div className="space-y-3">
-        {seed.map((n) => {
-          const isRead = readIds.includes(n.id);
+        {!notifications.length && <Card><CardContent className="py-8 text-center text-sm text-muted-foreground">No notifications for this demo employee.</CardContent></Card>}
+        {notifications.map((n) => {
+          const isRead = n.read;
           return (
             <Card
               key={n.id}
@@ -55,7 +57,7 @@ export default function NotificationsPage() {
                 </div>
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{n.title}</p>
+                    <Link href={n.href} onClick={() => !n.read && markRead([n.id])} className="text-sm font-semibold text-slate-900 hover:text-primary dark:text-slate-100">{n.title}</Link>
                     {!isRead && (
                       <Badge variant="secondary" className="rounded-full bg-blue-50 px-2 py-0 text-[10px] font-semibold text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                         New
@@ -64,17 +66,18 @@ export default function NotificationsPage() {
                   </div>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">{n.body}</p>
                   <p className="text-xs text-slate-400 dark:text-slate-500">
-                    {n.docType} · {n.from} · {n.when}
+                    {n.docType} · {n.from} · {formatWhen(n.when)}
                   </p>
                 </div>
                 {!isRead && (
-                  <button
-                    type="button"
-                    onClick={() => setReadIds((r) => [...r, n.id])}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => markRead([n.id])}
                     className="shrink-0 text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
                   >
                     Mark read
-                  </button>
+                  </Button>
                 )}
               </CardContent>
             </Card>

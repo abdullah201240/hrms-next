@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useTaskNotifications } from "@/hooks/use-task-workspace";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,17 +8,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { notifications as seed } from "@/lib/mock/data-4";
 import { Bell, CheckCheck } from "lucide-react";
 
 /** Header notifications control: a bell with an unread-count badge that opens a
  *  dropdown of recent notifications and links to the full /notifications page.
  *  Read state is tracked locally for the session (UI-only, mirrors the page). */
 export function NavNotifications() {
-  const [readIds, setReadIds] = useState<string[]>(
-    seed.filter((n) => n.read).map((n) => n.id),
-  );
-  const unread = seed.filter((n) => !readIds.includes(n.id));
+  const { notifications, unread, ready, error, markRead, formatWhen } = useTaskNotifications();
 
   return (
     <Popover>
@@ -50,26 +46,30 @@ export function NavNotifications() {
               </span>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => setReadIds(seed.map((n) => n.id))}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => markRead(unread.map((n) => n.id))}
             disabled={unread.length === 0}
             className="flex items-center gap-1 text-xs font-medium text-primary hover:underline disabled:pointer-events-none disabled:opacity-50"
           >
             <CheckCheck className="size-3.5" />
             Mark all read
-          </button>
+          </Button>
         </div>
 
         {/* List */}
         <div className="max-h-80 overflow-y-auto">
-          {seed.map((n) => {
-            const isRead = readIds.includes(n.id);
+          {!ready && <p className="p-4 text-xs text-muted-foreground">Loading notifications…</p>}
+          {error && <p role="alert" className="p-4 text-xs text-destructive">Demo storage is unavailable. Open Tasks to retry.</p>}
+          {ready && !error && !notifications.length && <p className="p-4 text-xs text-muted-foreground">No notifications for this demo employee.</p>}
+          {notifications.map((n) => {
+            const isRead = n.read;
             return (
               <Link
                 key={n.id}
-                href="/notifications"
-                onClick={() => setReadIds((r) => (r.includes(n.id) ? r : [...r, n.id]))}
+                href={n.href}
+                onClick={() => !n.read && markRead([n.id])}
                 className={`flex items-start gap-3 border-b px-4 py-3 transition-colors last:border-b-0 hover:bg-muted ${
                   !isRead ? "bg-muted/50" : ""
                 }`}
@@ -91,7 +91,7 @@ export function NavNotifications() {
                   </p>
                   <p className="line-clamp-2 text-xs text-muted-foreground">{n.body}</p>
                   <p className="text-[11px] text-muted-foreground">
-                    {n.from} · {n.when}
+                    {n.from} · {formatWhen(n.when)}
                   </p>
                 </div>
               </Link>

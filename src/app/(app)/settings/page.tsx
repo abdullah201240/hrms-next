@@ -16,7 +16,7 @@ import {
 import { SearchSelect } from "@/components/shared/search-select";
 import { PageHeader } from "@/components/shared/page-header";
 import { company } from "@/lib/mock/data";
-import { shiftTypes, holidayLists, workingHoursSettings } from "@/lib/mock/data-2";
+import { holidayLists, workingHoursSettings } from "@/lib/mock/data-2";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
 import Link from "next/link";
@@ -100,9 +100,9 @@ export default function SettingsPage() {
 
         <Card className="rounded-2xl border border-slate-200/80 bg-white shadow-xs dark:border-slate-800/80 dark:bg-[#121826] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
           <CardHeader>
-            <CardTitle className="text-base">Working Hours &amp; Holidays</CardTitle>
+            <CardTitle className="text-base">General Office Timing &amp; Working Hours</CardTitle>
             <CardDescription>
-              HR Settings — the office window and the fallback holiday list. Weekly offs and public
+              Organization-wide general shift schedule and fallback holiday list. Weekly offs and public
               holidays are managed on the{" "}
               <Link href="/leave/holidays" className="font-medium text-primary hover:underline">Holidays</Link>{" "}
               page.
@@ -111,17 +111,15 @@ export default function SettingsPage() {
           <CardContent className="max-w-2xl space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="wh-shift" className="text-xs font-semibold">Default Shift</Label>
-                <SearchSelect
+                <Label htmlFor="wh-shift" className="text-xs font-semibold">Shift Name</Label>
+                <Input
                   id="wh-shift"
-                  value={wh.defaultShift}
-                  onChange={(val) => setWh((p) => ({ ...p, defaultShift: val }))}
-                  options={shiftTypes.map((s) => s.name)}
-                  addLabel="Shift Type"
+                  value={wh.shiftName}
+                  onChange={(e) => setWh((p) => ({ ...p, shiftName: e.target.value }))}
+                  className="rounded-lg"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Start &amp; end time come from this{" "}
-                  <Link href="/attendance/shift-types" className="text-primary hover:underline">Shift Type</Link>.
+                  Unified general shift that applies organization-wide.
                 </p>
               </div>
               <div className="space-y-2">
@@ -133,6 +131,26 @@ export default function SettingsPage() {
                   step="0.5"
                   value={wh.standardWorkingHours}
                   onChange={(e) => setWh((p) => ({ ...p, standardWorkingHours: Number(e.target.value) }))}
+                  className="rounded-lg"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="wh-start" className="text-xs font-semibold">Office Start Time</Label>
+                <Input
+                  id="wh-start"
+                  type="time"
+                  value={wh.startTime}
+                  onChange={(e) => setWh((p) => ({ ...p, startTime: e.target.value }))}
+                  className="rounded-lg"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="wh-end" className="text-xs font-semibold">Office End Time</Label>
+                <Input
+                  id="wh-end"
+                  type="time"
+                  value={wh.endTime}
+                  onChange={(e) => setWh((p) => ({ ...p, endTime: e.target.value }))}
                   className="rounded-lg"
                 />
               </div>
@@ -174,12 +192,6 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="space-y-1">
-              <Setting
-                label="Allow multiple shift assignments"
-                description="Let an employee hold more than one active shift at a time."
-                checked={wh.allowMultipleShiftAssignments}
-                onChange={(v) => setWh((p) => ({ ...p, allowMultipleShiftAssignments: v }))}
-              />
               <Setting
                 label="Send holiday reminders"
                 description="Email the upcoming-holiday digest on the chosen frequency."

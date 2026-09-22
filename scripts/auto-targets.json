@@ -1,2948 +1,1966 @@
 [
-{
-"route": "/attendance/attendance-requests",
-"var": "attendanceRequests",
-"plural": "Attendance Requests",
-"desc": "Work-from-home / on-duty requests.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"from",
-"From",
-null,
-true
-],
-[
-"to",
-"To",
-null,
-true
-],
-[
-"reason",
-"Reason",
-null,
-false
-],
-[
-"workFromHome",
-"WFH",
-"center",
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/checkin",
-"var": "employeeCheckins",
-"plural": "Employee Checkin",
-"desc": "Raw check-in / check-out logs.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"logType",
-"Type",
-"center",
-false
-],
-[
-"time",
-"Time",
-null,
-false
-],
-[
-"shift",
-"Shift",
-null,
-false
-],
-[
-"device",
-"Device",
-null,
-false
-],
-[
-"lateEntry",
-"Late",
-"center",
-false
-]
-]
-},
-{
-"route": "/attendance/compensatory-leave",
-"var": "compensatoryLeaveRequests",
-"plural": "Compensatory Leave Requests",
-"desc": "Leave earned for working on off days.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"workDate",
-"Worked On",
-null,
-true
-],
-[
-"from",
-"Leave From",
-null,
-false
-],
-[
-"to",
-"Leave To",
-null,
-false
-],
-[
-"reason",
-"Reason",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/daily-work-summary",
-"var": "dailyWorkSummaries",
-"plural": "Daily Work Summary Group",
-"desc": "Automated end-of-day work digests.",
-"columns": [
-[
-"name",
-"Summary",
-null,
-true
-],
-[
-"template",
-"Template",
-null,
-false
-],
-[
-"group",
-"Group",
-null,
-false
-],
-[
-"recipients",
-"Recipients",
-"center",
-true
-],
-[
-"enabled",
-"Enabled",
-"center",
-false
-]
-]
-},
-{
-"route": "/attendance/overtime-slips",
-"var": "overtimeSlips",
-"plural": "Overtime Slips",
-"desc": "Approved overtime payouts per period.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"overtimeType",
-"Overtime Type",
-null,
-false
-],
-[
-"payrollPeriod",
-"Period",
-null,
-false
-],
-[
-"overtimeHours",
-"Hours",
-"center",
-true
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/overtime-types",
-"var": "overtimeTypes",
-"plural": "Overtime Types",
-"desc": "Configured overtime calculation types.",
-"columns": [
-[
-"name",
-"Overtime Type",
-null,
-true
-],
-[
-"forDailyWage",
-"Daily Wage",
-"center",
-false
-],
-[
-"maxOvertimeHours",
-"Max Hrs/Day",
-"center",
-false
-],
-[
-"hoursPerSlip",
-"Hours/Slip",
-"center",
-false
-]
-]
-},
-{
-"route": "/attendance/shift-assignments",
-"var": "shiftAssignments",
-"plural": "Shift Assignments",
-"desc": "Employees assigned to shift types.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"shiftType",
-"Shift Type",
-null,
-false
-],
-[
-"fromDate",
-"From",
-null,
-true
-],
-[
-"toDate",
-"To",
-null,
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/shift-locations",
-"var": "shiftLocations",
-"plural": "Shift Locations",
-"desc": "Geofenced check-in points.",
-"columns": [
-[
-"name",
-"Location",
-null,
-true
-],
-[
-"checkinRadius",
-"Radius (m)",
-"center",
-true
-],
-[
-"latitude",
-"Latitude",
-null,
-false
-],
-[
-"longitude",
-"Longitude",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/shift-requests",
-"var": "shiftRequests",
-"plural": "Shift Requests",
-"desc": "Employee requests to change shift.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"from",
-"From",
-null,
-true
-],
-[
-"to",
-"To",
-null,
-true
-],
-[
-"shiftType",
-"Requested Shift",
-null,
-false
-],
-[
-"reason",
-"Reason",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/shift-schedules",
-"var": "shiftSchedules",
-"plural": "Shift Schedules",
-"desc": "Recurring shift assignment plans.",
-"columns": [
-[
-"name",
-"Schedule",
-null,
-true
-],
-[
-"shiftType",
-"Shift Type",
-null,
-false
-],
-[
-"location",
-"Location",
-null,
-false
-],
-[
-"frequency",
-"Frequency",
-"center",
-false
-],
-[
-"employeesAssigned",
-"Employees",
-"center",
-true
-],
-[
-"enabled",
-"Enabled",
-"center",
-false
-]
-]
-},
-{
-"route": "/attendance/shift-types",
-"var": "shiftTypes",
-"plural": "Shift Types",
-"desc": "Defined working shift patterns.",
-"columns": [
-[
-"name",
-"Shift Type",
-null,
-true
-],
-[
-"start",
-"Start",
-null,
-false
-],
-[
-"end",
-"End",
-null,
-false
-],
-[
-"hours",
-"Hours",
-"center",
-true
-],
-[
-"holidayList",
-"Holiday List",
-null,
-false
-]
-]
-},
-{
-"route": "/attendance/timesheets",
-"var": "timesheets",
-"plural": "Timesheets",
-"desc": "Project time logged by employees.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"project",
-"Project",
-null,
-false
-],
-[
-"fromDate",
-"From",
-null,
-false
-],
-[
-"toDate",
-"To",
-null,
-false
-],
-[
-"totalHours",
-"Hours",
-"center",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/branches",
-"var": "branches",
-"plural": "Branches",
-"desc": "Physical and distributed office locations.",
-"columns": [
-[
-"name",
-"Branch",
-null,
-true
-],
-[
-"city",
-"City",
-null,
-true
-],
-[
-"company",
-"Company",
-null,
-false
-],
-[
-"head",
-"Branch Head",
-null,
-false
-]
-]
-},
-{
-"route": "/departments",
-"var": "departments",
-"plural": "Departments",
-"desc": null,
-"columns": [
-[
-"name",
-"Department",
-null,
-true
-],
-[
-"head",
-"Head of Department",
-null,
-true
-],
-[
-"employeeCount",
-"Employees",
-"right",
-true
-]
-]
-},
-{
-"route": "/designations",
-"var": "designations",
-"plural": "Designations",
-"desc": null,
-"columns": [
-[
-"name",
-"Designation",
-null,
-true
-],
-[
-"department",
-"Department",
-null,
-true
-],
-[
-"grade",
-"Grade",
-null,
-false
-],
-[
-"reportsTo",
-"Reports To",
-null,
-false
-]
-]
-},
-{
-"route": "/employee-grades",
-"var": "employeeGrades",
-"plural": "Employee Grades",
-"desc": "Salary grades and bands used for costing and appraisals.",
-"columns": [
-[
-"name",
-"Grade",
-null,
-true
-],
-[
-"level",
-"Level",
-"center",
-true
-],
-[
-"minSalary",
-"Min Salary",
-"right",
-true
-],
-[
-"maxSalary",
-"Max Salary",
-"right",
-true
-],
-[
-"defaultComponent",
-"Default Structure",
-null,
-false
-]
-]
-},
-{
-"route": "/employee-groups",
-"var": "employeeGroups",
-"plural": "Employee Groups",
-"desc": "Logical groupings used for leave, payroll and reports.",
-"columns": [
-[
-"name",
-"Group",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-],
-[
-"strength",
-"Strength",
-"right",
-true
-]
-]
-},
-{
-"route": "/employment-types",
-"var": "employmentTypes",
-"plural": "Employment Types",
-"desc": "Classifications of employment.",
-"columns": [
-[
-"name",
-"Type",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-]
-]
-},
-{
-"route": "/expenses/full-and-final",
-"var": "fullAndFinalStatements",
-"plural": "Full and Final Statement",
-"desc": "Final settlement for exiting employees.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"payrollDate",
-"Payroll Date",
-null,
-true
-],
-[
-"unsalariedAmount",
-"Unsalaried",
-"right",
-false
-],
-[
-"salaryPayout",
-"Salary",
-"right",
-true
-],
-[
-"totalAmount",
-"Total",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/expenses/purpose-of-travel",
-"var": "purposesOfTravel",
-"plural": "Purpose of Travel",
-"desc": "Selectable reasons on travel requests.",
-"columns": [
-[
-"name",
-"Purpose of Travel",
-null,
-true
-]
-]
-},
-{
-"route": "/expenses/travel-requests",
-"var": "travelRequests",
-"plural": "Travel Requests",
-"desc": "Employee travel approvals.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"purpose",
-"Purpose",
-null,
-false
-],
-[
-"modeOfTravel",
-"Mode",
-"center",
-false
-],
-[
-"travelDate",
-"Date",
-null,
-true
-],
-[
-"amount",
-"Est. Cost",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/expenses/types",
-"var": "expenseClaimTypes",
-"plural": "Expense Claim Types",
-"desc": "Categories of reimbursable expense.",
-"columns": [
-[
-"name",
-"Type",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-],
-[
-"needsReceipt",
-"Receipt",
-"center",
-false
-]
-]
-},
-{
-"route": "/expenses/vehicle-logs",
-"var": "vehicleLogs",
-"plural": "Vehicle Logs",
-"desc": "Company vehicle in/out logs.",
-"columns": [
-[
-"licensePlate",
-"Vehicle",
-null,
-true
-],
-[
-"employee",
-"Driver",
-null,
-false
-],
-[
-"type",
-"In/Out",
-"center",
-false
-],
-[
-"date",
-"When",
-null,
-false
-],
-[
-"logType",
-"Log Type",
-null,
-false
-]
-]
-},
-{
-"route": "/expenses/vehicle-service",
-"var": "vehicleServices",
-"plural": "Vehicle Service",
-"desc": "Company vehicle service records.",
-"columns": [
-[
-"licensePlate",
-"Vehicle",
-null,
-true
-],
-[
-"employee",
-"Requested By",
-null,
-false
-],
-[
-"serviceDate",
-"Service Date",
-null,
-true
-],
-[
-"type",
-"Type",
-null,
-false
-],
-[
-"invoiceNo",
-"Invoice",
-null,
-false
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/my-advance",
-"var": "employeeAdvances",
-"plural": "My Salary Advances",
-"desc": "Apply for an advance and track your existing requests.",
-"columns": [
-[
-"purpose",
-"Purpose / Ref",
-null,
-true
-],
-[
-"advanceDate",
-"Applied",
-null,
-true
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"paidAmount",
-"Paid",
-"right",
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/my-claims",
-"var": "expenseClaims",
-"plural": "My Expense Claims",
-"desc": "Submit and track your reimbursement claims.",
-"columns": [
-[
-"claimId",
-"Claim",
-null,
-true
-],
-[
-"category",
-"Category",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-],
-[
-"date",
-"Date",
-null,
-true
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/additional-salary",
-"var": "additionalSalaries",
-"plural": "Additional Salary",
-"desc": "One-off bonuses & allowances into payroll.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"component",
-"Component",
-null,
-false
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"from",
-"From",
-null,
-false
-],
-[
-"overwrite",
-"Overwrite",
-"center",
-false
-]
-]
-},
-{
-"route": "/payroll/advances",
-"var": "employeeAdvances",
-"plural": "Employee Advance",
-"desc": "Advances paid against future salary.",
-"columns": [
-[
-"purpose",
-"Advance",
-null,
-true
-],
-[
-"employee",
-"Employee",
-null,
-false
-],
-[
-"advanceDate",
-"Date",
-null,
-true
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"paidAmount",
-"Paid",
-"right",
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/arrears",
-"var": "arrears",
-"plural": "Arrears",
-"desc": "Salary arrears paid to employees.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"payrollPeriod",
-"Payroll Period",
-null,
-false
-],
-[
-"fromMonth",
-"From",
-null,
-false
-],
-[
-"toMonth",
-"To",
-null,
-false
-],
-[
-"totalArrearAmount",
-"Amount",
-"right",
-true
-],
-[
-"submitted",
-"Submitted",
-"center",
-false
-]
-]
-},
-{
-"route": "/payroll/assignments",
-"var": "salaryStructureAssignments",
-"plural": "Salary Structure Assignment",
-"desc": "Employee-to-structure mapping with base pay.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"salaryStructure",
-"Structure",
-null,
-false
-],
-[
-"base",
-"Base",
-"right",
-true
-],
-[
-"amount",
-"Monthly",
-"right",
-true
-],
-[
-"fromDate",
-"From",
-null,
-false
-],
-[
-"currency",
-"Currency",
-"center",
-false
-]
-]
-},
-{
-"route": "/payroll/components",
-"var": "salaryComponents",
-"plural": "Salary Components",
-"desc": "Earnings and deductions building a structure.",
-"columns": [
-[
-"name",
-"Component",
-null,
-true
-],
-[
-"type",
-"Type",
-"center",
-false
-],
-[
-"formula",
-"Formula",
-null,
-false
-],
-[
-"basedOn",
-"Based On",
-null,
-false
-],
-[
-"dependsOnPaymentDays",
-"Pro-rated",
-"center",
-false
-]
-]
-},
-{
-"route": "/payroll/correction",
-"var": "payrollCorrections",
-"plural": "Payroll Correction",
-"desc": "Corrections against a payroll entry.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"payrollEntry",
-"Payroll Entry",
-null,
-false
-],
-[
-"month",
-"Month",
-"center",
-false
-],
-[
-"submitted",
-"Submitted",
-"center",
-false
-]
-]
-},
-{
-"route": "/payroll/cost-centers",
-"var": "employeeCostCenters",
-"plural": "Employee Cost Centers",
-"desc": "Allocate salary expense across cost centers.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"department",
-"Department",
-null,
-false
-],
-[
-"costCenter",
-"Cost Center",
-null,
-false
-],
-[
-"percentage",
-"Allocation",
-"center",
-true
-]
-]
-},
-{
-"route": "/payroll/gratuity",
-"var": "gratuities",
-"plural": "Gratuity",
-"desc": "Accrued gratuity entitlements.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"gratuityRule",
-"Rule",
-null,
-false
-],
-[
-"currentGratuityAmount",
-"Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/incentives",
-"var": "employeeIncentives",
-"plural": "Employee Incentives",
-"desc": "Performance incentive payments.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"payoutDate",
-"Payout Date",
-null,
-true
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"note",
-"Note",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/other-income",
-"var": "employeeOtherIncomes",
-"plural": "Employee Other Income",
-"desc": "Additional income taxed with salary.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"incomeType",
-"Income Type",
-null,
-false
-],
-[
-"payStructureComponent",
-"Component",
-null,
-false
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"note",
-"Note",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/periods",
-"var": "payrollPeriods",
-"plural": "Payroll Periods",
-"desc": "Fiscal periods used for payroll & tax.",
-"columns": [
-[
-"name",
-"Period",
-null,
-true
-],
-[
-"startDate",
-"Start",
-null,
-true
-],
-[
-"endDate",
-"End",
-null,
-true
-],
-[
-"company",
-"Company",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/retention-bonus",
-"var": "retentionBonuses",
-"plural": "Retention Bonus",
-"desc": "Scheduled retention bonus payouts.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"bonusPaymentPlan",
-"Plan",
-null,
-false
-],
-[
-"bonusAmount",
-"Amount",
-"right",
-true
-],
-[
-"bonusPaymentDate",
-"Payment Date",
-null,
-true
-],
-[
-"payoutStatus",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/slips",
-"var": "salarySlips",
-"plural": "Salary Slips",
-"desc": "Monthly payslips and their payout status.",
-"columns": [
-[
-"employeeName",
-"Employee",
-null,
-true
-],
-[
-"employeeId",
-"Emp ID",
-null,
-false
-],
-[
-"month",
-"Pay Period",
-null,
-true
-],
-[
-"gross",
-"Gross",
-"right",
-true
-],
-[
-"deductions",
-"Deductions",
-"right",
-false
-],
-[
-"net",
-"Net Pay",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/tax-slabs",
-"var": "incomeTaxSlabs",
-"plural": "Income Tax Slabs",
-"desc": "Tax brackets applied to taxable salary.",
-"columns": [
-[
-"name",
-"Slab",
-null,
-true
-],
-[
-"fromAmount",
-"From",
-"right",
-true
-],
-[
-"toAmount",
-"To",
-"right",
-true
-],
-[
-"percentDeducted",
-"Rate",
-"center",
-false
-],
-[
-"company",
-"Company",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/taxable-slabs",
-"var": "taxableSalarySlabs",
-"plural": "Taxable Salary Slabs",
-"desc": "Slab-wise taxable breakdown per slip.",
-"columns": [
-[
-"salarySlip",
-"Salary Slip",
-null,
-true
-],
-[
-"employee",
-"Employee",
-null,
-false
-],
-[
-"fromAmount",
-"From",
-"right",
-false
-],
-[
-"toAmount",
-"To",
-"right",
-false
-],
-[
-"percentDeducted",
-"Rate",
-"center",
-false
-]
-]
-},
-{
-"route": "/payroll/withholding-cycles",
-"var": "salaryWithholdingCycles",
-"plural": "Salary Withholding Cycle",
-"desc": "Grouped withholding periods.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"fromDate",
-"From",
-null,
-false
-],
-[
-"toDate",
-"To",
-null,
-false
-],
-[
-"withholdingAmount",
-"Withheld",
-"right",
-true
-],
-[
-"receivedAmount",
-"Received",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/payroll/withholding",
-"var": "salaryWithholdings",
-"plural": "Salary Withholding",
-"desc": "Amounts withheld from salary.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"fromDate",
-"From",
-null,
-false
-],
-[
-"toDate",
-"To",
-null,
-false
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/performance/appraisals",
-"var": "appraisals",
-"plural": "Appraisals",
-"desc": "Performance review cycles and ratings.",
-"columns": [
-[
-"employeeName",
-"Employee",
-null,
-true
-],
-[
-"department",
-"Department",
-null,
-true
-],
-[
-"cycle",
-"Cycle",
-null,
-false
-],
-[
-"selfRating",
-"Self",
-"center",
-false
-],
-[
-"managerRating",
-"Manager",
-"center",
-false
-],
-[
-"finalScore",
-"Score",
-"center",
-true
-],
-[
-"dueOn",
-"Due",
-null,
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/performance/cycles",
-"var": "appraisalCycles",
-"plural": "Appraisal Cycles",
-"desc": "Periodic review cycles.",
-"columns": [
-[
-"name",
-"Cycle",
-null,
-true
-],
-[
-"appraisalTemplate",
-"Template",
-null,
-false
-],
-[
-"startDate",
-"Start",
-null,
-true
-],
-[
-"endDate",
-"End",
-null,
-true
-],
-[
-"kraAssessment",
-"KRA",
-"center",
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/performance/feedback-criteria",
-"var": "feedbackCriteria",
-"plural": "Feedback Criteria",
-"desc": "Criteria used across appraisal feedback forms.",
-"columns": [
-[
-"name",
-"Criteria",
-null,
-true
-],
-[
-"category",
-"Category",
-null,
-true
-]
-]
-},
-{
-"route": "/performance/feedback",
-"var": "performanceFeedbacks",
-"plural": "Performance Feedback",
-"desc": "Reviewer feedback on appraisals.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"reviewer",
-"Reviewer",
-null,
-false
-],
-[
-"reviewedOn",
-"Reviewed On",
-null,
-true
-],
-[
-"totalScore",
-"Score",
-"center",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/performance/kra",
-"var": "kras",
-"plural": "Key Result Areas",
-"desc": "KRAs used in appraisals.",
-"columns": [
-[
-"name",
-"KRA",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-],
-[
-"isCritical",
-"Critical",
-"center",
-false
-]
-]
-},
-{
-"route": "/performance/promotions",
-"var": "promotions",
-"plural": "Promotions",
-"desc": "Employee grade promotions.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"promotionDate",
-"Effective",
-null,
-true
-],
-[
-"fromGrade",
-"From Grade",
-null,
-false
-],
-[
-"toGrade",
-"To Grade",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/performance/templates",
-"var": "appraisalTemplates",
-"plural": "Appraisal Templates",
-"desc": "Scoring templates for reviews.",
-"columns": [
-[
-"name",
-"Template",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-],
-[
-"totalScore",
-"Max Score",
-"center",
-true
-]
-]
-},
-{
-"route": "/recruitment/applications",
-"var": "jobApplications",
-"plural": "Applications",
-"desc": null,
-"columns": [
-[
-"applicantName",
-"Applicant",
-null,
-true
-],
-[
-"jobTitle",
-"Position",
-null,
-true
-],
-[
-"source",
-"Source",
-null,
-false
-],
-[
-"appliedOn",
-"Applied",
-null,
-true
-],
-[
-"rating",
-"Rating",
-null,
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/appointment-letter-templates",
-"var": "appointmentLetterTemplates",
-"plural": "Appointment Letter Templates",
-"desc": "Templates used to generate appointment letters.",
-"columns": [
-[
-"name",
-"Template",
-null,
-true
-],
-[
-"company",
-"Company",
-null,
-true
-],
-[
-"basedOn",
-"Based On",
-null,
-true
-]
-]
-},
-{
-"route": "/recruitment/appointment-letters",
-"var": "appointmentLetters",
-"plural": "Appointment Letters",
-"desc": "Formal appointment letter records.",
-"columns": [
-[
-"employeeName",
-"Employee",
-null,
-true
-],
-[
-"designation",
-"Designation",
-null,
-false
-],
-[
-"basicSalary",
-"Basic",
-"right",
-true
-],
-[
-"templName",
-"Template",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/interview-rounds",
-"var": "interviewRounds",
-"plural": "Interview Rounds",
-"desc": "Standard interview stages used in recruitment.",
-"columns": [
-[
-"name",
-"Round",
-null,
-true
-],
-[
-"interviewType",
-"Type",
-null,
-true
-],
-[
-"expectedDuration",
-"Expected Duration (min)",
-"center",
-true
-]
-]
-},
-{
-"route": "/recruitment/interview-types",
-"var": "interviewTypes",
-"plural": "Interview Types",
-"desc": "Classifications used when scheduling interviews.",
-"columns": [
-[
-"name",
-"Interview Type",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/interviews",
-"var": "interviews",
-"plural": "Interviews",
-"desc": "Scheduled and completed interviews.",
-"columns": [
-[
-"applicantName",
-"Applicant",
-null,
-true
-],
-[
-"jobTitle",
-"Job Title",
-null,
-false
-],
-[
-"round",
-"Round",
-null,
-false
-],
-[
-"date",
-"Scheduled",
-null,
-true
-],
-[
-"interviewers",
-"Interviewers",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/job-offer-term-templates",
-"var": "jobOfferTermTemplates",
-"plural": "Job Offer Term Templates",
-"desc": "Standard terms attached to job offers.",
-"columns": [
-[
-"name",
-"Term Template",
-null,
-true
-],
-[
-"offerTerm",
-"Offer Term",
-null,
-true
-],
-[
-"weight",
-"Weight",
-"center",
-false
-]
-]
-},
-{
-"route": "/recruitment/job-opening-templates",
-"var": "jobOpeningTemplates",
-"plural": "Job Opening Templates",
-"desc": "Reusable templates for creating job openings.",
-"columns": [
-[
-"name",
-"Template",
-null,
-true
-],
-[
-"description",
-"Description",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/offers",
-"var": "jobOffers",
-"plural": "Job Offers",
-"desc": "Offers extended to candidates.",
-"columns": [
-[
-"applicantName",
-"Candidate",
-null,
-true
-],
-[
-"designation",
-"Designation",
-null,
-false
-],
-[
-"offerDate",
-"Offer Date",
-null,
-true
-],
-[
-"base",
-"Base",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/referrals",
-"var": "employeeReferrals",
-"plural": "Employee Referrals",
-"desc": "Candidate referrals by employees.",
-"columns": [
-[
-"applicantName",
-"Candidate",
-null,
-true
-],
-[
-"referringEmployee",
-"Referred By",
-null,
-false
-],
-[
-"jobTitle",
-"Job Title",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/requisitions",
-"var": "jobRequisitions",
-"plural": "Job Requisitions",
-"desc": "Departmental hiring requests.",
-"columns": [
-[
-"subject",
-"Requisition",
-null,
-true
-],
-[
-"department",
-"Department",
-null,
-false
-],
-[
-"noOfPositions",
-"Positions",
-"center",
-true
-],
-[
-"requestedBy",
-"Requested By",
-null,
-false
-],
-[
-"expectedBy",
-"Expected",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/recruitment/staffing-plans",
-"var": "staffingPlans",
-"plural": "Staffing Plans",
-"desc": "Planned vs current headcount.",
-"columns": [
-[
-"month",
-"Month",
-null,
-true
-],
-[
-"department",
-"Department",
-null,
-false
-],
-[
-"designation",
-"Designation",
-null,
-false
-],
-[
-"employeesRequired",
-"Required",
-"center",
-true
-],
-[
-"currentlyEmployed",
-"Current",
-"center",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tax-benefits/benefit-applications",
-"var": "benefitApplications",
-"plural": "Benefit Applications",
-"desc": "Employee benefit coverage.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"payrollPeriod",
-"Period",
-"center",
-false
-],
-[
-"maxBeneficiaryAmount",
-"Max Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tax-benefits/benefit-claims",
-"var": "benefitClaims",
-"plural": "Benefit Claims",
-"desc": "Claims against benefit applications.",
-"columns": [
-[
-"benefitApplication",
-"Application",
-null,
-true
-],
-[
-"employee",
-"Employee",
-null,
-false
-],
-[
-"expenseDate",
-"Expense Date",
-null,
-true
-],
-[
-"amount",
-"Amount",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tax-benefits/benefit-ledger",
-"var": "employeeBenefitLedgers",
-"plural": "Employee Benefit Ledger",
-"desc": "Benefit eligibility, sanction & utilization.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"benefitApplication",
-"Application",
-null,
-false
-],
-[
-"amountEligible",
-"Eligible",
-"right",
-true
-],
-[
-"amountSanctioned",
-"Sanctioned",
-"right",
-true
-],
-[
-"amountUtilized",
-"Utilized",
-"right",
-true
-]
-]
-},
-{
-"route": "/tax-benefits/declarations",
-"var": "exemptionDeclarations",
-"plural": "Exemption Declarations",
-"desc": "Annual tax-saving declarations.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"payrollPeriod",
-"Period",
-"center",
-false
-],
-[
-"company",
-"Company",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tax-benefits/exemption-categories",
-"var": "exemptionCategories",
-"plural": "Tax Exemption Categories",
-"desc": "Categories employees can declare tax exemptions against.",
-"columns": [
-[
-"name",
-"Category",
-null,
-true
-],
-[
-"maxAmount",
-"Max Amount",
-"right",
-true
-]
-]
-},
-{
-"route": "/tax-benefits/health-insurance",
-"var": "employeeHealthInsurances",
-"plural": "Employee Health Insurance",
-"desc": "Health insurance policy records.",
-"columns": [
-[
-"policyNo",
-"Policy",
-null,
-true
-],
-[
-"employee",
-"Employee",
-null,
-false
-],
-[
-"insuranceProvider",
-"Provider",
-null,
-false
-],
-[
-"planType",
-"Plan",
-null,
-false
-],
-[
-"from",
-"From",
-null,
-false
-],
-[
-"to",
-"To",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tax-benefits/proofs",
-"var": "exemptionProofs",
-"plural": "Exemption Proofs",
-"desc": "Submitted proof vs approved amounts.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"category",
-"Category",
-null,
-false
-],
-[
-"declared",
-"Declared",
-"right",
-false
-],
-[
-"submitted",
-"Submitted",
-"right",
-false
-],
-[
-"approved",
-"Approved",
-"right",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/exit-interviews",
-"var": "exitInterviews",
-"plural": "Exit Interviews",
-"desc": "Departure interview records.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"departureDate",
-"Departure",
-null,
-true
-],
-[
-"reason",
-"Reason",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/grievance-types",
-"var": "grievanceTypes",
-"plural": "Grievance Types",
-"desc": "Categories used when logging employee grievances.",
-"columns": [
-[
-"name",
-"Grievance Type",
-null,
-true
-],
-[
-"isSubmittable",
-"Employees Can Submit",
-"center",
-false
-]
-]
-},
-{
-"route": "/tenure/grievances",
-"var": "grievances",
-"plural": "Employee Grievances",
-"desc": "Grievance cases and their status.",
-"columns": [
-[
-"subject",
-"Grievance",
-null,
-true
-],
-[
-"raisedBy",
-"Raised By",
-null,
-false
-],
-[
-"grievanceAgainst",
-"Against",
-null,
-false
-],
-[
-"type",
-"Type",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/onboarding",
-"var": "onboardings",
-"plural": "Employee Onboarding",
-"desc": "New-hire onboarding records.",
-"columns": [
-[
-"employeeName",
-"New Hire",
-null,
-true
-],
-[
-"dateOfJoining",
-"Joining",
-null,
-true
-],
-[
-"jobOffer",
-"Job Offer",
-null,
-false
-],
-[
-"boardingStatus",
-"Boarding",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/separations",
-"var": "separations",
-"plural": "Employee Separation",
-"desc": "Resignation and exit records.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"resignationLetterDate",
-"Resignation",
-null,
-true
-],
-[
-"leavingDate",
-"Leaving",
-null,
-true
-],
-[
-"dateOfJoining",
-"Joined",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/skill-maps",
-"var": "skillMaps",
-"plural": "Employee Skill Maps",
-"desc": "Skill profiles per employee.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"department",
-"Department",
-null,
-false
-],
-[
-"basedOn",
-"Based On",
-null,
-false
-],
-[
-"totalSkills",
-"Skills",
-"center",
-true
-]
-]
-},
-{
-"route": "/tenure/skills",
-"var": "employeeSkills",
-"plural": "Employee Skills",
-"desc": "Skill records and proficiency.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"skill",
-"Skill",
-null,
-false
-],
-[
-"proficiency",
-"Proficiency",
-"center",
-true
-],
-[
-"assessmentCount",
-"Assessments",
-"center",
-true
-]
-]
-},
-{
-"route": "/tenure/training-events",
-"var": "trainingEvents",
-"plural": "Training Events",
-"desc": "Scheduled training sessions.",
-"columns": [
-[
-"name",
-"Event",
-null,
-true
-],
-[
-"trainingProgram",
-"Program",
-null,
-false
-],
-[
-"startTime",
-"Start",
-null,
-false
-],
-[
-"level",
-"Level",
-"center",
-false
-],
-[
-"attendees",
-"Attendees",
-"center",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/training-feedback",
-"var": "trainingFeedback",
-"plural": "Training Feedback",
-"desc": "Employee feedback captured against training events.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"trainingEvent",
-"Training Event",
-null,
-true
-],
-[
-"trainerName",
-"Trainer",
-null,
-true
-],
-[
-"rating",
-"Rating",
-"center",
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/training-programs",
-"var": "trainingPrograms",
-"plural": "Training Programs",
-"desc": "Reusable training programs.",
-"columns": [
-[
-"name",
-"Program",
-null,
-true
-],
-[
-"trainerName",
-"Trainer",
-null,
-false
-],
-[
-"trainerEmail",
-"Email",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/training-records",
-"var": "employeeTrainings",
-"plural": "Employee Training",
-"desc": "Training history per employee.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"trainingProgram",
-"Program",
-null,
-false
-],
-[
-"level",
-"Level",
-"center",
-false
-],
-[
-"trainerName",
-"Trainer",
-null,
-false
-],
-[
-"score",
-"Score",
-"center",
-true
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-},
-{
-"route": "/tenure/transfers",
-"var": "transfers",
-"plural": "Employee Transfers",
-"desc": "Department / branch transfers.",
-"columns": [
-[
-"employee",
-"Employee",
-null,
-true
-],
-[
-"transactionDate",
-"Date",
-null,
-true
-],
-[
-"fromDepartment",
-"From Dept",
-null,
-false
-],
-[
-"toDepartment",
-"To Dept",
-null,
-false
-],
-[
-"toBranch",
-"To Branch",
-null,
-false
-],
-[
-"status",
-"Status",
-null,
-false
-]
-]
-}
+  {
+    "route": "/attendance/attendance-requests",
+    "var": "attendanceRequests",
+    "plural": "Attendance Requests",
+    "desc": "Work-from-home / on-duty requests.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "from",
+        "From",
+        null,
+        true
+      ],
+      [
+        "to",
+        "To",
+        null,
+        true
+      ],
+      [
+        "reason",
+        "Reason",
+        null,
+        false
+      ],
+      [
+        "workFromHome",
+        "WFH",
+        "center",
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/checkin",
+    "var": "employeeCheckins",
+    "plural": "Employee Checkin",
+    "desc": "Raw check-in / check-out logs.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "logType",
+        "Type",
+        "center",
+        false
+      ],
+      [
+        "time",
+        "Time",
+        null,
+        false
+      ],
+      [
+        "shift",
+        "Shift",
+        null,
+        false
+      ],
+      [
+        "device",
+        "Device",
+        null,
+        false
+      ],
+      [
+        "lateEntry",
+        "Late",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/compensatory-leave",
+    "var": "compensatoryLeaveRequests",
+    "plural": "Compensatory Leave Requests",
+    "desc": "Leave earned for working on off days.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "workDate",
+        "Worked On",
+        null,
+        true
+      ],
+      [
+        "from",
+        "Leave From",
+        null,
+        false
+      ],
+      [
+        "to",
+        "Leave To",
+        null,
+        false
+      ],
+      [
+        "reason",
+        "Reason",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/daily-work-summary",
+    "var": "dailyWorkSummaries",
+    "plural": "Daily Work Summary Group",
+    "desc": "Automated end-of-day work digests.",
+    "columns": [
+      [
+        "name",
+        "Summary",
+        null,
+        true
+      ],
+      [
+        "template",
+        "Template",
+        null,
+        false
+      ],
+      [
+        "group",
+        "Group",
+        null,
+        false
+      ],
+      [
+        "recipients",
+        "Recipients",
+        "center",
+        true
+      ],
+      [
+        "enabled",
+        "Enabled",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/shift-assignments",
+    "var": "shiftAssignments",
+    "plural": "Shift Assignments",
+    "desc": "Employees assigned to shift types.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "shiftType",
+        "Shift Type",
+        null,
+        false
+      ],
+      [
+        "fromDate",
+        "From",
+        null,
+        true
+      ],
+      [
+        "toDate",
+        "To",
+        null,
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/shift-locations",
+    "var": "shiftLocations",
+    "plural": "Shift Locations",
+    "desc": "Geofenced check-in points.",
+    "columns": [
+      [
+        "name",
+        "Location",
+        null,
+        true
+      ],
+      [
+        "checkinRadius",
+        "Radius (m)",
+        "center",
+        true
+      ],
+      [
+        "latitude",
+        "Latitude",
+        null,
+        false
+      ],
+      [
+        "longitude",
+        "Longitude",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/shift-requests",
+    "var": "shiftRequests",
+    "plural": "Shift Requests",
+    "desc": "Employee requests to change shift.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "from",
+        "From",
+        null,
+        true
+      ],
+      [
+        "to",
+        "To",
+        null,
+        true
+      ],
+      [
+        "shiftType",
+        "Requested Shift",
+        null,
+        false
+      ],
+      [
+        "reason",
+        "Reason",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/shift-schedules",
+    "var": "shiftSchedules",
+    "plural": "Shift Schedules",
+    "desc": "Recurring shift assignment plans.",
+    "columns": [
+      [
+        "name",
+        "Schedule",
+        null,
+        true
+      ],
+      [
+        "shiftType",
+        "Shift Type",
+        null,
+        false
+      ],
+      [
+        "location",
+        "Location",
+        null,
+        false
+      ],
+      [
+        "frequency",
+        "Frequency",
+        "center",
+        false
+      ],
+      [
+        "employeesAssigned",
+        "Employees",
+        "center",
+        true
+      ],
+      [
+        "enabled",
+        "Enabled",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/shift-types",
+    "var": "shiftTypes",
+    "plural": "Shift Types",
+    "desc": "Defined working shift patterns.",
+    "columns": [
+      [
+        "name",
+        "Shift Type",
+        null,
+        true
+      ],
+      [
+        "start",
+        "Start",
+        null,
+        false
+      ],
+      [
+        "end",
+        "End",
+        null,
+        false
+      ],
+      [
+        "hours",
+        "Hours",
+        "center",
+        true
+      ],
+      [
+        "holidayList",
+        "Holiday List",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/attendance/timesheets",
+    "var": "timesheets",
+    "plural": "Timesheets",
+    "desc": "Project time logged by employees.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "project",
+        "Project",
+        null,
+        false
+      ],
+      [
+        "fromDate",
+        "From",
+        null,
+        false
+      ],
+      [
+        "toDate",
+        "To",
+        null,
+        false
+      ],
+      [
+        "totalHours",
+        "Hours",
+        "center",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/branches",
+    "var": "branches",
+    "plural": "Branches",
+    "desc": "Physical and distributed office locations.",
+    "columns": [
+      [
+        "name",
+        "Branch",
+        null,
+        true
+      ],
+      [
+        "city",
+        "City",
+        null,
+        true
+      ],
+      [
+        "company",
+        "Company",
+        null,
+        false
+      ],
+      [
+        "head",
+        "Branch Head",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/departments",
+    "var": "departments",
+    "plural": "Departments",
+    "desc": null,
+    "columns": [
+      [
+        "name",
+        "Department",
+        null,
+        true
+      ],
+      [
+        "head",
+        "Head of Department",
+        null,
+        true
+      ],
+      [
+        "employeeCount",
+        "Employees",
+        "right",
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/designations",
+    "var": "designations",
+    "plural": "Designations",
+    "desc": null,
+    "columns": [
+      [
+        "name",
+        "Designation",
+        null,
+        true
+      ],
+      [
+        "department",
+        "Department",
+        null,
+        true
+      ],
+      [
+        "grade",
+        "Grade",
+        null,
+        false
+      ],
+      [
+        "reportsTo",
+        "Reports To",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/employee-grades",
+    "var": "employeeGrades",
+    "plural": "Employee Grades",
+    "desc": "Salary grades and bands used for costing and appraisals.",
+    "columns": [
+      [
+        "name",
+        "Grade",
+        null,
+        true
+      ],
+      [
+        "level",
+        "Level",
+        "center",
+        true
+      ],
+      [
+        "minSalary",
+        "Min Salary",
+        "right",
+        true
+      ],
+      [
+        "maxSalary",
+        "Max Salary",
+        "right",
+        true
+      ],
+      [
+        "defaultComponent",
+        "Default Structure",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/employee-groups",
+    "var": "employeeGroups",
+    "plural": "Employee Groups",
+    "desc": "Logical groupings used for leave, payroll and reports.",
+    "columns": [
+      [
+        "name",
+        "Group",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ],
+      [
+        "strength",
+        "Strength",
+        "right",
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/employment-types",
+    "var": "employmentTypes",
+    "plural": "Employment Types",
+    "desc": "Classifications of employment.",
+    "columns": [
+      [
+        "name",
+        "Type",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/expenses/full-and-final",
+    "var": "fullAndFinalStatements",
+    "plural": "Full and Final Statement",
+    "desc": "Final settlement for exiting employees.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "payrollDate",
+        "Payroll Date",
+        null,
+        true
+      ],
+      [
+        "unsalariedAmount",
+        "Unsalaried",
+        "right",
+        false
+      ],
+      [
+        "salaryPayout",
+        "Salary",
+        "right",
+        true
+      ],
+      [
+        "totalAmount",
+        "Total",
+        "right",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/expenses/purpose-of-travel",
+    "var": "purposesOfTravel",
+    "plural": "Purpose of Travel",
+    "desc": "Selectable reasons on travel requests.",
+    "columns": [
+      [
+        "name",
+        "Purpose of Travel",
+        null,
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/expenses/travel-requests",
+    "var": "travelRequests",
+    "plural": "Travel Requests",
+    "desc": "Employee travel approvals.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "purpose",
+        "Purpose",
+        null,
+        false
+      ],
+      [
+        "modeOfTravel",
+        "Mode",
+        "center",
+        false
+      ],
+      [
+        "travelDate",
+        "Date",
+        null,
+        true
+      ],
+      [
+        "amount",
+        "Est. Cost",
+        "right",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/expenses/types",
+    "var": "expenseClaimTypes",
+    "plural": "Expense Claim Types",
+    "desc": "Categories of reimbursable expense.",
+    "columns": [
+      [
+        "name",
+        "Type",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ],
+      [
+        "needsReceipt",
+        "Receipt",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/expenses/vehicle-logs",
+    "var": "vehicleLogs",
+    "plural": "Vehicle Logs",
+    "desc": "Company vehicle in/out logs.",
+    "columns": [
+      [
+        "licensePlate",
+        "Vehicle",
+        null,
+        true
+      ],
+      [
+        "employee",
+        "Driver",
+        null,
+        false
+      ],
+      [
+        "type",
+        "In/Out",
+        "center",
+        false
+      ],
+      [
+        "date",
+        "When",
+        null,
+        false
+      ],
+      [
+        "logType",
+        "Log Type",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/expenses/vehicle-service",
+    "var": "vehicleServices",
+    "plural": "Vehicle Service",
+    "desc": "Company vehicle service records.",
+    "columns": [
+      [
+        "licensePlate",
+        "Vehicle",
+        null,
+        true
+      ],
+      [
+        "employee",
+        "Requested By",
+        null,
+        false
+      ],
+      [
+        "serviceDate",
+        "Service Date",
+        null,
+        true
+      ],
+      [
+        "type",
+        "Type",
+        null,
+        false
+      ],
+      [
+        "invoiceNo",
+        "Invoice",
+        null,
+        false
+      ],
+      [
+        "amount",
+        "Amount",
+        "right",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/my-advance",
+    "var": "employeeAdvances",
+    "plural": "My Salary Advances",
+    "desc": "Apply for an advance and track your existing requests.",
+    "columns": [
+      [
+        "purpose",
+        "Purpose / Ref",
+        null,
+        true
+      ],
+      [
+        "advanceDate",
+        "Applied",
+        null,
+        true
+      ],
+      [
+        "amount",
+        "Amount",
+        "right",
+        true
+      ],
+      [
+        "paidAmount",
+        "Paid",
+        "right",
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/my-claims",
+    "var": "expenseClaims",
+    "plural": "My Expense Claims",
+    "desc": "Submit and track your reimbursement claims.",
+    "columns": [
+      [
+        "claimId",
+        "Claim",
+        null,
+        true
+      ],
+      [
+        "category",
+        "Category",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ],
+      [
+        "date",
+        "Date",
+        null,
+        true
+      ],
+      [
+        "amount",
+        "Amount",
+        "right",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/performance/appraisals",
+    "var": "appraisals",
+    "plural": "Appraisals",
+    "desc": "Performance review cycles and ratings.",
+    "columns": [
+      [
+        "employeeName",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "department",
+        "Department",
+        null,
+        true
+      ],
+      [
+        "cycle",
+        "Cycle",
+        null,
+        false
+      ],
+      [
+        "selfRating",
+        "Self",
+        "center",
+        false
+      ],
+      [
+        "managerRating",
+        "Manager",
+        "center",
+        false
+      ],
+      [
+        "finalScore",
+        "Score",
+        "center",
+        true
+      ],
+      [
+        "dueOn",
+        "Due",
+        null,
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/performance/cycles",
+    "var": "appraisalCycles",
+    "plural": "Appraisal Cycles",
+    "desc": "Periodic review cycles.",
+    "columns": [
+      [
+        "name",
+        "Cycle",
+        null,
+        true
+      ],
+      [
+        "appraisalTemplate",
+        "Template",
+        null,
+        false
+      ],
+      [
+        "startDate",
+        "Start",
+        null,
+        true
+      ],
+      [
+        "endDate",
+        "End",
+        null,
+        true
+      ],
+      [
+        "kraAssessment",
+        "KRA",
+        "center",
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/performance/feedback-criteria",
+    "var": "feedbackCriteria",
+    "plural": "Feedback Criteria",
+    "desc": "Criteria used across appraisal feedback forms.",
+    "columns": [
+      [
+        "name",
+        "Criteria",
+        null,
+        true
+      ],
+      [
+        "category",
+        "Category",
+        null,
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/performance/feedback",
+    "var": "performanceFeedbacks",
+    "plural": "Performance Feedback",
+    "desc": "Reviewer feedback on appraisals.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "reviewer",
+        "Reviewer",
+        null,
+        false
+      ],
+      [
+        "reviewedOn",
+        "Reviewed On",
+        null,
+        true
+      ],
+      [
+        "totalScore",
+        "Score",
+        "center",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/performance/kra",
+    "var": "kras",
+    "plural": "Key Result Areas",
+    "desc": "KRAs used in appraisals.",
+    "columns": [
+      [
+        "name",
+        "KRA",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ],
+      [
+        "isCritical",
+        "Critical",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/performance/promotions",
+    "var": "promotions",
+    "plural": "Promotions",
+    "desc": "Employee grade promotions.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "promotionDate",
+        "Effective",
+        null,
+        true
+      ],
+      [
+        "fromGrade",
+        "From Grade",
+        null,
+        false
+      ],
+      [
+        "toGrade",
+        "To Grade",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/performance/templates",
+    "var": "appraisalTemplates",
+    "plural": "Appraisal Templates",
+    "desc": "Scoring templates for reviews.",
+    "columns": [
+      [
+        "name",
+        "Template",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ],
+      [
+        "totalScore",
+        "Max Score",
+        "center",
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/applications",
+    "var": "jobApplications",
+    "plural": "Applications",
+    "desc": null,
+    "columns": [
+      [
+        "applicantName",
+        "Applicant",
+        null,
+        true
+      ],
+      [
+        "jobTitle",
+        "Position",
+        null,
+        true
+      ],
+      [
+        "source",
+        "Source",
+        null,
+        false
+      ],
+      [
+        "appliedOn",
+        "Applied",
+        null,
+        true
+      ],
+      [
+        "rating",
+        "Rating",
+        null,
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/appointment-letter-templates",
+    "var": "appointmentLetterTemplates",
+    "plural": "Appointment Letter Templates",
+    "desc": "Templates used to generate appointment letters.",
+    "columns": [
+      [
+        "name",
+        "Template",
+        null,
+        true
+      ],
+      [
+        "company",
+        "Company",
+        null,
+        true
+      ],
+      [
+        "basedOn",
+        "Based On",
+        null,
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/appointment-letters",
+    "var": "appointmentLetters",
+    "plural": "Appointment Letters",
+    "desc": "Formal appointment letter records.",
+    "columns": [
+      [
+        "employeeName",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "designation",
+        "Designation",
+        null,
+        false
+      ],
+      [
+        "basicSalary",
+        "Basic",
+        "right",
+        true
+      ],
+      [
+        "templName",
+        "Template",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/interview-rounds",
+    "var": "interviewRounds",
+    "plural": "Interview Rounds",
+    "desc": "Standard interview stages used in recruitment.",
+    "columns": [
+      [
+        "name",
+        "Round",
+        null,
+        true
+      ],
+      [
+        "interviewType",
+        "Type",
+        null,
+        true
+      ],
+      [
+        "expectedDuration",
+        "Expected Duration (min)",
+        "center",
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/interview-types",
+    "var": "interviewTypes",
+    "plural": "Interview Types",
+    "desc": "Classifications used when scheduling interviews.",
+    "columns": [
+      [
+        "name",
+        "Interview Type",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/interviews",
+    "var": "interviews",
+    "plural": "Interviews",
+    "desc": "Scheduled and completed interviews.",
+    "columns": [
+      [
+        "applicantName",
+        "Applicant",
+        null,
+        true
+      ],
+      [
+        "jobTitle",
+        "Job Title",
+        null,
+        false
+      ],
+      [
+        "round",
+        "Round",
+        null,
+        false
+      ],
+      [
+        "date",
+        "Scheduled",
+        null,
+        true
+      ],
+      [
+        "interviewers",
+        "Interviewers",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/job-offer-term-templates",
+    "var": "jobOfferTermTemplates",
+    "plural": "Job Offer Term Templates",
+    "desc": "Standard terms attached to job offers.",
+    "columns": [
+      [
+        "name",
+        "Term Template",
+        null,
+        true
+      ],
+      [
+        "offerTerm",
+        "Offer Term",
+        null,
+        true
+      ],
+      [
+        "weight",
+        "Weight",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/job-opening-templates",
+    "var": "jobOpeningTemplates",
+    "plural": "Job Opening Templates",
+    "desc": "Reusable templates for creating job openings.",
+    "columns": [
+      [
+        "name",
+        "Template",
+        null,
+        true
+      ],
+      [
+        "description",
+        "Description",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/offers",
+    "var": "jobOffers",
+    "plural": "Job Offers",
+    "desc": "Offers extended to candidates.",
+    "columns": [
+      [
+        "applicantName",
+        "Candidate",
+        null,
+        true
+      ],
+      [
+        "designation",
+        "Designation",
+        null,
+        false
+      ],
+      [
+        "offerDate",
+        "Offer Date",
+        null,
+        true
+      ],
+      [
+        "base",
+        "Base",
+        "right",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/referrals",
+    "var": "employeeReferrals",
+    "plural": "Employee Referrals",
+    "desc": "Candidate referrals by employees.",
+    "columns": [
+      [
+        "applicantName",
+        "Candidate",
+        null,
+        true
+      ],
+      [
+        "referringEmployee",
+        "Referred By",
+        null,
+        false
+      ],
+      [
+        "jobTitle",
+        "Job Title",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/requisitions",
+    "var": "jobRequisitions",
+    "plural": "Job Requisitions",
+    "desc": "Departmental hiring requests.",
+    "columns": [
+      [
+        "subject",
+        "Requisition",
+        null,
+        true
+      ],
+      [
+        "department",
+        "Department",
+        null,
+        false
+      ],
+      [
+        "noOfPositions",
+        "Positions",
+        "center",
+        true
+      ],
+      [
+        "requestedBy",
+        "Requested By",
+        null,
+        false
+      ],
+      [
+        "expectedBy",
+        "Expected",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/recruitment/staffing-plans",
+    "var": "staffingPlans",
+    "plural": "Staffing Plans",
+    "desc": "Planned vs current headcount.",
+    "columns": [
+      [
+        "month",
+        "Month",
+        null,
+        true
+      ],
+      [
+        "department",
+        "Department",
+        null,
+        false
+      ],
+      [
+        "designation",
+        "Designation",
+        null,
+        false
+      ],
+      [
+        "employeesRequired",
+        "Required",
+        "center",
+        true
+      ],
+      [
+        "currentlyEmployed",
+        "Current",
+        "center",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/exit-interviews",
+    "var": "exitInterviews",
+    "plural": "Exit Interviews",
+    "desc": "Departure interview records.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "departureDate",
+        "Departure",
+        null,
+        true
+      ],
+      [
+        "reason",
+        "Reason",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/grievance-types",
+    "var": "grievanceTypes",
+    "plural": "Grievance Types",
+    "desc": "Categories used when logging employee grievances.",
+    "columns": [
+      [
+        "name",
+        "Grievance Type",
+        null,
+        true
+      ],
+      [
+        "isSubmittable",
+        "Employees Can Submit",
+        "center",
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/grievances",
+    "var": "grievances",
+    "plural": "Employee Grievances",
+    "desc": "Grievance cases and their status.",
+    "columns": [
+      [
+        "subject",
+        "Grievance",
+        null,
+        true
+      ],
+      [
+        "raisedBy",
+        "Raised By",
+        null,
+        false
+      ],
+      [
+        "grievanceAgainst",
+        "Against",
+        null,
+        false
+      ],
+      [
+        "type",
+        "Type",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/onboarding",
+    "var": "onboardings",
+    "plural": "Employee Onboarding",
+    "desc": "New-hire onboarding records.",
+    "columns": [
+      [
+        "employeeName",
+        "New Hire",
+        null,
+        true
+      ],
+      [
+        "dateOfJoining",
+        "Joining",
+        null,
+        true
+      ],
+      [
+        "jobOffer",
+        "Job Offer",
+        null,
+        false
+      ],
+      [
+        "boardingStatus",
+        "Boarding",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/separations",
+    "var": "separations",
+    "plural": "Employee Separation",
+    "desc": "Resignation and exit records.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "resignationLetterDate",
+        "Resignation",
+        null,
+        true
+      ],
+      [
+        "leavingDate",
+        "Leaving",
+        null,
+        true
+      ],
+      [
+        "dateOfJoining",
+        "Joined",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/skill-maps",
+    "var": "skillMaps",
+    "plural": "Employee Skill Maps",
+    "desc": "Skill profiles per employee.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "department",
+        "Department",
+        null,
+        false
+      ],
+      [
+        "basedOn",
+        "Based On",
+        null,
+        false
+      ],
+      [
+        "totalSkills",
+        "Skills",
+        "center",
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/skills",
+    "var": "employeeSkills",
+    "plural": "Employee Skills",
+    "desc": "Skill records and proficiency.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "skill",
+        "Skill",
+        null,
+        false
+      ],
+      [
+        "proficiency",
+        "Proficiency",
+        "center",
+        true
+      ],
+      [
+        "assessmentCount",
+        "Assessments",
+        "center",
+        true
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/training-events",
+    "var": "trainingEvents",
+    "plural": "Training Events",
+    "desc": "Scheduled training sessions.",
+    "columns": [
+      [
+        "name",
+        "Event",
+        null,
+        true
+      ],
+      [
+        "trainingProgram",
+        "Program",
+        null,
+        false
+      ],
+      [
+        "startTime",
+        "Start",
+        null,
+        false
+      ],
+      [
+        "level",
+        "Level",
+        "center",
+        false
+      ],
+      [
+        "attendees",
+        "Attendees",
+        "center",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/training-feedback",
+    "var": "trainingFeedback",
+    "plural": "Training Feedback",
+    "desc": "Employee feedback captured against training events.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "trainingEvent",
+        "Training Event",
+        null,
+        true
+      ],
+      [
+        "trainerName",
+        "Trainer",
+        null,
+        true
+      ],
+      [
+        "rating",
+        "Rating",
+        "center",
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/training-programs",
+    "var": "trainingPrograms",
+    "plural": "Training Programs",
+    "desc": "Reusable training programs.",
+    "columns": [
+      [
+        "name",
+        "Program",
+        null,
+        true
+      ],
+      [
+        "trainerName",
+        "Trainer",
+        null,
+        false
+      ],
+      [
+        "trainerEmail",
+        "Email",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/training-records",
+    "var": "employeeTrainings",
+    "plural": "Employee Training",
+    "desc": "Training history per employee.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "trainingProgram",
+        "Program",
+        null,
+        false
+      ],
+      [
+        "level",
+        "Level",
+        "center",
+        false
+      ],
+      [
+        "trainerName",
+        "Trainer",
+        null,
+        false
+      ],
+      [
+        "score",
+        "Score",
+        "center",
+        true
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  },
+  {
+    "route": "/tenure/transfers",
+    "var": "transfers",
+    "plural": "Employee Transfers",
+    "desc": "Department / branch transfers.",
+    "columns": [
+      [
+        "employee",
+        "Employee",
+        null,
+        true
+      ],
+      [
+        "transactionDate",
+        "Date",
+        null,
+        true
+      ],
+      [
+        "fromDepartment",
+        "From Dept",
+        null,
+        false
+      ],
+      [
+        "toDepartment",
+        "To Dept",
+        null,
+        false
+      ],
+      [
+        "toBranch",
+        "To Branch",
+        null,
+        false
+      ],
+      [
+        "status",
+        "Status",
+        null,
+        false
+      ]
+    ]
+  }
 ]

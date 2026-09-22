@@ -47,44 +47,43 @@ export type MyAttendanceRecord = {
   checkOut: string;
   lateBy: string;
   workHours: number;
-  overtime: string;
   status: "Present" | "Late" | "Half Day" | "Leave" | "Week Off" | "Upcoming";
   notes?: string;
 };
 
 // Full September 2026 attendance dataset for currentUser
 const initialRecords: MyAttendanceRecord[] = [
-  { date: "2026-09-21", weekday: "Mon", dayNum: 21, shift: "General (09:00 - 18:00)", checkIn: "08:58 AM", checkOut: "—", lateBy: "0m", workHours: 9.0, overtime: "+1.0h", status: "Present", notes: "Shift active" },
-  { date: "2026-09-20", weekday: "Sun", dayNum: 20, shift: "General (09:00 - 18:00)", checkIn: "09:01 AM", checkOut: "06:12 PM", lateBy: "1m", workHours: 9.2, overtime: "+1.2h", status: "Present" },
-  { date: "2026-09-19", weekday: "Sat", dayNum: 19, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-18", weekday: "Fri", dayNum: 18, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-17", weekday: "Thu", dayNum: 17, shift: "General (09:00 - 18:00)", checkIn: "09:24 AM", checkOut: "05:58 PM", lateBy: "24m", workHours: 8.6, overtime: "—", status: "Late", notes: "Traffic delay" },
-  { date: "2026-09-16", weekday: "Wed", dayNum: 16, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Leave", notes: "Casual Leave" },
-  { date: "2026-09-15", weekday: "Tue", dayNum: 15, shift: "Half Day (09:00 - 13:00)", checkIn: "08:55 AM", checkOut: "01:05 PM", lateBy: "0m", workHours: 4.1, overtime: "—", status: "Half Day", notes: "Approved half day" },
-  { date: "2026-09-14", weekday: "Mon", dayNum: 14, shift: "General (09:00 - 18:00)", checkIn: "08:52 AM", checkOut: "06:10 PM", lateBy: "0m", workHours: 9.3, overtime: "+1.3h", status: "Present" },
-  { date: "2026-09-13", weekday: "Sun", dayNum: 13, shift: "General (09:00 - 18:00)", checkIn: "09:04 AM", checkOut: "06:30 PM", lateBy: "4m", workHours: 9.4, overtime: "+1.4h", status: "Present" },
-  { date: "2026-09-12", weekday: "Sat", dayNum: 12, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-11", weekday: "Fri", dayNum: 11, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-10", weekday: "Thu", dayNum: 10, shift: "General (09:00 - 18:00)", checkIn: "08:57 AM", checkOut: "06:05 PM", lateBy: "0m", workHours: 9.1, overtime: "+1.1h", status: "Present" },
-  { date: "2026-09-09", weekday: "Wed", dayNum: 9, shift: "General (09:00 - 18:00)", checkIn: "08:50 AM", checkOut: "06:22 PM", lateBy: "0m", workHours: 9.5, overtime: "+1.5h", status: "Present" },
-  { date: "2026-09-08", weekday: "Tue", dayNum: 8, shift: "General (09:00 - 18:00)", checkIn: "09:18 AM", checkOut: "06:15 PM", lateBy: "18m", workHours: 9.0, overtime: "+1.0h", status: "Late", notes: "Weather alert" },
-  { date: "2026-09-07", weekday: "Mon", dayNum: 7, shift: "General (09:00 - 18:00)", checkIn: "08:59 AM", checkOut: "06:08 PM", lateBy: "0m", workHours: 9.1, overtime: "+1.1h", status: "Present" },
-  { date: "2026-09-06", weekday: "Sun", dayNum: 6, shift: "General (09:00 - 18:00)", checkIn: "08:54 AM", checkOut: "06:00 PM", lateBy: "0m", workHours: 9.1, overtime: "+1.1h", status: "Present" },
-  { date: "2026-09-05", weekday: "Sat", dayNum: 5, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-04", weekday: "Fri", dayNum: 4, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-03", weekday: "Thu", dayNum: 3, shift: "General (09:00 - 18:00)", checkIn: "08:56 AM", checkOut: "06:14 PM", lateBy: "0m", workHours: 9.3, overtime: "+1.3h", status: "Present" },
-  { date: "2026-09-02", weekday: "Wed", dayNum: 2, shift: "General (09:00 - 18:00)", checkIn: "09:00 AM", checkOut: "06:00 PM", lateBy: "0m", workHours: 9.0, overtime: "+1.0h", status: "Present" },
-  { date: "2026-09-01", weekday: "Tue", dayNum: 1, shift: "General (09:00 - 18:00)", checkIn: "08:58 AM", checkOut: "06:05 PM", lateBy: "0m", workHours: 9.1, overtime: "+1.1h", status: "Present" },
+  { date: "2026-09-21", weekday: "Mon", dayNum: 21, shift: "General (09:00 - 18:00)", checkIn: "08:58 AM", checkOut: "—", lateBy: "0m", workHours: 9.0, status: "Present", notes: "Shift active" },
+  { date: "2026-09-20", weekday: "Sun", dayNum: 20, shift: "General (09:00 - 18:00)", checkIn: "09:01 AM", checkOut: "06:12 PM", lateBy: "1m", workHours: 9.2, status: "Present" },
+  { date: "2026-09-19", weekday: "Sat", dayNum: 19, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-18", weekday: "Fri", dayNum: 18, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-17", weekday: "Thu", dayNum: 17, shift: "General (09:00 - 18:00)", checkIn: "09:24 AM", checkOut: "05:58 PM", lateBy: "24m", workHours: 8.6, status: "Late", notes: "Traffic delay" },
+  { date: "2026-09-16", weekday: "Wed", dayNum: 16, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Leave", notes: "Casual Leave" },
+  { date: "2026-09-15", weekday: "Tue", dayNum: 15, shift: "General (09:00 - 18:00)", checkIn: "08:55 AM", checkOut: "01:05 PM", lateBy: "0m", workHours: 4.1, status: "Half Day", notes: "Approved half day" },
+  { date: "2026-09-14", weekday: "Mon", dayNum: 14, shift: "General (09:00 - 18:00)", checkIn: "08:52 AM", checkOut: "06:10 PM", lateBy: "0m", workHours: 9.3, status: "Present" },
+  { date: "2026-09-13", weekday: "Sun", dayNum: 13, shift: "General (09:00 - 18:00)", checkIn: "09:04 AM", checkOut: "06:30 PM", lateBy: "4m", workHours: 9.4, status: "Present" },
+  { date: "2026-09-12", weekday: "Sat", dayNum: 12, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-11", weekday: "Fri", dayNum: 11, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-10", weekday: "Thu", dayNum: 10, shift: "General (09:00 - 18:00)", checkIn: "08:57 AM", checkOut: "06:05 PM", lateBy: "0m", workHours: 9.1, status: "Present" },
+  { date: "2026-09-09", weekday: "Wed", dayNum: 9, shift: "General (09:00 - 18:00)", checkIn: "08:50 AM", checkOut: "06:22 PM", lateBy: "0m", workHours: 9.5, status: "Present" },
+  { date: "2026-09-08", weekday: "Tue", dayNum: 8, shift: "General (09:00 - 18:00)", checkIn: "09:18 AM", checkOut: "06:15 PM", lateBy: "18m", workHours: 9.0, status: "Late", notes: "Weather alert" },
+  { date: "2026-09-07", weekday: "Mon", dayNum: 7, shift: "General (09:00 - 18:00)", checkIn: "08:59 AM", checkOut: "06:08 PM", lateBy: "0m", workHours: 9.1, status: "Present" },
+  { date: "2026-09-06", weekday: "Sun", dayNum: 6, shift: "General (09:00 - 18:00)", checkIn: "08:54 AM", checkOut: "06:00 PM", lateBy: "0m", workHours: 9.1, status: "Present" },
+  { date: "2026-09-05", weekday: "Sat", dayNum: 5, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-04", weekday: "Fri", dayNum: 4, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-03", weekday: "Thu", dayNum: 3, shift: "General (09:00 - 18:00)", checkIn: "08:56 AM", checkOut: "06:14 PM", lateBy: "0m", workHours: 9.3, status: "Present" },
+  { date: "2026-09-02", weekday: "Wed", dayNum: 2, shift: "General (09:00 - 18:00)", checkIn: "09:00 AM", checkOut: "06:00 PM", lateBy: "0m", workHours: 9.0, status: "Present" },
+  { date: "2026-09-01", weekday: "Tue", dayNum: 1, shift: "General (09:00 - 18:00)", checkIn: "08:58 AM", checkOut: "06:05 PM", lateBy: "0m", workHours: 9.1, status: "Present" },
   // Upcoming days of September
-  { date: "2026-09-22", weekday: "Tue", dayNum: 22, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
-  { date: "2026-09-23", weekday: "Wed", dayNum: 23, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
-  { date: "2026-09-24", weekday: "Thu", dayNum: 24, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
-  { date: "2026-09-25", weekday: "Fri", dayNum: 25, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-26", weekday: "Sat", dayNum: 26, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Week Off" },
-  { date: "2026-09-27", weekday: "Sun", dayNum: 27, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
-  { date: "2026-09-28", weekday: "Mon", dayNum: 28, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
-  { date: "2026-09-29", weekday: "Tue", dayNum: 29, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
-  { date: "2026-09-30", weekday: "Wed", dayNum: 30, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, overtime: "—", status: "Upcoming" },
+  { date: "2026-09-22", weekday: "Tue", dayNum: 22, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
+  { date: "2026-09-23", weekday: "Wed", dayNum: 23, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
+  { date: "2026-09-24", weekday: "Thu", dayNum: 24, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
+  { date: "2026-09-25", weekday: "Fri", dayNum: 25, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-26", weekday: "Sat", dayNum: 26, shift: "Weekly Off", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Week Off" },
+  { date: "2026-09-27", weekday: "Sun", dayNum: 27, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
+  { date: "2026-09-28", weekday: "Mon", dayNum: 28, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
+  { date: "2026-09-29", weekday: "Tue", dayNum: 29, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
+  { date: "2026-09-30", weekday: "Wed", dayNum: 30, shift: "General (09:00 - 18:00)", checkIn: "—", checkOut: "—", lateBy: "—", workHours: 0, status: "Upcoming" },
 ];
 
 export default function MyAttendancePage() {
@@ -115,7 +114,7 @@ export default function MyAttendancePage() {
     setRecords((prev) =>
       prev.map((r) =>
         r.date === "2026-09-21"
-          ? { ...r, checkOut: timeStr, workHours: 9.1, overtime: "+1.1h" }
+          ? { ...r, checkOut: timeStr, workHours: 9.1 }
           : r
       )
     );
@@ -227,14 +226,6 @@ export default function MyAttendancePage() {
           >
             {r.workHours > 0 ? `${r.workHours}h` : "—"}
           </span>
-          {r.overtime !== "—" && (
-            <Badge
-              variant="secondary"
-              className="rounded-md bg-blue-50 px-1.5 py-0 text-[10px] font-semibold text-blue-600 dark:bg-blue-950/60 dark:text-blue-400"
-            >
-              {r.overtime}
-            </Badge>
-          )}
         </div>
       ),
     },
@@ -451,14 +442,14 @@ export default function MyAttendancePage() {
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-50">
-                Shift & Policy Details
+                General Office Shift Policy
               </CardTitle>
               <Badge variant="secondary" className="rounded-full font-semibold">
-                General Shift
+                09:00 AM – 06:00 PM
               </Badge>
             </div>
             <CardDescription className="text-xs">
-              09:00 AM – 06:00 PM (9 hours window)
+              Standard organization-wide office working schedule
             </CardDescription>
           </CardHeader>
 
@@ -715,7 +706,7 @@ export default function MyAttendancePage() {
               Attendance Register History
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Detailed breakdown of your biometric punches, daily hours, and overtime records.
+              Detailed breakdown of your biometric punches and daily hours.
             </p>
           </div>
         </div>

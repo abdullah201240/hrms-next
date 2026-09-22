@@ -7,10 +7,7 @@
 import { company, employees, leaveTypes } from "@/lib/mock/data";
 import {
   holidayLists,
-  shiftTypes,
-  shiftAssignments,
   workingHoursSettings,
-  type ShiftType,
 } from "@/lib/mock/data-2";
 import { holidayListAssignments } from "@/lib/mock/data-4";
 import {
@@ -55,20 +52,14 @@ export function employeeHolidayRows(employeeName: string, asOn: string): Holiday
   });
 }
 
-/** The Shift Type that applies to an employee on a date (their active assignment, else the default). */
-export function employeeShift(employeeName: string, asOn: string): ShiftType | undefined {
-  const active = shiftAssignments.find(
-    (a) => a.employee === employeeName && a.status === "Active" && a.fromDate <= asOn && asOn <= a.toDate,
-  );
-  const name = active?.shiftType || workingHoursSettings.defaultShift;
-  return shiftTypes.find((s) => s.name === name);
-}
-
-/** Office start/end for a date — the default shift unless an employee is given. */
-export function officeWindow(asOn: string, employeeName?: string): { start: string; end: string; hours: number; holidayList?: string } {
-  const shift = employeeName ? employeeShift(employeeName, asOn) : shiftTypes.find((s) => s.name === workingHoursSettings.defaultShift);
-  if (!shift) return { start: "09:00", end: "17:00", hours: workingHoursSettings.standardWorkingHours };
-  return { start: shift.start, end: shift.end, hours: shift.hours, holidayList: shift.holidayList };
+/** Office start/end for the organization's single general shift. */
+export function officeWindow(asOn?: string, employeeName?: string): { start: string; end: string; hours: number; holidayList?: string } {
+  return {
+    start: workingHoursSettings.startTime,
+    end: workingHoursSettings.endTime,
+    hours: workingHoursSettings.standardWorkingHours,
+    holidayList: workingHoursSettings.defaultHolidayList,
+  };
 }
 
 export type DayKind = "working" | "weeklyOff" | "holiday" | "halfHoliday";
@@ -87,15 +78,6 @@ export function dayState(employeeName: string, date: string): { kind: DayKind; l
 /** The seven days of the week containing `weekStartMonday` (Mon → Sun), ISO dates. */
 export function weekDates(weekStartMonday: string): string[] {
   return Array.from({ length: 7 }, (_, i) => addDays(weekStartMonday, i));
-}
-
-/** Roster row for one employee across a week — replaces the old hardcoded `i < 5`. */
-export function rosterWeek(employeeName: string, weekStartMonday: string): { date: string; weekday: WeekDay; state: { kind: DayKind; label: string } }[] {
-  return weekDates(weekStartMonday).map((date) => ({
-    date,
-    weekday: weekdayName(date),
-    state: dayState(employeeName, date),
-  }));
 }
 
 /** Upcoming public holidays (weekly offs excluded) from a date, soonest first. */

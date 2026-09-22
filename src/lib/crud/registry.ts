@@ -18,8 +18,6 @@ import {
   leaveBlockLists,
   salaryComponents,
   branches,
-  shiftTypes,
-  overtimeTypes,
 } from "@/lib/mock/data-2";
 import {
   leaveLedgerEntries,
@@ -43,12 +41,7 @@ const departmentNames = departments.map((d) => d.name);
 const designationNames = designations.map((d) => d.name);
 const branchNames = branches.map((b) => b.name);
 const employmentTypeNames = employmentTypes.map((t) => t.name);
-const overtimeTypeNames = overtimeTypes.map((t) => t.name);
-const shiftNames = shiftTypes.map((s) => s.name);
 const DOC_STATUS = ["Draft", "Submitted"] as const;
-
-/** Shift Type `color` (Roster Color) select options. */
-const ROSTER_COLORS = ["Blue", "Cyan", "Fuchsia", "Green", "Lime", "Orange", "Pink", "Red", "Violet", "Yellow"] as const;
 
 const CONFIGS: DoctypeConfig[] = [
   {
@@ -570,72 +563,6 @@ const CONFIGS: DoctypeConfig[] = [
           { key: "isGroup", label: "Is Group", type: "check" },
           { key: "parentGoal", label: "Parent Goal", type: "link", options: goals.map((g) => g.title), addLabel: "Goal" },
           { key: "description", label: "Description", type: "long", full: true },
-        ],
-      },
-    ],
-  },
-  {
-    // Hand-cloned from hrms/hr/doctype/shift_type — the office start/end time lives here.
-    route: "/attendance/shift-types",
-    label: "Shift Type",
-    plural: "Shift Types",
-    desc: "Working window, grace periods and auto-attendance rules per shift.",
-    rows: shiftTypes,
-    titleKey: "name",
-    searchKeys: ["name", "start", "end"],
-    columns: [
-      { key: "name", header: "Shift Type", sortable: true },
-      { key: "start", header: "Start Time" },
-      { key: "end", header: "End Time" },
-      { key: "holidayList", header: "Holiday List" },
-      { key: "enableAutoAttendance", header: "Auto Attendance", align: "center", render: (r) => (r.enableAutoAttendance ? "Yes" : "No") },
-      { key: "color", header: "Roster", align: "center", render: (r) => (r.color ? String(r.color) : "—") },
-    ],
-    sections: [
-      {
-        title: "Shift",
-        desc: "Start and end time of the working window — employees inherit them through their Shift Assignment.",
-        fields: [
-          { key: "name", label: "Shift Type", type: "data", req: true },
-          { key: "holidayList", label: "Holiday List", type: "link", options: holidayListNames, addLabel: "Holiday List", help: "Weekly offs and public holidays for this shift." },
-          { key: "start", label: "Start Time", type: "time", req: true },
-          { key: "end", label: "End Time", type: "time", req: true, help: "Earlier than Start Time means the shift runs past midnight." },
-          { key: "color", label: "Roster Color", type: "select", options: ROSTER_COLORS },
-        ],
-      },
-      {
-        title: "Check-in & Check-out",
-        fields: [
-          { key: "determineCheckInAndCheckout", label: "Determine Check-in and Check-out", type: "select", full: true, options: ["Alternating entries as IN and OUT during the same shift", "Strictly based on Log Type in Employee Checkin"] },
-          { key: "workingHoursCalculationBasedOn", label: "Working Hours Calculation Based On", type: "select", full: true, options: ["First Check-in and Last Check-out", "Every Valid Check-in and Check-out"] },
-          { key: "beginCheckInBefore", label: "Begin check-in before shift start time (in minutes)", type: "int" },
-          { key: "allowCheckOutAfter", label: "Allow check-out after shift end time (in minutes)", type: "int" },
-          { key: "halfDayThreshold", label: "Working Hours Threshold for Half Day", type: "float", help: "Working hours below which Half Day is marked. (Zero to disable)" },
-          { key: "absentThreshold", label: "Working Hours Threshold for Absent", type: "float", help: "Working hours below which Absent is marked. (Zero to disable)" },
-        ],
-      },
-      {
-        title: "Auto Attendance Settings",
-        fields: [
-          { key: "enableAutoAttendance", label: "Enable Auto Attendance", type: "check", help: "Mark attendance from Employee Checkin logs for employees on this shift." },
-          { key: "processAttendanceAfter", label: "Process Attendance After", type: "date" },
-          { key: "markAutoAttendanceOnHolidays", label: "Mark Auto Attendance on Holidays", type: "check", help: "Only when checkins exist for the holiday." },
-        ],
-      },
-      {
-        title: "Late Entry & Early Exit Settings for Auto Attendance",
-        fields: [
-          { key: "enableLateEntryMarking", label: "Enable Late Entry Marking", type: "check" },
-          { key: "enableEarlyExitMarking", label: "Enable Early Exit Marking", type: "check" },
-          { key: "lateEntryGracePeriod", label: "Late Entry Grace Period", type: "int", help: "Minutes after Start Time still treated as on time." },
-          { key: "earlyExitGracePeriod", label: "Early Exit Grace Period", type: "int", help: "Minutes before End Time still treated as on time." },
-        ],
-      },
-      {
-        title: "Overtime",
-        fields: [
-          { key: "allowOvertime", label: "Allow Overtime", type: "check" },
-          { key: "overtimeType", label: "Overtime Type", type: "link", options: overtimeTypeNames, addLabel: "Overtime Type" },
         ],
       },
     ],

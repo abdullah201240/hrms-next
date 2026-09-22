@@ -1,4 +1,4 @@
-// Generates the HR Setup master list pages (data-4 + exemptionCategories in data-3).
+// Generates the HR Setup master list pages (data-4).
 // Run: node scripts/gen-pages-setup.mjs
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -62,10 +62,6 @@ export default function ${spec.component}() {
 }
 
 const specs = [
-  { route: "tax-benefits/exemption-categories", component: "ExemptionCategoriesPage", mod: "data-3", rows: "exemptionCategories", type: "ExemptionCategory", title: "Tax Exemption Categories", desc: "Categories employees can declare tax exemptions against.", search: ["name"], cols: [
-    { key: "name", header: "Category", sortable: true, render: "bold" },
-    { key: "maxAmount", header: "Max Amount", align: "right", sortable: true, render: "money" },
-  ] },
   { route: "recruitment/interview-types", component: "InterviewTypesPage", mod: "data-4", rows: "interviewTypes", type: "InterviewType", title: "Interview Types", desc: "Classifications used when scheduling interviews.", search: ["name", "description"], cols: [
     { key: "name", header: "Interview Type", sortable: true, render: "bold" },
     { key: "description", header: "Description", render: "muted" },

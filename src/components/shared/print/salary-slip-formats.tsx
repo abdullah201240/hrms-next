@@ -120,13 +120,12 @@ export function SalarySlipDetailed({ data: d }: P) {
     "Medical Allowance": "Monthly medical allowance",
     "Special Allowance": "Balance amount decided by management",
     "Provident Fund": "10% of basic contributed by employee",
-    "Income Tax": "Deducted at source per annual TDS",
     "Social Security": "Statutory social security contribution",
     "Health Insurance": "Group health insurance premium",
   };
   const rows: (Money & { note: string; depends: string })[] = [
     ...d.earnings.map((e) => ({ ...e, note: desc[e.label] ?? "—", depends: "Yes" })),
-    ...d.deductions.map((e) => ({ ...e, note: desc[e.label] ?? "—", depends: e.label === "Income Tax" ? "No" : "Yes" })),
+    ...d.deductions.map((e) => ({ ...e, note: desc[e.label] ?? "—", depends: "Yes" })),
   ];
   return (
     <PrintSheet>

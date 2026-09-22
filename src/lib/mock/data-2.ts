@@ -173,21 +173,20 @@ export const holidayLists: HolidayList[] = [
 ];
 
 /**
- * Working-hours & holiday defaults — the hrms-next mirror of the Single Doctypes
- * that hold this in Frappe HR: `HR Settings` (standard_working_hours,
- * remind_before, holiday reminder frequency, allow_multiple_shift_assignments)
- * and `Company.default_holiday_list`. Office start/end time itself is NOT stored
- * here — it comes from the default `Shift Type` (like Frappe, where times live on
- * the shift and `Employee`/`Shift Assignment` point at one).
+ * Working-hours & holiday defaults — organization-wide General Office Shift
+ * (startTime, endTime, standardWorkingHours) and Company default_holiday_list.
  */
 export interface WorkingHoursSettings {
-  /** Shift Type whose start/end time is the office's working window. */
-  defaultShift: string;
-  /** HR Settings.standard_working_hours — used by overtime & payroll pro-rata. */
+  /** Name of the organization-wide general shift. */
+  shiftName: string;
+  /** Office start time — e.g. "09:00". */
+  startTime: string;
+  /** Office end time — e.g. "18:00". */
+  endTime: string;
+  /** HR Settings.standard_working_hours — used by payroll pro-rata. */
   standardWorkingHours: number;
   /** Company.default_holiday_list — fallback when no assignment covers the date. */
   defaultHolidayList: string;
-  allowMultipleShiftAssignments: boolean;
   sendHolidayReminders: boolean;
   /** HR Settings.remind_before (Time, hours:minutes before the holiday). */
   remindBefore: string;
@@ -196,10 +195,11 @@ export interface WorkingHoursSettings {
 }
 
 export const workingHoursSettings: WorkingHoursSettings = {
-  defaultShift: "General",
+  shiftName: "General Shift",
+  startTime: "09:00",
+  endTime: "18:00",
   standardWorkingHours: 8,
   defaultHolidayList: "2026 Holidays",
-  allowMultipleShiftAssignments: false,
   sendHolidayReminders: true,
   remindBefore: "00:15",
   holidayReminderFrequency: "Weekly",
@@ -241,114 +241,16 @@ export const leaveEncashments: LeaveEncashment[] = [
   { id: "enc2", employee: "Sarah Chen", leaveType: "Privileged Leave", days: 2, amount: 640, status: "Draft" },
 ];
 
-// --- Shift & Attendance -----------------------------------------------------
-
-/**
- * `Shift Type` (hrms/hr/doctype/shift_type) — this is where the office start and
- * end time live (start_time / end_time, both Time & mandatory), together with the
- * check-in window, grace periods, half-day/absent thresholds and the linked
- * Holiday List. `hours` is a convenience span (see `shiftHours`) for tooltips.
- */
-export type RosterColor = "Blue" | "Cyan" | "Fuchsia" | "Green" | "Lime" | "Orange" | "Pink" | "Red" | "Violet" | "Yellow";
-export interface ShiftType {
-  id: ID;
-  name: string;
-  /** start_time — "09:00". */
-  start: string;
-  /** end_time — "18:00"; earlier than start means the shift crosses midnight. */
-  end: string;
-  hours: number;
-  holidayList: string;
-  determineCheckInAndCheckout: "Alternating entries as IN and OUT during the same shift" | "Strictly based on Log Type in Employee Checkin";
-  workingHoursCalculationBasedOn: "First Check-in and Last Check-out" | "Every Valid Check-in and Check-out";
-  halfDayThreshold: number;
-  absentThreshold: number;
-  beginCheckInBefore: number;
-  allowCheckOutAfter: number;
-  lateEntryGracePeriod: number;
-  earlyExitGracePeriod: number;
-  enableAutoAttendance: boolean;
-  processAttendanceAfter: string;
-  markAutoAttendanceOnHolidays: boolean;
-  enableLateEntryMarking: boolean;
-  enableEarlyExitMarking: boolean;
-  color: RosterColor;
-  allowOvertime: boolean;
-  overtimeType: string;
-}
-export const shiftTypes: ShiftType[] = [
-  {
-    id: "st1", name: "General", start: "09:00", end: "18:00", hours: 9, holidayList: "2026 Holidays",
-    determineCheckInAndCheckout: "Alternating entries as IN and OUT during the same shift",
-    workingHoursCalculationBasedOn: "First Check-in and Last Check-out",
-    halfDayThreshold: 4, absentThreshold: 2, beginCheckInBefore: 60, allowCheckOutAfter: 60,
-    lateEntryGracePeriod: 15, earlyExitGracePeriod: 15,
-    enableAutoAttendance: true, processAttendanceAfter: "2026-01-01", markAutoAttendanceOnHolidays: false,
-    enableLateEntryMarking: true, enableEarlyExitMarking: false, color: "Blue", allowOvertime: false, overtimeType: "",
-  },
-  {
-    id: "st2", name: "Early", start: "06:00", end: "14:00", hours: 8, holidayList: "US Holidays 2026",
-    determineCheckInAndCheckout: "Strictly based on Log Type in Employee Checkin",
-    workingHoursCalculationBasedOn: "Every Valid Check-in and Check-out",
-    halfDayThreshold: 3, absentThreshold: 1, beginCheckInBefore: 30, allowCheckOutAfter: 30,
-    lateEntryGracePeriod: 10, earlyExitGracePeriod: 10,
-    enableAutoAttendance: false, processAttendanceAfter: "2026-01-01", markAutoAttendanceOnHolidays: false,
-    enableLateEntryMarking: false, enableEarlyExitMarking: false, color: "Green", allowOvertime: true, overtimeType: "Standard Overtime",
-  },
-  {
-    id: "st3", name: "Late", start: "13:00", end: "21:00", hours: 8, holidayList: "2026 Holidays",
-    determineCheckInAndCheckout: "Alternating entries as IN and OUT during the same shift",
-    workingHoursCalculationBasedOn: "First Check-in and Last Check-out",
-    halfDayThreshold: 3, absentThreshold: 1, beginCheckInBefore: 60, allowCheckOutAfter: 120,
-    lateEntryGracePeriod: 30, earlyExitGracePeriod: 15,
-    enableAutoAttendance: true, processAttendanceAfter: "2026-03-01", markAutoAttendanceOnHolidays: true,
-    enableLateEntryMarking: true, enableEarlyExitMarking: true, color: "Orange", allowOvertime: true, overtimeType: "Weekend Overtime",
-  },
-  // Crosses midnight — exercises the night-shift span maths.
-  {
-    id: "st4", name: "Night", start: "22:00", end: "06:00", hours: 8, holidayList: "UK Holidays 2026",
-    determineCheckInAndCheckout: "Strictly based on Log Type in Employee Checkin",
-    workingHoursCalculationBasedOn: "Every Valid Check-in and Check-out",
-    halfDayThreshold: 3, absentThreshold: 1, beginCheckInBefore: 45, allowCheckOutAfter: 60,
-    lateEntryGracePeriod: 20, earlyExitGracePeriod: 20,
-    enableAutoAttendance: false, processAttendanceAfter: "2026-01-01", markAutoAttendanceOnHolidays: false,
-    enableLateEntryMarking: false, enableEarlyExitMarking: false, color: "Violet", allowOvertime: false, overtimeType: "",
-  },
-];
-
-export interface ShiftLocation { id: ID; name: string; checkinRadius: number; latitude: number; longitude: number; }
-export const shiftLocations: ShiftLocation[] = [
-  { id: "sloc1", name: "HQ Campus", checkinRadius: 200, latitude: 37.7897, longitude: -122.3972 },
-  { id: "sloc2", name: "NYC Office", checkinRadius: 150, latitude: 40.7128, longitude: -74.006 },
-];
-
-export interface ShiftSchedule { id: ID; name: string; shiftType: string; location: string; frequency: "Daily" | "Weekly"; employeesAssigned: number; enabled: boolean; }
-export const shiftSchedules: ShiftSchedule[] = [
-  { id: "sch1", name: "Eng General Schedule", shiftType: "General", location: "HQ Campus", frequency: "Weekly", employeesAssigned: 30, enabled: true },
-  { id: "sch2", name: "Support Rotating", shiftType: "Late", location: "NYC Office", frequency: "Weekly", employeesAssigned: 8, enabled: true },
-];
-
-export interface ShiftAssignment { id: ID; employee: string; shiftType: string; status: "Active" | "Inactive"; fromDate: string; toDate: string; }
-export const shiftAssignments: ShiftAssignment[] = [
-  { id: "sa1", employee: "Aisha Khan", shiftType: "General", status: "Active", fromDate: "2026-07-01", toDate: "2026-12-31" },
-  { id: "sa2", employee: "Leo Martins", shiftType: "Late", status: "Active", fromDate: "2026-07-01", toDate: "2026-12-31" },
-  { id: "sa3", employee: "Dana Cole", shiftType: "Night", status: "Active", fromDate: "2026-07-01", toDate: "2026-12-31" },
-];
+// --- Attendance -----------------------------------------------------------
 
 export interface EmployeeCheckin { id: ID; employee: string; device: string; logType: "IN" | "OUT"; time: string; shift: string; lateEntry: boolean; }
 export const employeeCheckins: EmployeeCheckin[] = [
-  { id: "ci1", employee: "Aisha Khan", device: "Web", logType: "IN", time: "2026-09-21 09:02", shift: "General", lateEntry: true },
-  { id: "ci2", employee: "Aisha Khan", device: "Web", logType: "OUT", time: "2026-09-21 18:15", shift: "General", lateEntry: false },
-  { id: "ci3", employee: "Nina Patel", device: "Mobile", logType: "IN", time: "2026-09-21 08:55", shift: "General", lateEntry: false },
+  { id: "ci1", employee: "Aisha Khan", device: "Web", logType: "IN", time: "2026-09-21 09:02", shift: "General Shift", lateEntry: true },
+  { id: "ci2", employee: "Aisha Khan", device: "Web", logType: "OUT", time: "2026-09-21 18:15", shift: "General Shift", lateEntry: false },
+  { id: "ci3", employee: "Nina Patel", device: "Mobile", logType: "IN", time: "2026-09-21 08:55", shift: "General Shift", lateEntry: false },
 ];
 
 export type RequestDocStatus = "Draft" | "Pending" | "Approved" | "Rejected" | "Compensatory";
-export interface ShiftRequest { id: ID; employee: string; from: string; to: string; shiftType: string; reason: string; status: RequestDocStatus; }
-export const shiftRequests: ShiftRequest[] = [
-  { id: "sr1", employee: "Nina Patel", from: "2026-09-25", to: "2026-09-26", shiftType: "Early", reason: "Personal commitment", status: "Pending" },
-  { id: "sr2", employee: "Yuki Tanaka", from: "2026-09-22", to: "2026-09-22", shiftType: "General", reason: "Client timezone", status: "Approved" },
-];
-
 export interface AttendanceRequest { id: ID; employee: string; from: string; to: string; reason: "Work From Home" | "On Duty" | "Half Day"; workFromHome: boolean; status: RequestDocStatus; }
 export const attendanceRequests: AttendanceRequest[] = [
   { id: "ar1", employee: "Diego Torres", from: "2026-09-23", to: "2026-09-23", reason: "Work From Home", workFromHome: true, status: "Pending" },
@@ -358,18 +260,6 @@ export const attendanceRequests: AttendanceRequest[] = [
 export interface CompensatoryLeaveRequest { id: ID; employee: string; workDate: string; from: string; to: string; reason: string; status: RequestDocStatus; }
 export const compensatoryLeaveRequests: CompensatoryLeaveRequest[] = [
   { id: "clr1", employee: "Tom Becker", workDate: "2026-09-13", from: "2026-09-14", to: "2026-09-14", reason: "Worked on weekly off", status: "Approved" },
-];
-
-export interface OvertimeType { id: ID; name: string; forDailyWage: boolean; maxOvertimeHours: number; hoursPerSlip: number; }
-export const overtimeTypes: OvertimeType[] = [
-  { id: "ot1", name: "Standard Overtime", forDailyWage: false, maxOvertimeHours: 2, hoursPerSlip: 1.5 },
-  { id: "ot2", name: "Weekend Overtime", forDailyWage: true, maxOvertimeHours: 4, hoursPerSlip: 3 },
-];
-
-export interface OvertimeSlip { id: ID; employee: string; payrollPeriod: string; overtimeType: string; overtimeHours: number; amount: number; status: "Draft" | "Approved"; }
-export const overtimeSlips: OvertimeSlip[] = [
-  { id: "os1", employee: "Aisha Khan", payrollPeriod: "September 2026", overtimeType: "Standard Overtime", overtimeHours: 6, amount: 340, status: "Approved" },
-  { id: "os2", employee: "Owen Wright", payrollPeriod: "September 2026", overtimeType: "Weekend Overtime", overtimeHours: 8, amount: 410, status: "Draft" },
 ];
 
 export interface Timesheet { id: ID; employee: string; project: string; fromDate: string; toDate: string; totalHours: number; status: "Draft" | "Submitted" | "Completed"; }
@@ -385,7 +275,6 @@ export const salaryComponents: SalaryComponent[] = [
   { id: "sc1", name: "Basic Salary", type: "Earning", formula: "base * 0.5", basedOn: "Grade Default Amount", dependsOnPaymentDays: true },
   { id: "sc2", name: "House Rent Allowance", type: "Earning", formula: "base * 0.2", basedOn: "Salary Component", dependsOnPaymentDays: true },
   { id: "sc3", name: "Provident Fund", type: "Deduction", formula: "Basic Salary * 0.12", basedOn: "Salary Component", dependsOnPaymentDays: false },
-  { id: "sc4", name: "Income Tax", type: "Deduction", formula: "", basedOn: "Based On Taxable Salary", dependsOnPaymentDays: false },
 ];
 
 export interface SalaryStructureAssignment { id: ID; employee: string; salaryStructure: string; base: number; amount: number; payrollCompany: string; fromDate: string; currency: string; }
@@ -403,13 +292,6 @@ export const additionalSalaries: AdditionalSalary[] = [
 export interface PayrollPeriod { id: ID; name: string; startDate: string; endDate: string; company: string; }
 export const payrollPeriods: PayrollPeriod[] = [
   { id: "pp1", name: "2026", startDate: "2026-01-01", endDate: "2026-12-31", company: "Acme" },
-];
-
-export interface IncomeTaxSlab { id: ID; name: string; fromAmount: number; toAmount: number; percentDeducted: number; company: string; }
-export const incomeTaxSlabs: IncomeTaxSlab[] = [
-  { id: "its1", name: "Slab 0%", fromAmount: 0, toAmount: 12000, percentDeducted: 0, company: "Acme" },
-  { id: "its2", name: "Slab 10%", fromAmount: 12000, toAmount: 40000, percentDeducted: 10, company: "Acme" },
-  { id: "its3", name: "Slab 22%", fromAmount: 40000, toAmount: 99999999, percentDeducted: 22, company: "Acme" },
 ];
 
 export interface EmployeeCostCenter { id: ID; employee: string; department: string; costCenter: string; percentage: number; }

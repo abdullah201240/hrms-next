@@ -47,12 +47,6 @@ export const employeeSkills: EmployeeSkill[] = [
   { id: "esk3", employee: "Grace Liu", skill: "Figma", proficiency: 5, assessmentCount: 4 },
 ];
 
-export interface EmployeeHealthInsurance { id: ID; policyNo: string; employee: string; insuranceProvider: string; planType: string; from: string; to: string; status: "Active" | "Expired"; }
-export const employeeHealthInsurances: EmployeeHealthInsurance[] = [
-  { id: "hi1", policyNo: "HIP-2026-0044", employee: "Aisha Khan", insuranceProvider: "AcmeCare", planType: "Family Floater", from: "2026-04-01", to: "2027-03-31", status: "Active" },
-  { id: "hi2", policyNo: "HIP-2025-0912", employee: "Tom Becker", insuranceProvider: "AcmeCare", planType: "Individual", from: "2025-04-01", to: "2026-03-31", status: "Expired" },
-];
-
 export interface DailyWorkSummary { id: ID; name: string; template: string; group: string; recipients: number; enabled: boolean; }
 export const dailyWorkSummaries: DailyWorkSummary[] = [
   { id: "dws1", name: "Engineering EOD", template: "Standard EOD", group: "Engineering", recipients: 30, enabled: true },
@@ -74,17 +68,6 @@ export const payrollCorrections: PayrollCorrection[] = [
 export interface EmployeeOtherIncome { id: ID; employee: string; incomeType: string; payStructureComponent: string; amount: number; note: string; }
 export const employeeOtherIncomes: EmployeeOtherIncome[] = [
   { id: "oi1", employee: "Dana Cole", incomeType: "Stock Option Exercise", payStructureComponent: "Other Income", amount: 5400, note: "Q3 vest" },
-];
-
-export interface TaxableSalarySlab { id: ID; salarySlip: string; employee: string; fromAmount: number; toAmount: number; percentDeducted: number; }
-export const taxableSalarySlabs: TaxableSalarySlab[] = [
-  { id: "tss1", salarySlip: "SS-2026-09-0001", employee: "Aisha Khan", fromAmount: 0, toAmount: 12000, percentDeducted: 0 },
-  { id: "tss2", salarySlip: "SS-2026-09-0001", employee: "Aisha Khan", fromAmount: 12000, toAmount: 40000, percentDeducted: 10 },
-];
-
-export interface EmployeeBenefitLedger { id: ID; employee: string; benefitApplication: string; expenseClaim: string; amountEligible: number; amountSanctioned: number; amountUtilized: number; }
-export const employeeBenefitLedgers: EmployeeBenefitLedger[] = [
-  { id: "bl1", employee: "Tom Becker", benefitApplication: "BA/2026/0001", expenseClaim: " exp-118", amountEligible: 10000, amountSanctioned: 8000, amountUtilized: 2400 },
 ];
 
 export interface SalaryWithholdingCycle { id: ID; employee: string; fromDate: string; toDate: string; withholdingAmount: number; receivedAmount: number; status: "Draft" | "Submitted"; }

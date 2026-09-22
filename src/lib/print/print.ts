@@ -1,4 +1,5 @@
 import { company, employees, salarySlips, type SalarySlip, type LeaveApplication, type ExpenseClaim } from "@/lib/mock/data";
+import type { PaySlip } from "@/lib/mock/payroll";
 
 /**
  * Print data layer — mirrors the reference Frappe HR print subsystem
@@ -117,11 +118,10 @@ export function salarySlipPrint(slip: SalarySlip, opts: { timesheet?: boolean } 
     ["Special Allowance", 0.10],
   ]);
   const deductions = split(slip.deductions, [
-    ["Provident Fund", 0.1],
-    ["Income Tax", 0.6],
-    ["Social Security", 0.15],
-    ["Health Insurance", 0.15],
-  ]).map((d, i) => (i === 0 ? { ...d, label: "Provident Fund" } : d));
+    ["Provident Fund", 0.25],
+    ["Social Security", 0.35],
+    ["Health Insurance", 0.4],
+  ]);
   const rounded = Math.round(slip.net / 10) * 10;
   const seq = slip.id.replace(/\D/g, "").padStart(3, "0");
   const ytdMonths = ytdMonthCount(slip);
@@ -160,6 +160,58 @@ export function salarySlipPrint(slip: SalarySlip, opts: { timesheet?: boolean } 
       net: slip.net * ytdMonths,
     },
     timeSheetBased: opts.timesheet,
+  };
+}
+
+/** Build a printable payload from a computed payslip (real earnings/deduction lines). */
+export function paySlipPrint(p: PaySlip): SalarySlipPrint {
+  const { start, end, drawing } = monthRange(p.month);
+  const earnings: Money[] = p.earnings.map((e) => ({ label: e.label, amount: e.amount }));
+  const deductions: Money[] = p.deductions.map((d) => ({ label: d.label, amount: d.amount }));
+  const rounded = Math.round(p.net / 10) * 10;
+  const workingDays = 26;
+  const slip: SalarySlip = {
+    id: p.id,
+    employeeId: p.employeeId,
+    employeeName: p.employee,
+    month: p.month,
+    gross: p.gross,
+    deductions: p.totalDeduction,
+    net: p.net,
+    status: p.status === "Published" ? "Paid" : "Draft",
+  };
+  return {
+    doctype: "Salary Slip",
+    name: p.slipNo,
+    slip,
+    employeeName: p.employee,
+    employeeId: p.employeeId,
+    department: p.department,
+    designation: p.designation,
+    branch: employees.find((e) => e.employeeId === p.employeeId)?.workLocation ?? "—",
+    company: company.name,
+    startDate: start,
+    endDate: end,
+    drawingDate: drawing,
+    bankName: "Dutch-Bangla Bank PLC",
+    accountNo: `1${p.employeeId.slice(-3)}784021`,
+    workingDays,
+    lwp: 0,
+    paymentDays: workingDays,
+    earnings,
+    deductions,
+    gross: p.gross,
+    totalDeduction: p.totalDeduction,
+    net: p.net,
+    rounded,
+    inWords: amountInWords(rounded),
+    ytd: {
+      earnings,
+      deductions,
+      gross: p.gross,
+      deduction: p.totalDeduction,
+      net: p.net,
+    },
   };
 }
 

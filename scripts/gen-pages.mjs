@@ -111,18 +111,6 @@ const specs = [
     { key: "to", header: "Leave To", render: "date" },
     { key: "reason", header: "Reason", render: "muted", hide: true },
     { key: "status", header: "Status", render: "status" } ] },
-  { route: "attendance/overtime-types", component: "OvertimeTypesPage", title: "Overtime Types", desc: "Configured overtime calculation types.", mod: "data-2", rows: "overtimeTypes", type: "OvertimeType", search: ["name"], cols: [
-    { key: "name", header: "Overtime Type", render: "bold", sortable: true },
-    { key: "forDailyWage", header: "Daily Wage", render: "bool", align: "center" },
-    { key: "maxOvertimeHours", header: "Max Hrs/Day", align: "center" },
-    { key: "hoursPerSlip", header: "Hours/Slip", align: "center" } ] },
-  { route: "attendance/overtime-slips", component: "OvertimeSlipsPage", title: "Overtime Slips", desc: "Approved overtime payouts per period.", mod: "data-2", rows: "overtimeSlips", type: "OvertimeSlip", search: ["employee", "overtimeType"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "overtimeType", header: "Overtime Type" },
-    { key: "payrollPeriod", header: "Period", render: "muted", hide: true },
-    { key: "overtimeHours", header: "Hours", align: "center", sortable: true },
-    { key: "amount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "status", header: "Status", render: "status" } ] },
   { route: "attendance/timesheets", component: "TimesheetsPage", title: "Timesheets", desc: "Project time logged by employees.", mod: "data-2", rows: "timesheets", type: "Timesheet", search: ["employee", "project"], cols: [
     { key: "employee", header: "Employee", render: "bold", sortable: true },
     { key: "project", header: "Project" },
@@ -132,70 +120,6 @@ const specs = [
     { key: "status", header: "Status", render: "status" } ] },
 
   // --- Payroll ---
-  { route: "payroll/components", component: "SalaryComponentsPage", title: "Salary Components", desc: "Earnings and deductions building a structure.", mod: "data-2", rows: "salaryComponents", type: "SalaryComponent", search: ["name"], cols: [
-    { key: "name", header: "Component", render: "bold", sortable: true },
-    { key: "type", header: "Type", align: "center" },
-    { key: "formula", header: "Formula", render: "muted" },
-    { key: "basedOn", header: "Based On", hide: true },
-    { key: "dependsOnPaymentDays", header: "Pro-rated", render: "bool", align: "center" } ] },
-  { route: "payroll/assignments", component: "StructureAssignmentPage", title: "Salary Structure Assignment", desc: "Employee-to-structure mapping with base pay.", mod: "data-2", rows: "salaryStructureAssignments", type: "SalaryStructureAssignment", search: ["employee", "salaryStructure"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "salaryStructure", header: "Structure" },
-    { key: "base", header: "Base", render: "money", align: "right", sortable: true },
-    { key: "amount", header: "Monthly", render: "money", align: "right", sortable: true },
-    { key: "fromDate", header: "From", render: "date", hide: true },
-    { key: "currency", header: "Currency", align: "center" } ] },
-  { route: "payroll/additional-salary", component: "AdditionalSalaryPage", title: "Additional Salary", desc: "One-off bonuses & allowances into payroll.", mod: "data-2", rows: "additionalSalaries", type: "AdditionalSalary", search: ["employee", "component"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "component", header: "Component" },
-    { key: "amount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "from", header: "From", render: "date" },
-    { key: "overwrite", header: "Overwrite", render: "bool", align: "center" } ] },
-  { route: "payroll/advances", component: "EmployeeAdvancePage", title: "Employee Advance", desc: "Advances paid against future salary.", mod: "data-2", rows: "employeeAdvances", type: "EmployeeAdvance", search: ["employee", "purpose"], cols: [
-    { key: "purpose", header: "Advance", render: "bold", sortable: true },
-    { key: "employee", header: "Employee" },
-    { key: "advanceDate", header: "Date", render: "date", sortable: true },
-    { key: "amount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "paidAmount", header: "Paid", render: "money", align: "right", hide: true },
-    { key: "status", header: "Status", render: "status" } ] },
-  { route: "payroll/withholding", component: "SalaryWithholdingPage", title: "Salary Withholding", desc: "Amounts withheld from salary.", mod: "data-2", rows: "salaryWithholdings", type: "SalaryWithholding", search: ["employee"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "fromDate", header: "From", render: "date" },
-    { key: "toDate", header: "To", render: "date" },
-    { key: "amount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "status", header: "Status", render: "status" } ] },
-  { route: "payroll/periods", component: "PayrollPeriodPage", title: "Payroll Periods", desc: "Fiscal periods used for payroll & tax.", mod: "data-2", rows: "payrollPeriods", type: "PayrollPeriod", search: ["name", "company"], cols: [
-    { key: "name", header: "Period", render: "bold", sortable: true },
-    { key: "startDate", header: "Start", render: "date", sortable: true },
-    { key: "endDate", header: "End", render: "date", sortable: true },
-    { key: "company", header: "Company", render: "muted" } ] },
-  { route: "payroll/tax-slabs", component: "IncomeTaxSlabsPage", title: "Income Tax Slabs", desc: "Tax brackets applied to taxable salary.", mod: "data-2", rows: "incomeTaxSlabs", type: "IncomeTaxSlab", search: ["name"], cols: [
-    { key: "name", header: "Slab", render: "bold", sortable: true },
-    { key: "fromAmount", header: "From", render: "money", align: "right", sortable: true },
-    { key: "toAmount", header: "To", render: "money", align: "right", sortable: true },
-    { key: "percentDeducted", header: "Rate", align: "center", render: "pct" },
-    { key: "company", header: "Company", render: "muted", hide: true } ] },
-  { route: "payroll/cost-centers", component: "CostCentersPage", title: "Employee Cost Centers", desc: "Allocate salary expense across cost centers.", mod: "data-2", rows: "employeeCostCenters", type: "EmployeeCostCenter", search: ["employee", "costCenter"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "department", header: "Department" },
-    { key: "costCenter", header: "Cost Center" },
-    { key: "percentage", header: "Allocation", align: "center", sortable: true, render: "pct" } ] },
-  { route: "payroll/retention-bonus", component: "RetentionBonusPage", title: "Retention Bonus", desc: "Scheduled retention bonus payouts.", mod: "data-2", rows: "retentionBonuses", type: "RetentionBonus", search: ["employee", "bonusPaymentPlan"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "bonusPaymentPlan", header: "Plan" },
-    { key: "bonusAmount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "bonusPaymentDate", header: "Payment Date", render: "date", sortable: true },
-    { key: "payoutStatus", header: "Status", render: "status" } ] },
-  { route: "payroll/incentives", component: "EmployeeIncentivesPage", title: "Employee Incentives", desc: "Performance incentive payments.", mod: "data-2", rows: "employeeIncentives", type: "EmployeeIncentive", search: ["employee", "note"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "payoutDate", header: "Payout Date", render: "date", sortable: true },
-    { key: "amount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "note", header: "Note", render: "muted" } ] },
-  { route: "payroll/gratuity", component: "GratuityPage", title: "Gratuity", desc: "Accrued gratuity entitlements.", mod: "data-2", rows: "gratuities", type: "Gratuity", search: ["employee", "gratuityRule"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "gratuityRule", header: "Rule" },
-    { key: "currentGratuityAmount", header: "Amount", render: "money", align: "right", sortable: true },
-    { key: "status", header: "Status", render: "status" } ] },
 
   // --- Expenses ---
   { route: "expenses/types", component: "ExpenseClaimTypesPage", title: "Expense Claim Types", desc: "Categories of reimbursable expense.", mod: "data-2", rows: "expenseClaimTypes", type: "ExpenseClaimType", search: ["name", "description"], cols: [
@@ -332,31 +256,6 @@ const specs = [
     { key: "startTime", header: "Start" },
     { key: "level", header: "Level", align: "center", hide: true },
     { key: "attendees", header: "Attendees", align: "center", sortable: true },
-    { key: "status", header: "Status", render: "status" } ] },
-
-  // --- Tax & Benefits ---
-  { route: "tax-benefits/declarations", component: "ExemptionDeclarationsPage", title: "Exemption Declarations", desc: "Annual tax-saving declarations.", mod: "data-3", rows: "exemptionDeclarations", type: "ExemptionDeclaration", search: ["employee", "payrollPeriod"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "payrollPeriod", header: "Period", align: "center" },
-    { key: "company", header: "Company", render: "muted", hide: true },
-    { key: "status", header: "Status", render: "status" } ] },
-  { route: "tax-benefits/proofs", component: "ExemptionProofsPage", title: "Exemption Proofs", desc: "Submitted proof vs approved amounts.", mod: "data-3", rows: "exemptionProofs", type: "ExemptionProof", search: ["employee", "category"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "category", header: "Category" },
-    { key: "declared", header: "Declared", render: "money", align: "right" },
-    { key: "submitted", header: "Submitted", render: "money", align: "right", hide: true },
-    { key: "approved", header: "Approved", render: "money", align: "right", sortable: true },
-    { key: "status", header: "Status", render: "status" } ] },
-  { route: "tax-benefits/benefit-applications", component: "BenefitApplicationsPage", title: "Benefit Applications", desc: "Employee benefit coverage.", mod: "data-3", rows: "benefitApplications", type: "BenefitApplication", search: ["employee"], cols: [
-    { key: "employee", header: "Employee", render: "bold", sortable: true },
-    { key: "payrollPeriod", header: "Period", align: "center" },
-    { key: "maxBeneficiaryAmount", header: "Max Amount", render: "money", align: "right", sortable: true },
-    { key: "status", header: "Status", render: "status" } ] },
-  { route: "tax-benefits/benefit-claims", component: "BenefitClaimsPage", title: "Benefit Claims", desc: "Claims against benefit applications.", mod: "data-3", rows: "benefitClaims", type: "BenefitClaim", search: ["employee", "benefitApplication"], cols: [
-    { key: "benefitApplication", header: "Application", render: "bold", sortable: true },
-    { key: "employee", header: "Employee" },
-    { key: "expenseDate", header: "Expense Date", render: "date", sortable: true },
-    { key: "amount", header: "Amount", render: "money", align: "right", sortable: true },
     { key: "status", header: "Status", render: "status" } ] },
 ];
 
