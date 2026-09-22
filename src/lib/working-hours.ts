@@ -15,6 +15,7 @@ import {
 import { holidayListAssignments } from "@/lib/mock/data-4";
 import {
   addDays,
+  addWeeklyOffHolidays,
   holidayOn,
   holidayRowsFor,
   isHalfHoliday,
@@ -22,6 +23,7 @@ import {
   toMinutes,
   totalLeaveDays,
   weekdayName,
+  weeklyOffDates,
   WEEK_DAYS,
   type HolidayAssignmentLike,
   type HolidayRow,
@@ -129,6 +131,44 @@ export function netLeaveDays(
 export function isNonWorkingDay(employeeName: string, date: string): boolean {
   const s = dayState(employeeName, date).kind;
   return s === "holiday" || s === "weeklyOff";
+}
+
+/* -------------------------------------------------------------------------- */
+/* Weekly-off control (Holiday List `weekly_off` + "Add to Holidays")          */
+/* The weekly holiday lives on the Holiday List, not HR Settings — same as     */
+/* Frappe HR. These helpers let /settings read & change the DEFAULT list's     */
+/* weekly-off day while keeping the list as the single source of truth.        */
+/* -------------------------------------------------------------------------- */
+
+/** Weekly-off weekday of a holiday list (defaults to the company default list). */
+export function getWeeklyOff(listName?: string): string {
+  const name = listName || workingHoursSettings.defaultHolidayList;
+  return holidayLists.find((l) => l.name === name)?.weeklyOff ?? "";
+}
+
+/**
+ * Set the weekly-off day on a holiday list and regenerate its weekly-off rows,
+ * preserving public holidays. Mirrors Holiday List's `weekly_off` field +
+ * `get_weekly_off_dates` ("Add to Holidays"). Mutates the in-memory master so
+ * roster / attendance / leave resolve the new weekly off within the session.
+ */
+export function setWeeklyOff(day: string, listName?: string): void {
+  const name = listName || workingHoursSettings.defaultHolidayList;
+  const list = holidayLists.find((l) => l.name === name);
+  if (!list) return;
+  list.weeklyOff = day;
+  const publicRows = list.holidays.filter((r) => !r.weeklyOff);
+  list.holidays = addWeeklyOffHolidays(publicRows, {
+    from: list.from,
+    to: list.to,
+    weeklyOff: day,
+  });
+}
+
+/** Upcoming weekly-off dates for a weekday name, from a start date. */
+export function nextWeeklyOffDates(day: string, from: string, count = 4): string[] {
+  if (!day) return [];
+  return weeklyOffDates(from, addDays(from, 60), day).slice(0, count);
 }
 
 export { WEEK_DAYS, weekdayName, isHalfHoliday, toMinutes, publicHolidays };
