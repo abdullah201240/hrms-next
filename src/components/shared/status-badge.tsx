@@ -1,6 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 
-// Square, border+tint based status pills (flat design: no rounding/shadow).
+// Square, border+tint based status pills. Semantic colors match the site brand
+// panel: green=emerald, orange=amber, purple=violet, red=rose (soft UI adds the
+// rounding centrally via [data-slot=badge]).
 const STYLES: Record<string, string> = {
   // positive
   Active: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400",
@@ -45,11 +47,11 @@ const STYLES: Record<string, string> = {
   "Week Off": "bg-zinc-50 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400",
   Leave: "bg-zinc-50 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400",
   // danger
-  Absent: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400",
-  Rejected: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400",
-  Cancelled: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400",
-  Expired: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400",
-  Inactive: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400",
+  Absent: "bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400",
+  Rejected: "bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400",
+  Cancelled: "bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400",
+  Expired: "bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400",
+  Inactive: "bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400",
   "Notice Period": "bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-400",
   Closed: "bg-zinc-50 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400",
 };

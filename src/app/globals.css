@@ -49,75 +49,79 @@
 }
 
 :root {
-  /* FLAT/BORDERLESS: page uses a light tint so white surfaces (cards) stay
-     readable without any 1px outlines. */
-  --background: oklch(0.975 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  /* FLAT UI: no rounded corners anywhere (see .qoder/rules/02-shadcn-flat-ui.md) */
-  --radius: 0rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* BRAND PANEL: page #F5F8FC, white cards/header/sidebar, blue primary
+     #2563EB, navy text #172554, slate secondary #64748B, table-head #F7F9FD,
+     borders #E8EDF5, light-blue tint #EEF4FF for accent/secondary. */
+  --background: #f5f8fc;
+  --foreground: #172554;
+  --card: #ffffff;
+  --card-foreground: #172554;
+  --popover: #ffffff;
+  --popover-foreground: #172554;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #eef4ff;
+  --secondary-foreground: #172554;
+  --muted: #f7f9fd;
+  --muted-foreground: #64748b;
+  --accent: #eef4ff;
+  --accent-foreground: #172554;
+  --destructive: #f43f5e;
+  --border: #e8edf5;
+  --input: #e8edf5;
+  --ring: #2563eb;
+  --chart-1: #2563eb;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #f43f5e;
+  --chart-5: #8b5cf6;
+  /* SOFT UI: rounded-corner scale (see .qoder/rules/02-ui-design-system.md) */
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #172554;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef4ff;
+  --sidebar-accent-foreground: #172554;
+  --sidebar-border: #e8edf5;
+  --sidebar-ring: #2563eb;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* DARK THEME: Refined deep midnight slate (#0b0f17) with elevated card panels
+     (#121826), luminous blue primary (#3b82f6), crisp slate text (#f8fafc),
+     and high-contrast border definition (#1e293b). */
+  --background: #0b0f17;
+  --foreground: #f8fafc;
+  --card: #121826;
+  --card-foreground: #f8fafc;
+  --popover: #121826;
+  --popover-foreground: #f8fafc;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #1a2234;
+  --secondary-foreground: #f8fafc;
+  --muted: #161e2e;
+  --muted-foreground: #94a3b8;
+  --accent: #1a2234;
+  --accent-foreground: #f8fafc;
+  --destructive: #f43f5e;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #f43f5e;
+  --chart-5: #8b5cf6;
+  --sidebar: #0f1420;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a2234;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #1e293b;
+  --sidebar-ring: #3b82f6;
 }
 
 @layer base {
@@ -129,91 +133,116 @@
   }
   html {
     @apply font-sans;
+    /* Global legibility zoom: root raised to 18px (112.5%). Every Tailwind
+       text-* utility is rem-based, so all fonts grow ~12.5%; spacing/widths are
+       rem too, so the whole layout scales proportionally (no overflow). */
+    font-size: 112.5%;
   }
 }
 
 /* =====================================================================
-   FLAT UI GLOBAL OVERRIDES — project policy (rules/02-shadcn-flat-ui.md)
-   No shadows and no rounded corners anywhere. Focus rings (accessibility)
-   are preserved because they are driven by --tw-ring-shadow, not the
-   --shadow-* scale neutralized below.
-   ===================================================================== */
-
-/* 1. Kill every drop shadow in the shadow scale (shadow-sm, shadow-md, ...). */
-@theme {
-  --shadow-2xs: 0 0 #0000;
-  --shadow-xs: 0 0 #0000;
-  --shadow-sm: 0 0 #0000;
-  --shadow: 0 0 #0000;
-  --shadow-md: 0 0 #0000;
-  --shadow-lg: 0 0 #0000;
-  --shadow-xl: 0 0 #0000;
-  --shadow-2xl: 0 0 #0000;
-  --drop-shadow-*: initial;
-}
-
-/* 2. Force sharp corners globally, incl. rounded-full (avatar/switch/etc.). */
-@layer base {
-  *,
-  *::before,
-  *::after {
-    border-radius: 0 !important;
-  }
-}
-
-/* 3. BORDERLESS surfaces: remove every 1px line (cards, inputs, selects,
-   table rows, dividers). Focus/invalid states stay visible because they are
-   driven by box-shadow rings (--tw-ring-shadow) and outline, NOT border-width.
-   See .qoder/rules flat-ui policy. */
-@layer base {
-  *,
-  *::before,
-  *::after {
-    border-width: 0 !important;
-  }
-  /* Separator is a background-coloured 1px bar, not a CSS border — hide it too. */
-  [data-slot="separator"] {
-    background-color: transparent;
-  }
-}
-
-/* =====================================================================
-   DASHBOARD EXCEPTION — the analytics dashboard intentionally uses the
-   rounded + softly-shadowed card treatment from the product mock, while
-   every other screen stays flat/borderless. All rules are scoped under
-   `.dash` (the dashboard root) and live in the SAME @layer base as the
-   flat overrides above, so their higher-specificity `!important` wins.
+   SOFT UI GLOBAL SYSTEM — project policy (rules/02-ui-design-system.md)
+   Rounded, airy, softly-shadowed surfaces app-wide. The shadcn primitives
+   already carry their own border/bg classes (the old flat overrides that
+   forced border-width:0 and killed the shadow scale are removed), but the
+   rounded-* radius tokens were stripped from component source, so corners
+   are re-applied centrally here via [data-slot] hooks.
    ===================================================================== */
 @layer base {
-  /* Card surfaces (incl. StatCard) get the soft rounded panel look. */
-  .dash [data-slot="card"] {
-    border-radius: 1rem !important;
+  /* Cards: rounded panel + soft elevation. */
+  [data-slot="card"] {
+    border-radius: var(--radius-xl);
     box-shadow:
       0 1px 2px -1px rgb(16 24 40 / 0.06),
-      0 8px 24px -6px rgb(16 24 40 / 0.12) !important;
+      0 12px 28px -14px rgb(16 24 40 / 0.16);
   }
-  /* Colored square icon chips. */
-  .dash .chip {
-    border-radius: 0.625rem !important;
+
+  .dark [data-slot="card"] {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.07),
+      0 4px 16px -2px rgba(0, 0, 0, 0.6),
+      0 16px 36px -8px rgba(0, 0, 0, 0.7);
   }
-  /* StatCard's larger icon (shared component — targeted via size token). */
-  .dash [class*="size-11"] {
-    border-radius: 0.875rem !important;
+
+  /* Buttons + icon buttons. */
+  [data-slot="button"] {
+    border-radius: var(--radius-md);
   }
-  /* Status / count / vacancy pills. */
-  .dash .pill {
-    border-radius: 9999px !important;
+
+  .dark [data-slot="button"] {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
   }
+
+  /* Form controls (borders already present in source — add radius). */
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="combobox-trigger"],
+  [data-slot="input-group"],
+  [data-slot="input-group-control"] {
+    border-radius: var(--radius-md);
+  }
+
+  /* Checkbox + switch. */
+  [data-slot="checkbox"] { border-radius: 4px; }
+  [data-slot="switch"],
+  [data-slot="switch-thumb"] { border-radius: 9999px; }
+
+  /* Badges / status pills. */
+  [data-slot="badge"] { border-radius: var(--radius-md); }
+
   /* Avatars stay circular. */
-  .dash [data-slot="avatar"],
-  .dash [data-slot="avatar-fallback"] {
-    border-radius: 9999px !important;
+  [data-slot="avatar"],
+  [data-slot="avatar-fallback"],
+  [data-slot="avatar-image"] { border-radius: 9999px; }
+
+  /* Floating surfaces: menus, dialogs, popovers, selects. */
+  [data-slot="select-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="popover-content"],
+  [data-slot="combobox-content"],
+  [data-slot="dialog-content"],
+  [data-slot="alert-dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="command"],
+  [data-slot="calendar"] {
+    border-radius: var(--radius-lg);
   }
-  /* Vacancy mini-bar tracks. */
-  .dash .bar-track {
-    border-radius: 9999px !important;
+
+  /* Selectable rows inside floating surfaces. */
+  [data-slot="dropdown-menu-item"],
+  [data-slot="dropdown-menu-checkbox-item"],
+  [data-slot="dropdown-menu-radio-item"],
+  [data-slot="select-item"],
+  [data-slot="combobox-item"],
+  [data-slot="command-item"] {
+    border-radius: var(--radius-sm);
   }
+
+  /* Tabs. */
+  [data-slot="tabs-list"] { border-radius: var(--radius-md); }
+  [data-slot="tabs-trigger"] { border-radius: var(--radius-sm); }
+
+  /* Tables: round the container, tint the header row. */
+  [data-slot="table-container"] { border-radius: var(--radius-lg); }
+  [data-slot="table-head"] { background-color: var(--muted); }
+
+  /* Sidebar interactive items. */
+  [data-slot="sidebar-menu-button"],
+  [data-slot="sidebar-menu-sub-button"] {
+    border-radius: var(--radius-md);
+  }
+
+  /* Reusable helpers used by bespoke pages (icon chips / pills / bars). */
+  .chip { border-radius: var(--radius-md); }
+  .pill { border-radius: 9999px; }
+  .bar-track { border-radius: 9999px; }
 }
+
+/* (Dashboard no longer needs a scoped exception — the soft UI above is
+   now global. The `.chip` / `.pill` / `.bar-track` helpers used on the
+   dashboard are defined in the SOFT UI layer.) */
 
 /* =====================================================================
    PRINT — Frappe-HR-style document printing (see components/shared/print).

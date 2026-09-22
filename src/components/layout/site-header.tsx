@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { NavUser } from "@/components/layout/nav-user";
+import { NavNotifications } from "@/components/layout/nav-notifications";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { navSections } from "@/lib/nav";
 
@@ -21,11 +22,12 @@ export function SiteHeader() {
   const title = resolveTitle(pathname);
 
   return (
-    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur lg:px-6">
+    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b bg-card/95 px-4 backdrop-blur lg:px-6">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mr-1 h-5!" />
       <h1 className="text-sm font-semibold tracking-tight">{title}</h1>
       <div className="ml-auto flex items-center gap-2">
+        <NavNotifications />
         <ModeToggle />
         <NavUser />
       </div>

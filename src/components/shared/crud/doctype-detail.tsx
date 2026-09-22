@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { CrudPrintButton } from "@/components/shared/crud/crud-print-button";
+import { detectIcon, CHIP } from "@/components/shared/page-header";
 import { fmtDate } from "@/lib/mock/data";
 import { ArrowLeft, Pencil, Plus } from "lucide-react";
 import type { ChildTableDef, DoctypeConfig, Field } from "@/lib/crud/types";
@@ -116,6 +117,7 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
   const row = getRow(doctype, id) as Record<string, unknown>;
   const title = String(row[config.titleKey] ?? config.label);
   const subtitle = config.subtitleKey ? (row[config.subtitleKey] as string | undefined) : undefined;
+  const { Icon: HeadIcon, color: headColor } = detectIcon(config.label);
 
   return (
     <>
@@ -123,22 +125,33 @@ export function DocTypeDetail({ doctype, id }: { doctype: string; id: string }) 
         <ArrowLeft /> Back to {config.plural}
       </Button>
 
-      <div className="flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
+      <div className="relative overflow-hidden pb-6">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-10 -top-20 size-60 rounded-full bg-gradient-to-br from-indigo-300/35 via-sky-200/30 to-transparent blur-3xl"
+        />
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
-            {STATUS_KEYS.has(config.titleKey) && <StatusBadge status={title} />}
+            <div className={`chip flex size-12 shrink-0 items-center justify-center ${CHIP[headColor] ?? CHIP.indigo}`}>
+              <HeadIcon className="size-6" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
+                {STATUS_KEYS.has(config.titleKey) && <StatusBadge status={title} />}
+              </div>
+              {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+            </div>
           </div>
-          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          <CrudPrintButton doctype={doctype} id={id} />
-          <Button render={<Link href={`${config.route}/${id}/edit`} />}>
-            <Pencil /> Edit
-          </Button>
-          <Button variant="outline" render={<Link href={`${config.route}/new`} />}>
-            <Plus /> New {config.label}
-          </Button>
+          <div className="flex items-center gap-2">
+            <CrudPrintButton doctype={doctype} id={id} />
+            <Button render={<Link href={`${config.route}/${id}/edit`} />}>
+              <Pencil /> Edit
+            </Button>
+            <Button variant="outline" render={<Link href={`${config.route}/new`} />}>
+              <Plus /> New {config.label}
+            </Button>
+          </div>
         </div>
       </div>
 
